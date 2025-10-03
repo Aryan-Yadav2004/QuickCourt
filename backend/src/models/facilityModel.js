@@ -29,7 +29,6 @@ const Schema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        require: true,
         ref: "User"
     },
     AvailableSports: [
