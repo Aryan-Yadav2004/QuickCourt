@@ -5,11 +5,16 @@ const Schema = new mongoose.Schema({
         type: String,
         require: true,
     },
+    
     street: {
         type: String,
         require: true,
     },
     district: {
+        type: String,
+        require: true,
+    },
+    state: {
         type: String,
         require: true,
     },
@@ -31,11 +36,6 @@ const Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    AvailableSports: [
-        {
-            types: String,
-        }
-    ],
     profileImg: {
         type: String,
     },

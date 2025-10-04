@@ -10,7 +10,7 @@ const handleRegister = async (req, res) => {
     const user = new User(req.body);
     const result = await user.save();
     console.log(result);
-    res.send("done");
+    res.status(200).json({message: "User registerd successfully"});
 }
 
 
@@ -23,13 +23,49 @@ const handleLogin = async (req,res) => {
         }
         const secretKey = process.env.JWTsecretKey;
         const token = jwt.sign({_id: user._id, username: user.username, role: user.role}, secretKey, {expiresIn: "168h"});
-        console.log(token);
-        res.cookie("token",token).json(user);
+        res.cookie("token",token,{httpOnly: true, sameSite: "strict"}).status(200).json({message: "User logedIn successfully"});
     }
-    catch(e){
-        console.log(e);
+    catch(error){
+        res.status(500).json({message: error.message});
     }
-    
 }
 
-export {handleLogin, handleRegister};
+const handleLogOut = async (req,res) => {
+    try {
+        res.clearCookie("token",{httpOnly: true, sameSite: "strict"}).status(200).json({message: "logout successfull!"});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+const updateUser = async (req,res) => {
+    try {
+        const { id } = req.params;
+        const newUser = req.body;
+        const user = await User.findOne({_id: id});
+        user.name = newUser.name;
+        user.username = newUser.username;
+        user.street = newUser.street;
+        user.district = newUser.district;
+        user.state = newUser.state;
+        user.country = newUser.country;
+        user.avtar = newUser.avtar;
+        user.phoneNo = newUser.phoneNo;
+        await user.save();
+        res.status(200).json({message: "User updated"});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+const getUser = async(req,res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findOne({_id: id});
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+export {handleLogin, handleRegister, handleLogOut , updateUser, getUser};
