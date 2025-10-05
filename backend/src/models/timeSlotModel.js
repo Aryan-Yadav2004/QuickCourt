@@ -1,12 +1,11 @@
 import mongoose from "mongoose";
-import Court from "./courtModel";
 
-const Schema = mongoose.Schema({
+const Schema = new mongoose.Schema({
     time: {
         type: Date,
         require: true,
     },
-    TotalSeats: {
+    totalSeats: {
         type: Number,
         require: true,
         min: 0,

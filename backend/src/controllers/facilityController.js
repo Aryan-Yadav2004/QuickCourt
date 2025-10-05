@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import Facility from "../models/facilityModel.js";
 import Court from "../models/courtModel.js";
 import User from "../models/userModel.js";
+import Slot from "../models/timeSlotModel.js";
 const createFacility = async (req,res) => {
     try {
         const token = req.cookies?.token;
@@ -23,7 +24,14 @@ const deleteFacility = async (req,res) => {
     try {
         const { id } = req.params;
         const facility = await Facility.findOne({_id: id});
+        const courts = await Court.find({_id: {$in: facility.courts}});
+        for(let court of courts){
+            for(let slots of court.timeSlotBookingInfo){
+                await Slot.deleteMany({_id: {$in: slots}});
+            }
+        }
         await Court.deleteMany({_id: {$in: facility.courts}});
+        
         const token = req.cookies?.token;
         const data = jwt.decode(token);
         const owner = await User.findOne({_id: data._id});
@@ -61,7 +69,7 @@ const updateFacility = async(req,res) => {
 let readFacility = async (req,res) => {
     try {
         let { id } = req.params; 
-        const facility = await Facility.findOne({_id: id});
+        const facility = await Facility.findOne({_id: id}).populate("courts");
         res.status(200).json(facility);
     } catch (error) {
         res.status(500).json({message: error.message});

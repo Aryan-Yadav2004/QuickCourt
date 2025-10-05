@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 const Schema = new mongoose.Schema({
-    name: {
+    sport: {
         type: String,
         required: true,
     },
-    amenties: [
+    amenities: [
         {
-            type: mongoose.Schema.Types.String,
+            type: String,
         }
     ],
     reviews: [
@@ -14,22 +14,12 @@ const Schema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
         }
     ],
-    street: {
+    photoLink : {
         type: String,
-        require: true,
     },
-    district: {
-        type: String,
-        require: true,
-    },
-    country: {
-        type: String,
-        require: true,
-    },
-    slotBookingInfo: [
+    timeSlotBookingInfo: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            require: true,
             ref: "Slot"
         }
     ],

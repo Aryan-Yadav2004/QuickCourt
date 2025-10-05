@@ -26,7 +26,7 @@ const Scheme = new mongoose.Schema({
         type: String,
         require: true,
     },
-    district: {
+    city: {
         type: String,
         require: true,
     },
