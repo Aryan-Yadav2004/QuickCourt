@@ -68,4 +68,14 @@ const getUser = async(req,res) => {
     }
 }
 
-export {handleLogin, handleRegister, handleLogOut , updateUser, getUser};
+const getAllBookings = async(req,res) => {
+    try{
+        const { id } = req.params;
+        const user = await User.findOne({_id: id}).populate("bookings");
+        res.status(500).json(user);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }    
+}
+
+export {handleLogin, handleRegister, handleLogOut , updateUser, getUser, getAllBookings};

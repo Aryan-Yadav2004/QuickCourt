@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Schema = mongoose.Schema({
+const Schema = new mongoose.Schema({
     user_id:{
         type: mongoose.Schema.Types.ObjectId,
         require: true,
@@ -54,5 +54,5 @@ const Schema = mongoose.Schema({
     }
 });
 
-const Booking = mongoose.model("Booking",Schema);
+const Booking =  mongoose.model("Booking",Schema);
 export default Booking;

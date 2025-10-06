@@ -1,4 +1,4 @@
-import User from "../models/bookingModel.js";
+import User from "../models/userModel.js";
 import Slot from "../models/timeSlotModel.js";
 import Court from "../models/courtModel.js";
 import Facility from "../models/facilityModel.js";
@@ -8,16 +8,16 @@ import jwt from "jsonwebtoken";
 const createBooking = async (req,res) => {
     try {
         const { seats } = req.body;
-        const token = req.cookie?.token;
-        const { _id, username, role } = jwt.decode(token);
-        const { SlotId } = req.params;
-        const slot = await Slot.findOne({_id: SlotId});
+        const token = req.cookies?.token;
+        const {_id, username, role} = jwt.decode(token);
+        const { slotId } = req.params;
+        const slot = await Slot.findOne({_id: slotId});
         const court = await Court.findOne({_id: slot.court_id});
         const facility = await Facility.findOne({_id: court.facility_id});
         const user = await User.findOne({_id: _id});
         const bookingModel = new Booking({
             user_id: _id,
-            slot_id: _id,
+            slot_id: slot._id,
             court: court.sport,
             facility: facility.name,
             street: facility.street,
@@ -30,6 +30,7 @@ const createBooking = async (req,res) => {
             status : "booked"
         });
         const booking = await bookingModel.save();
+        
         slot.bookings.push(booking._id);
         user.bookings.push(booking._id);
         await slot.save();

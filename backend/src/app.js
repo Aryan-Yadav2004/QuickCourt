@@ -33,7 +33,6 @@ const start = async () => {
     const port = process.env.PORT;
     const connecctionDB = await mongoose.connect(dbURL);
     console.log("connected to db");
-    console.log(connecctionDB.connection.host);
     server.listen(port,()=>{
         console.log(`listening at port ${port}`);
     })

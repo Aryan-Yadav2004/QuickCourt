@@ -55,7 +55,7 @@ const Scheme = new mongoose.Schema({
     bookings : [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "booking",
+            ref: "Booking",
         }
     ],
     facility: [
