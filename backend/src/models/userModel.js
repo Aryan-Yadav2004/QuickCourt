@@ -52,7 +52,7 @@ const Scheme = new mongoose.Schema({
             message: "No such role exists"
         }
     },
-    booking : [
+    bookings : [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "booking",

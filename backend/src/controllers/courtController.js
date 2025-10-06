@@ -61,7 +61,7 @@ const deleteCourt = async (req,res) => {
         for(let slots of court.timeSlotBookingInfo){
             await Slot.deleteMany({_id: {$in: slots}});
         }
-        const facility = await Facility.findOne({_id: facility.facility_id});
+        const facility = await Facility.findOne({_id: court.facility_id});
         facility.courts = facility.courts.filter(id => !id.equals(court._id));
         await facility.save();
         await Court.deleteMany({_id: courtId});
