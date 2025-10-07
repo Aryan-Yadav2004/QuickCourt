@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 
 const handleRegister = async (req, res) => {
     const myPlaintextPassword = req.body.password;
+    console.log(req.body)
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(myPlaintextPassword, saltRounds);
     req.body.password = hashedPassword;

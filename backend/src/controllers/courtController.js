@@ -3,8 +3,8 @@ import Facility from "../models/facilityModel.js";
 import Slot from "../models/timeSlotModel.js";
 let createCourt = async (req,res) => {
     try {
-        let { id } = req.params;
-        const facility = await Facility.findOne({_id: id});
+        let { facilityId } = req.params;
+        const facility = await Facility.findOne({_id: facilityId});
         const courtData = req.body;
         console.log(req.body);
         const court = new Court({
@@ -74,7 +74,7 @@ const deleteCourt = async (req,res) => {
 const readCourt = async (req,res) => {
     try {
         const { courtId } = req.params;
-        const court = await Court.findOne({_id: courtId});
+        const court = await Court.findOne({_id: courtId}).populate("reviews");
         res.status(200).json(court);
     } catch (error) {
         res.status(500).json({message: error.message});

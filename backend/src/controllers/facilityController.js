@@ -22,8 +22,8 @@ const createFacility = async (req,res) => {
 
 const deleteFacility = async (req,res) => {
     try {
-        const { id } = req.params;
-        const facility = await Facility.findOne({_id: id});
+        const { facilityId } = req.params;
+        const facility = await Facility.findOne({_id: facilityId});
         const courts = await Court.find({_id: {$in: facility.courts}});
         for(let court of courts){
             for(let slots of court.timeSlotBookingInfo){
@@ -35,9 +35,9 @@ const deleteFacility = async (req,res) => {
         const token = req.cookies?.token;
         const data = jwt.decode(token);
         const owner = await User.findOne({_id: data._id});
-        owner.facility = owner.facility.filter(facilityId => !facilityId.equals(facility._id));
+        owner.facility = owner.facility.filter(fId => !fId.equals(facility._id));
         await owner.save();
-        await Facility.deleteOne({_id: id});
+        await Facility.deleteOne({_id: facilityId});
         res.status(200).json({message: "facility deleted successfully."});
     } catch (error) {
         res.status(500).json({message: "failed to delete."});
@@ -47,8 +47,8 @@ const deleteFacility = async (req,res) => {
 const updateFacility = async(req,res) => {
     // name, street, state, district, country, pincode, profileImg, photos , about
     try {
-        const { id } = req.params;
-        const facility = await Facility.findOne({_id: id});
+        const { facilityId } = req.params;
+        const facility = await Facility.findOne({_id: facilityId});
         const newFacility = req.body;
         facility.name = newFacility.name;
         facility.street = newFacility.street;
@@ -68,8 +68,8 @@ const updateFacility = async(req,res) => {
 
 let readFacility = async (req,res) => {
     try {
-        let { id } = req.params; 
-        const facility = await Facility.findOne({_id: id}).populate("courts");
+        let { facilityId } = req.params; 
+        const facility = await Facility.findOne({_id: facilityId}).populate("courts");
         res.status(200).json(facility);
     } catch (error) {
         res.status(500).json({message: error.message});

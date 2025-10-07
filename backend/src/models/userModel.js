@@ -3,44 +3,44 @@ import mongoose from "mongoose";
 const Scheme = new mongoose.Schema({
     name: {
         type: String,
-        require: true,
+        required: true,
     },
     email: {
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     username: {
         type: String,
-        require: true,
+        required: true,
         unique: true,
     },
     password: {
         type: String,
-        require: true,
+        required: true,
     },
     token: {
         type: String,
     },
     street: {
         type: String,
-        require: true,
+        required: true,
     },
     city: {
         type: String,
-        require: true,
+        required: true,
     },
     state: {
         type: String,
-        require: true,
+        required: true,
     },
     country: {
         type: String,
-        require: true,
+        required: true,
     },
     phoneNo: {
         type: Number,
-        require: true,
+        required: true,
         unique: true,
         max: 9999999999,
         min: 1000000000 

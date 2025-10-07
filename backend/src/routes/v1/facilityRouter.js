@@ -1,17 +1,18 @@
 import express from "express";
 import v1CourtRouter from "./courtRouter.js";
 import { createFacility, deleteFacility, readFacility, updateFacility } from "../../controllers/facilityController.js";
+import { isLogedIn, ownerAuthorization, ownerAuthorizationFacility } from "../../../middlewares.js";
 const router = express.Router();
 
-router.use("/:id/courts", v1CourtRouter);
+router.use("/:facilityId/courts",v1CourtRouter);
 
-router.route("/new").post(createFacility);
+router.route("/new").post(isLogedIn,ownerAuthorization,createFacility);
 
-router.delete("/:id/delete",deleteFacility);
+router.delete("/:facilityId/delete",isLogedIn,ownerAuthorization,ownerAuthorizationFacility,deleteFacility);
 
-router.patch("/:id/edit",updateFacility);
+router.patch("/:facilityId/edit",isLogedIn,ownerAuthorization,ownerAuthorizationFacility,updateFacility);
 
-router.get("/:id",readFacility);
+router.get("/:facilityId",readFacility);
 
 
 

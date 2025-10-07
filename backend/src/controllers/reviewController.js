@@ -16,8 +16,8 @@ const createReview = async (req,res) => {
             review: reviewDescription,
             rating: rating,
         });
-        const res = await review.save();
-        court.reviews.push(review._id);
+        const result = await review.save();
+        court.reviews.push(result._id);
         await court.save();
         res.status(200).json({message: "review create"});
     } catch (error) {
@@ -43,7 +43,8 @@ const deleteReview = async (req,res) => {
     try {
         const { courtId,reviewId } = req.params;
         const court = await Court.findOne({_id: courtId});
-        court.reviews.filter(id => !id.equals(review._id));
+        const review = await Review.findOne({_id: reviewId});
+        court.reviews = court.reviews.filter(id => !id.equals(review._id));
         await court.save();
         
         await Review.deleteOne({_id: reviewId});
@@ -53,4 +54,4 @@ const deleteReview = async (req,res) => {
     }
 }
 
-export { createReview, updateReview, deleteReview }
+export { createReview, updateReview, deleteReview };
