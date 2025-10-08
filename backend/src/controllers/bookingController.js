@@ -56,7 +56,7 @@ const cancelBooking = async(req,res) => {
         const { bookingId } = req.params;
         const booking = await Booking.findOne({_id: bookingId});
         const slot = await Slot.findOne({_id: booking.slot_id}); 
-        slot.bookings.filter(currBookingId => !currBookingId.equals(booking._id));
+        slot.bookings = slot.bookings.filter(currBookingId => !currBookingId.equals(booking._id));
         await slot.save();
         booking.status = "cancelled";
         await booking.save();

@@ -4,7 +4,7 @@ import User from "./src/models/userModel.js";
 import Court from "./src/models/courtModel.js";
 import Booking from "./src/models/bookingModel.js";
 import Review from "./src/models/reviewsModel.js";
-
+//passed
 const isLogedIn = (req,res,next) => {
     if(req.cookies.token){
         next();
@@ -14,6 +14,7 @@ const isLogedIn = (req,res,next) => {
     }
 }
 
+// passed
 const ownerAuthorizationFacility = async (req,res,next) => {
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
@@ -26,6 +27,8 @@ const ownerAuthorizationFacility = async (req,res,next) => {
         res.status(401).json({message: "you are unauthorized"});
     }
 }
+
+//passed
 const ownerAuthorization = (req,res,next)=>{
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
@@ -37,6 +40,7 @@ const ownerAuthorization = (req,res,next)=>{
     }
 }
 
+//passed
 const ownerAuthorizationCourt = async (req,res,next) => {
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
@@ -51,6 +55,7 @@ const ownerAuthorizationCourt = async (req,res,next) => {
     }
 }
 
+//passed
 const userAuthorization = (req,res,next) => {
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
@@ -63,6 +68,7 @@ const userAuthorization = (req,res,next) => {
     }
 }
 
+//passed
 const bookingAuthorization = async (req,res,next) => {
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
@@ -72,10 +78,12 @@ const bookingAuthorization = async (req,res,next) => {
         next();
     } 
     else{
-        res.status(401).json({message: "you are unauthorized"});
-    }
+        res.status(401).json({message: "you are booking unauthorized"});
+    }   
 }
 
+
+//passed
 const reviewAuthorization = async (req,res,next) => {
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
@@ -89,4 +97,59 @@ const reviewAuthorization = async (req,res,next) => {
     }
 }
 
-export { isLogedIn, ownerAuthorizationFacility, ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization };
+
+//passed
+const userCreateValidator = async (req,res,next)=>{
+    const data = req.body;
+    
+    if(!data.name || data.name.trim()==="" || !data.email || data.email.trim()==="" || !data.username || data.username.trim()==="" || !data.password || data.password.trim()==="" || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.phoneNo || data.phoneNo < 1000000000 || data.phoneNo > 9999999999){
+        res.status(400).json({message: "Provide appropirate data"});
+    }
+    else {
+        let a = await User.find({email: data.email});
+        if(a.length !== 0){
+            res.status(409).json({message: "email already exits"});
+        }
+        a = await User.find({username: data.username});
+        if(a.length !== 0){
+            res.status(409).json({message: "username already exits"});
+        }
+        a = await User.find({phoneNo: data.phoneNo});
+        if(a.length !== 0){
+            res.status(409).json({message: "phoneNo already exits"});
+        }
+    }
+    next();
+    
+}
+
+//passed
+const userUpdateValidator = async (req,res,next) => {
+    const data = req.body;
+    
+    if(!data.name || data.name.trim()===""  || !data.username || data.username.trim()===""  || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.phoneNo || data.phoneNo < 1000000000 || data.phoneNo > 9999999999 || !data.avatar || data.avatar.trim()===""){
+        res.status(400).json({message: "Provide appropirate data"});
+    }
+    else {
+        const token = req.cookies?.token;
+        const {_id,role } = jwt.decode(token);
+        let a = await User.find({email: data.email});
+        if(a.length !== 0 && !a[0]._id.equals(_id)){
+            res.status(409).json({message: "email already exits"});
+        }
+        a = await User.find({username: data.username});
+        if(a.length !== 0 && !a[0]._id.equals(_id)){
+            res.status(409).json({message: "username already exits"});
+        }
+        a = await User.find({phoneNo: data.phoneNo});
+        if(a.length !== 0 && !a[0]._id.equals(_id)){
+            res.status(409).json({message: "phoneNo already exits"});
+        }
+    }
+    next();
+}
+
+
+
+
+export { isLogedIn, ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization };

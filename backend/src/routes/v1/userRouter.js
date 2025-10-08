@@ -1,12 +1,12 @@
 import express from "express";
 import { getAllBookings, getUser, handleLogin, handleLogOut, handleRegister, updateUser } from "../../controllers/userController.js";
 import { cancelBooking, getBooking } from "../../controllers/bookingController.js";
-import { bookingAuthorization, isLogedIn, userAuthorization } from "../../../middlewares.js";
+import { bookingAuthorization, isLogedIn, userAuthorization, userCreateValidator, userUpdateValidator } from "../../../middlewares.js";
 const router = express.Router();
 
 
 router.route("/register")
-.post(handleRegister)
+.post(userCreateValidator,handleRegister)
 
 router.route("/login")
 .post(handleLogin)
@@ -16,7 +16,7 @@ router.route("/logout")
 
 router.route("/:id")
 .get(isLogedIn,userAuthorization,getUser)
-.patch(isLogedIn,userAuthorization,updateUser)
+.patch(isLogedIn,userAuthorization,userUpdateValidator,updateUser)
 
 router.route("/:id/bookings/:bookingId").get(isLogedIn,userAuthorization,getBooking);
 router.route("/:id/bookings/:bookingId/cancel").patch(isLogedIn,userAuthorization,cancelBooking);
