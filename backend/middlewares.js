@@ -10,7 +10,7 @@ const isLogedIn = (req,res,next) => {
         next();
     }
     else{
-        res.status(401).json({message: "user not loged in"});
+       return res.status(401).json({message: "user not loged in"});
     }
 }
 
@@ -24,7 +24,7 @@ const ownerAuthorizationFacility = async (req,res,next) => {
         next();
     }
     else{
-        res.status(401).json({message: "you are unauthorized"});
+      return  res.status(401).json({message: "you are unauthorized"});
     }
 }
 
@@ -36,7 +36,7 @@ const ownerAuthorization = (req,res,next)=>{
         next();
     }
     else{
-        res.status(401).json({message: "you are unauthorized"});
+      return  res.status(401).json({message: "you are unauthorized"});
     }
 }
 
@@ -51,7 +51,7 @@ const ownerAuthorizationCourt = async (req,res,next) => {
         next();
     }
     else{
-        res.status(401).json({message: "you are unauthorized"});
+       return res.status(401).json({message: "you are unauthorized"});
     }
 }
 
@@ -64,7 +64,7 @@ const userAuthorization = (req,res,next) => {
         next();
     }
     else{
-        res.status(401).json({message: "you are unauthorized"});
+       return res.status(401).json({message: "you are unauthorized"});
     }
 }
 
@@ -78,7 +78,7 @@ const bookingAuthorization = async (req,res,next) => {
         next();
     } 
     else{
-        res.status(401).json({message: "you are booking unauthorized"});
+       return res.status(401).json({message: "you are booking unauthorized"});
     }   
 }
 
@@ -93,7 +93,7 @@ const reviewAuthorization = async (req,res,next) => {
         next();
     }
     else{
-        res.status(401).json({message: "you are unauthorized"});
+      return  res.status(401).json({message: "you are unauthorized"});
     }
 }
 
@@ -103,20 +103,20 @@ const userCreateValidator = async (req,res,next)=>{
     const data = req.body;
     
     if(!data.name || data.name.trim()==="" || !data.email || data.email.trim()==="" || !data.username || data.username.trim()==="" || !data.password || data.password.trim()==="" || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.phoneNo || data.phoneNo < 1000000000 || data.phoneNo > 9999999999){
-        res.status(400).json({message: "Provide appropirate data"});
+      return  res.status(400).json({message: "Provide appropirate data"});
     }
     else {
         let a = await User.find({email: data.email});
         if(a.length !== 0){
-            res.status(409).json({message: "email already exits"});
+           return res.status(409).json({message: "email already exits"});
         }
         a = await User.find({username: data.username});
         if(a.length !== 0){
-            res.status(409).json({message: "username already exits"});
+          return  res.status(409).json({message: "username already exits"});
         }
         a = await User.find({phoneNo: data.phoneNo});
         if(a.length !== 0){
-            res.status(409).json({message: "phoneNo already exits"});
+           return res.status(409).json({message: "phoneNo already exits"});
         }
     }
     next();
@@ -127,29 +127,73 @@ const userCreateValidator = async (req,res,next)=>{
 const userUpdateValidator = async (req,res,next) => {
     const data = req.body;
     
-    if(!data.name || data.name.trim()===""  || !data.username || data.username.trim()===""  || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.phoneNo || data.phoneNo < 1000000000 || data.phoneNo > 9999999999 || !data.avatar || data.avatar.trim()===""){
-        res.status(400).json({message: "Provide appropirate data"});
+    if(!data.name || data.name.trim()===""  || !data.username || data.username.trim()===""  || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.phoneNo || typeof(data.phoneNo)==='number' || data.phoneNo < 1000000000 || data.phoneNo > 9999999999 || !data.avatar || data.avatar.trim()===""){
+       return res.status(400).json({message: "Provide appropirate data"});
     }
     else {
         const token = req.cookies?.token;
         const {_id,role } = jwt.decode(token);
         let a = await User.find({email: data.email});
         if(a.length !== 0 && !a[0]._id.equals(_id)){
-            res.status(409).json({message: "email already exits"});
+           return res.status(409).json({message: "email already exits"});
         }
         a = await User.find({username: data.username});
         if(a.length !== 0 && !a[0]._id.equals(_id)){
-            res.status(409).json({message: "username already exits"});
+           return res.status(409).json({message: "username already exits"});
         }
         a = await User.find({phoneNo: data.phoneNo});
         if(a.length !== 0 && !a[0]._id.equals(_id)){
-            res.status(409).json({message: "phoneNo already exits"});
+            return res.status(409).json({message: "phoneNo already exits"});
         }
     }
     next();
 }
+//passed
+const pinCodeValidator = (pin) => {
+    let flag = false;
+    let a = ['0','1','2','3','4','5','6','7','8','9'];
+    console.log(pin.split(''));
+    pin.split('').forEach(ch => {
+        if(!a.includes(ch)){
+            flag = true;
+        }
+    });
+    return flag;
+}
+//passed
+const facilityValidator = (req,res,next) => {
+    const data = req.body;
+    
+    if(!data.name || data.name.trim()==="" || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.pinCode || data.pinCode.length !== 6 || pinCodeValidator(data.pinCode)){
+       return res.status(400).json({message: "Provide Fcilit appropirate data"});
+    }
+    
+    next();
+}
 
 
+const courtValidator = (req,res,next) => {
+    const data = req.body;
+    if(!data.sport || data.sport.trim()===""){
+       return res.status(400).json({message: "provide appropirate data"});
+    }
+    next();
+}
 
+const reviewValidator = (req,res,next) => {
+    const data = req.body;
+    if(!data.reviewDescription || data.reviewDescription.trim()==="" || !data.rating || typeof(data.rating)==='number' || data.rating < 0 || data.rating > 5){
+       return res.status(400).json({message: "provide appropirate data"});
+    }
+    next();
+}
 
-export { isLogedIn, ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization };
+const slotValidator = (req,res,next) => {
+    const data = req.body;
+    if(!data.time || !data.totalSeats || typeof(data.totalSeat)==='number' || !data.price || typeof(data.price) !== 'number'){
+       return res.status(400).json({message: "provide appropirate data"});
+    }
+    next();
+}
+
+export { isLogedIn,slotValidator, reviewValidator, courtValidator,facilityValidator,ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization };
