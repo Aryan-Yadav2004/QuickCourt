@@ -171,7 +171,7 @@ const facilityValidator = (req,res,next) => {
     next();
 }
 
-
+//passed
 const courtValidator = (req,res,next) => {
     const data = req.body;
     if(!data.sport || data.sport.trim()===""){
@@ -179,7 +179,7 @@ const courtValidator = (req,res,next) => {
     }
     next();
 }
-
+//passed
 const reviewValidator = (req,res,next) => {
     const data = req.body;
     if(!data.reviewDescription || data.reviewDescription.trim()==="" || !data.rating || typeof(data.rating)==='number' || data.rating < 0 || data.rating > 5){

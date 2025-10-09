@@ -22,6 +22,7 @@ let createCourt = async (req,res) => {
                 totalSeats: time.totalSeats,
                 price: time.price,
                 court_id: courtObj._id,
+                rating: 0,
             })
             let result = await slot.save();
             timeSlots.push(result._id);

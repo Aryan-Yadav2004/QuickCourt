@@ -4,8 +4,8 @@ import { configDotenv } from "dotenv";
 import mongoose from "mongoose";
 import v1UserRouter from "./routes/v1/userRouter.js";
 import v1FacilityRouter from "./routes/v1/facilityRouter.js";
+import v1SearchRouter from "./routes/v1/searchRouter.js";
 import cookieParser from "cookie-parser";
-import Facility from "./models/facilityModel.js";
 configDotenv();
 const app = express();
 const server = createServer(app);
@@ -18,6 +18,7 @@ app.use(cookieParser());
 //api/v1
 app.use("/api/v1/user",v1UserRouter);
 app.use("/api/v1/facility",v1FacilityRouter);
+app.use("/api/v1/search",v1SearchRouter);
 
 
 
@@ -38,4 +39,5 @@ const start = async () => {
     })
     
 }
+
 await start();

@@ -4,8 +4,11 @@ import Court from "../models/courtModel.js";
 import Facility from "../models/facilityModel.js";
 import Booking from "../models/bookingModel.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 
 const createBooking = async (req,res) => {
+    const session = mongoose.startSession();
+    (await session).startSession()
     try {
         const { seats } = req.body;
         const token = req.cookies?.token;
@@ -33,11 +36,16 @@ const createBooking = async (req,res) => {
         
         slot.bookings.push(booking._id);
         user.bookings.push(booking._id);
-        await slot.save();
         await user.save();
+        await slot.save();
         res.status(200).json({bookingId :  booking._id});
+        (await session).commitTransaction();
     } catch (error) {
+        (await session).abortTransaction();
         res.status(500).json({message: error.message});
+    }
+    finally{
+        (await session).endSession();
     }
 }
 
