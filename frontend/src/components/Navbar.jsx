@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import {Menu, X} from "lucide-react";
-
+import { useSelector } from 'react-redux';
 function Navbar() {
     const [open,setOpen] = useState(false);
-    const login = false;
+    const login = useSelector((state)=> state.isLoged.value);
   return (
     <div className='w-full h-20 top-0 relative flex items-center justify-around '>
         <div className='left-0 text-3xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
@@ -26,7 +26,7 @@ function Navbar() {
         }
 
         {/* {auth page} */}
-        <div className="p-3 pt-0 flex gap-1 items-center absolute right-0 mr-8 ">
+        <div className="p-3 flex gap-1 items-center absolute right-0 mr-8 ">
             {login? <></> : 
             
                 <>

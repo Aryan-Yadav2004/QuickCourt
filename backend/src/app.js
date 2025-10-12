@@ -6,11 +6,15 @@ import v1UserRouter from "./routes/v1/userRouter.js";
 import v1FacilityRouter from "./routes/v1/facilityRouter.js";
 import v1SearchRouter from "./routes/v1/searchRouter.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 configDotenv();
 const app = express();
 const server = createServer(app);
 
-
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
@@ -21,7 +25,9 @@ app.use("/api/v1/facility",v1FacilityRouter);
 app.use("/api/v1/search",v1SearchRouter);
 
 
-
+app.get("/api/v1/hello",(req,res)=>{
+    res.json({message: "message from server"});
+})
 
 
 app.get("/",async (req,res)=>{
