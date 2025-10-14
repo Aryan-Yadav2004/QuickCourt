@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import { getCities, getCountries, getStates } from '../services/GeoDB.js';
+import PhoneVerifcation from '../components/PhoneVerifcation.jsx';
 
 function Signup() {
   const [email,setEmail] = useState("");
   const [phoneNo,setPhoneNo] = useState("");
-  const [country,setCountry] = useState("");
+  const [country,setCountry] = useState("India");//
   const [verifiedEmail,setVerifiedEmail] = useState(false);
   const [verifiedPhoneNo,setVerifiedPhoneNo] = useState(false);
-  const [phoneCode,setPhoneCode] = useState("");
+  const [phoneCode,setPhoneCode] = useState("91");//
   const [countries,setCountries] = useState([]);
   const [states,setStates] = useState([]);
   const [countryIso2,setCountryIso2] = useState("");
   const [cities,setCitites] = useState([]);
+  const [file,setFile] = useState(null)
   const [city,setCity] = useState("");
+  const [avatarSizeError,setAvatarSizeError] = useState(false);
+  const [emailOtpPreview,setEmailOtpPreview] = useState(false);
+  const [phoneOtpPreview,setPhoneOtpPreview] = useState(false);
+  
 
   useEffect(()=>{
     const fetchCountries = async () => {
-      const res = await getCountries();
-      setCountries(res);
+      // const res = await getCountries();
+      // setCountries(res);
     }
     fetchCountries();
   },[]);
@@ -30,7 +36,10 @@ function Signup() {
   const handlePhone = (e) => {
     if(isNaN(e.target.value)) return;
     setPhoneNo(e.target.value.trim());
+    console.log(e.target.value.trim());
   }
+
+
 
   const handleCountry = async(e) => {
     let value = e.target.value;
@@ -44,6 +53,8 @@ function Signup() {
     setStates(fetchedStates);
   }
 
+
+
   const handleState = async(e) => {
     let value = e.target.value
     value = value.trim();
@@ -53,15 +64,42 @@ function Signup() {
     setCitites(fetchedCities);
   }
 
+
+
   const handleCity = (e) => {
     let value = e.target.value;
     value = value.trim();
     setCity(value);
   }
 
-  const handleVerifyPhoneNo = async() => {
-    if(verifiedPhoneNo || phoneNo.trim.length === 0) return;
+
+
+  const handleVerifyPhoneNo = () => {
+    if(verifiedPhoneNo || phoneNo.trim().length < 10) return;
+    setPhoneOtpPreview(true);
   }
+
+  const onPhoneOtpPreviewClose = () => {
+    setPhoneOtpPreview(false);
+  }
+
+  const onFileChange = (e) => {
+    const f = e.target.files[0];
+    if(!f) return;
+    if(f.size > 10 * 1024 * 1024){
+      setAvatarSizeError(true);
+      e.target.value = "" // clear input
+      return;
+    }
+    setFile(f);
+  }
+
+  const completePhoneVerification = () => {
+    setVerifiedPhoneNo(true);
+  }
+
+
+
   return (
     <div className='w-full h-lvh bg-[#f0ebfa] flex justify-center items-center'>
       <div className='w-[70%] h-[70vh] bg-white rounded-2xl relative'>
@@ -85,7 +123,7 @@ function Signup() {
                     <label htmlFor="email">email:</label>
                     <div className='w-full flex justify-between'>
                       <input type="text" id='email' name='email' value={email}  placeholder="eg: SonnyHayes@gmail.com" className="w-[79%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleEmail} required disabled={verifiedEmail}/>
-                      <button className={`w-[19%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md hover:bg-green-300  text-center ${(email.length > 0 && !verifiedEmail)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`} type='button' >verify</button>
+                      <button className={`w-[19%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md   text-center ${(email.length > 0 && !verifiedEmail)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`} type='button' >verify</button>
                     </div>
                     {
                       email.length > 0 ? (
@@ -103,7 +141,7 @@ function Signup() {
                     <div className='w-full flex justify-between gap-0.5'>
                       <div className='w-[18%] py-2 text-center border border-gray-300 rounded-md'>+{phoneCode}</div>
                       <input type="text" id='phoneNo' name='phoneNo' value={phoneNo} placeholder="eg: XXXXXXXX78" className="w-[78%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handlePhone} required disabled={verifiedPhoneNo}/>
-                      <button className={`w-[18%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md   text-center ${((phoneNo.length > 0 && country!=="") && !verifiedPhoneNo)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`}type="button" onClick={handleVerifyPhoneNo}>verify</button>
+                      <button className={`w-[18%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md   text-center ${((phoneNo.length > 0 && country!=="") && !verifiedPhoneNo)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`} type="button" onClick={handleVerifyPhoneNo}>verify</button>
                     </div>
                     {
                       phoneNo.length > 0 ? (
@@ -165,13 +203,15 @@ function Signup() {
                     {/* profile photo */}
                     <div className='w-[70%]'>
                       <label htmlFor="avatar">Profile Image:</label>
-                      <input type="file" accept="image/*" class=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]"/>
+                      <input type="file" accept="image/*" className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={onFileChange}/>
+                      {avatarSizeError? <p className='text-red-500'>Image size should be less than or equal 10MB</p>:<></>}
                     </div>
               </div>
             </div>
             <button type='submit' className='bottom-0 left-[50%]'>register</button>
         </form>
       </div>
+      <PhoneVerifcation isOpen={phoneOtpPreview} onPhoneOtpPreviewClose={onPhoneOtpPreviewClose} phonecode={phoneCode} phoneNo={phoneNo} completeVerification={completePhoneVerification}/>
     </div>
   )
 }

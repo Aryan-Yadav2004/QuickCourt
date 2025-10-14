@@ -1,7 +1,11 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import twilio from "twilio"
+const accountSid = 'AC863233b16e0b728f478e989de69ea856';
+const authToken = "505a7554c04d1961d1beca7e841189f8";
 
+const client = new twilio(accountSid, authToken);
 
 const handleRegister = async (req, res) => {
     const myPlaintextPassword = req.body.password;
@@ -42,7 +46,7 @@ const handleLogOut = async (req,res) => {
 const verifyUser = (req,res) => {
     const token = req.cookies.token;
     if(!token){
-        res.status(401).json({message: "Not LogedIn"});
+       return res.status(401).json({message: "Not LogedIn"});
     }
     try {
         const decode = jwt.verify(token,process.env.JWTsecretKey);
@@ -52,4 +56,17 @@ const verifyUser = (req,res) => {
     }
 } 
 
-export {handleLogin, handleRegister, handleLogOut, verifyUser};
+
+
+
+
+const sendOtp = (otp,phonecode,phoneNo) => {
+    client.messages.create({
+            body: `Your otp for verification is ${otp}. Thank you!`,
+            from: '+12183575341',
+            to: `+${phonecode}${phoneNo}`
+    }).then(message => console.log(message.sid));
+}
+
+
+export {handleLogin, handleRegister, handleLogOut, verifyUser,sendOtp};

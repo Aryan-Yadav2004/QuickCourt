@@ -7,25 +7,27 @@ import Layout from './layout/Layout.jsx';
 import Signup from './pages/Signup.jsx';
 function App() {
   const dispatch = useDispatch();
-  // useEffect(()=>{
-  //   const checkLogin = ()=>{
-  //     fetch("http://localhost:3000/api/v1/hello",{
-  //       method: "GET",
-  //       credentials: "include",
-  //     }).then(res => res.json()).then(data => console.log(data));
-  //     // const res = await fetch('localhost:3000/api/v1/user/verify',{
-  //     //   method: "GET",
-  //     //   credentials: "include",
-  //     // });
-  //     // if(res.ok){
-  //     //   dispatch(setIsLoged(true));
-  //     // }
-  //     // else{
-  //     //   dispatch(setIsLoged(false));
-  //     // }
-  //   }
-  //   checkLogin();
-  // },[]);
+  useEffect(()=>{
+    const checkLogin = async ()=>{
+      fetch("http://localhost:3000/api/v1/hello",{
+        method: "GET",
+        credentials: "include",
+      }).then(res => res.json()).then(data => console.log(data));
+      const res = await fetch('http://localhost:3000/api/v1/user/verify',{
+        method: "GET",
+        credentials: "include",
+      });
+      // res = await res.json();
+      console.log(res);
+      if(res.ok){
+        dispatch(setIsLoged(true));
+      }
+      else{
+        dispatch(setIsLoged(false));
+      }
+    }
+    checkLogin();
+  },[]);
   return (
     <BrowserRouter>
       <Routes>
