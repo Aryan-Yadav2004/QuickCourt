@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import {Menu, X} from "lucide-react";
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 function Navbar() {
     const [open,setOpen] = useState(false);
     const login = useSelector((state)=> state.isLoged.value);
+    const navigate = useNavigate();
   return (
     <div className='w-full h-20 top-0 relative flex items-center justify-around '>
         <div className='left-0 text-3xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
@@ -34,7 +36,7 @@ function Navbar() {
                         <div className='text-xl text-[#5500ff] mr-1 cursor-pointer'>Login</div>
                     </div>
                     <div className='p-2 px-4 rounded-[5px] bg-[#5500ff] cursor-pointer'>
-                        <div className='text-xl text-white'>SignUp</div>
+                        <div className='text-xl text-white' onClick={()=>navigate("/signIn")}>Sign in</div>
                     </div>
                 </>
             }

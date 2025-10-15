@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { getCities, getCountries, getStates } from '../services/GeoDB.js';
 import PhoneVerifcation from '../components/PhoneVerifcation.jsx';
+import EmailVerification from '../components/EmailVerification.jsx';
+import { upload } from '../services/Cloudinary.js';
+import ErrorAlert from '../components/errorAlert.jsx';
+import { registerUser } from '../services/server.js';
 
 function Signup() {
   const [email,setEmail] = useState("");
   const [phoneNo,setPhoneNo] = useState("");
-  const [country,setCountry] = useState("India");//
+  const [country,setCountry] = useState("");//
   const [verifiedEmail,setVerifiedEmail] = useState(false);
   const [verifiedPhoneNo,setVerifiedPhoneNo] = useState(false);
-  const [phoneCode,setPhoneCode] = useState("91");//
+  const [phoneCode,setPhoneCode] = useState("");//
   const [countries,setCountries] = useState([]);
   const [states,setStates] = useState([]);
   const [countryIso2,setCountryIso2] = useState("");
@@ -18,25 +22,24 @@ function Signup() {
   const [avatarSizeError,setAvatarSizeError] = useState(false);
   const [emailOtpPreview,setEmailOtpPreview] = useState(false);
   const [phoneOtpPreview,setPhoneOtpPreview] = useState(false);
+  const [error,setError] = useState("");
   
 
   useEffect(()=>{
     const fetchCountries = async () => {
-      // const res = await getCountries();
-      // setCountries(res);
+      const res = await getCountries();
+      setCountries(res);
     }
     fetchCountries();
   },[]);
 
 
   const handleEmail = (e) => {
-    console.log(e.target.value);
     setEmail(e.target.value);
   }
   const handlePhone = (e) => {
     if(isNaN(e.target.value)) return;
     setPhoneNo(e.target.value.trim());
-    console.log(e.target.value.trim());
   }
 
 
@@ -73,10 +76,17 @@ function Signup() {
   }
 
 
+  const closeErrorMsg = () => {
+    setError("");
+  }
 
   const handleVerifyPhoneNo = () => {
     if(verifiedPhoneNo || phoneNo.trim().length < 10) return;
     setPhoneOtpPreview(true);
+  }
+
+  const onEmailOtpPreviewClose = () => {
+    setEmailOtpPreview(false);
   }
 
   const onPhoneOtpPreviewClose = () => {
@@ -98,32 +108,67 @@ function Signup() {
     setVerifiedPhoneNo(true);
   }
 
+  const handleVerifyEmail = () => {
+    if(email.trim() === "" || verifiedEmail) return;
+    setEmailOtpPreview(true);
+  }
 
+  const completeEmailVerification = () => {
+    setVerifiedEmail(true);
+  }
+
+  const handleSubmit = async (e) => {
+    if(!verifiedEmail || !verifiedPhoneNo) return;
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    let avatar = "https://i.pinimg.com/736x/9d/16/4e/9d164e4e074d11ce4de0a508914537a8.jpg";
+    if(file){
+      const res = await upload(file);
+      if(res.status === 200){
+        avatar = res.message;
+      }
+      else{
+        setError(res.message);
+      }
+    }
+    data.avatar = avatar;
+    data.phoneNo = Number(phoneNo);
+    data.email = email;
+    let result = await registerUser(data);
+    if(result.ok){
+      console.log("User Registered");
+    }
+    else{
+      result = await result.json();
+      setError(result.message);
+    }
+  }
 
   return (
     <div className='w-full h-lvh bg-[#f0ebfa] flex justify-center items-center'>
       <div className='w-[70%] h-[70vh] bg-white rounded-2xl relative'>
         <div className='left-0 text-2xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
         <h1 className='w-full text-center text-3xl font-serif'>Sign in.</h1>
-        <form className='w-full h-[80%] flex flex-col gap-2'>
+        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={handleSubmit}>
             <div className='w-full h-full flex sm:flex-row flex-col justify-between items-center'>
               <div className='w-[48%] h-full  flex flex-col justify-around items-end'>
                   {/* name */}
                   <div className='w-[70%]'>
                     <label htmlFor="name">name:</label>
-                    <input type="text" id='name' name='name' placeholder="eg: Sonny Hayes" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
+                    <input type="text" id='name' name='name' placeholder=" Sonny Hayes" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
                   </div>
                   {/* username */}
                   <div className='w-[70%]'>
                     <label htmlFor="username">username:</label>
-                    <input type="text" id='username' name='username' placeholder="eg: SonnyHayes1234" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
+                    <input type="text" id='username' name='username' placeholder=" SonnyHayes1234" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
                   </div>
                   {/* Email */}
                   <div className='w-[70%]'>
                     <label htmlFor="email">email:</label>
                     <div className='w-full flex justify-between'>
-                      <input type="text" id='email' name='email' value={email}  placeholder="eg: SonnyHayes@gmail.com" className="w-[79%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleEmail} required disabled={verifiedEmail}/>
-                      <button className={`w-[19%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md   text-center ${(email.length > 0 && !verifiedEmail)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`} type='button' >verify</button>
+                      <input type="text" id='email' name='email' value={email}  placeholder=" SonnyHayes@gmail.com" className="w-[79%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleEmail} required disabled={verifiedEmail}/>
+                      <button className={`w-[19%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md   text-center ${(email.length > 0 && !verifiedEmail)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`} type='button' onClick={handleVerifyEmail}>verify</button>
                     </div>
                     {
                       email.length > 0 ? (
@@ -140,7 +185,7 @@ function Signup() {
                     <label htmlFor="phoneNo">Phone No:</label>
                     <div className='w-full flex justify-between gap-0.5'>
                       <div className='w-[18%] py-2 text-center border border-gray-300 rounded-md'>+{phoneCode}</div>
-                      <input type="text" id='phoneNo' name='phoneNo' value={phoneNo} placeholder="eg: XXXXXXXX78" className="w-[78%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handlePhone} required disabled={verifiedPhoneNo}/>
+                      <input type="text" id='phoneNo' name='phoneNo' value={phoneNo} placeholder=" XXXXXXXX78" className="w-[78%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handlePhone} required disabled={verifiedPhoneNo}/>
                       <button className={`w-[18%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md   text-center ${((phoneNo.length > 0 && country!=="") && !verifiedPhoneNo)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`} type="button" onClick={handleVerifyPhoneNo}>verify</button>
                     </div>
                     {
@@ -156,7 +201,7 @@ function Signup() {
                   {/* password */}
                   <div className='w-[70%]'>
                     <label htmlFor="password">password:</label>
-                    <input type="password" id='password' name='password'  placeholder="eg: ......." className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                    <input type="password" id='password' name='password'  placeholder="@#VEFAR#!#R$adfa" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
                   </div>
               </div>
               <div className='w-[48%] h-full  flex flex-col justify-around items-start'>
@@ -190,7 +235,7 @@ function Signup() {
                     {/* street */}
                     <div className='w-[70%]'>
                       <label htmlFor="street">Street:</label>
-                      <input type="text" id='street' name='street'  placeholder="eg: Las Vegas Strip" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                      <input type="text" id='street' name='street'  placeholder=" Las Vegas Strip" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
                     </div>
                     {/* role */}
                     <div className='w-[70%]'>
@@ -208,10 +253,12 @@ function Signup() {
                     </div>
               </div>
             </div>
-            <button type='submit' className='bottom-0 left-[50%]'>register</button>
+            <button type='submit' className='bottom-0 left-[50%] m-auto px-3 py-2 rounded-2xl max-w-sm text-white bg-[#5500ff] text-center cursor-pointer'>register</button>
         </form>
       </div>
       <PhoneVerifcation isOpen={phoneOtpPreview} onPhoneOtpPreviewClose={onPhoneOtpPreviewClose} phonecode={phoneCode} phoneNo={phoneNo} completeVerification={completePhoneVerification}/>
+      <EmailVerification isOpen={emailOtpPreview} onEmailOtpPreviewClose={onEmailOtpPreviewClose} email={email} completeVerification={completeEmailVerification}/>
+      <ErrorAlert error={error} closeMsg={closeErrorMsg} />
     </div>
   )
 }

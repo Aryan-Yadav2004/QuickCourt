@@ -19,7 +19,6 @@ const getCities = async(countryIso2,stateIso2)=>{
         headers: { 'X-CSCAPI-KEY': apikey }
     });
     const cities = await response.json();
-    console.log(cities);
     return cities;
 }
 export {getCountries,getStates,getCities};

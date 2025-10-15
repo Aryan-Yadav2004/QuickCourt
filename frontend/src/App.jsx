@@ -17,7 +17,6 @@ function App() {
         method: "GET",
         credentials: "include",
       });
-      // res = await res.json();
       console.log(res);
       if(res.ok){
         dispatch(setIsLoged(true));
@@ -34,7 +33,7 @@ function App() {
         <Route path='/' element={<Layout/>}>
           <Route path='' element={<Home/>}></Route>
         </Route>
-        <Route path='/signup' element={<Signup/>}/>
+        <Route path='/signIn' element={<Signup/>}/>
       </Routes>
     </BrowserRouter>
   )
