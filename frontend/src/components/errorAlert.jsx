@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
-function ErrorAlert({msg,closeMsg,error}) {
-    if(msg === "") return null;
+function ErrorAlert({closeMsg,error}) {
+    if(error === "") return null;
     useEffect(()=>{
         const timeOutId = setTimeout(()=>{
             closeMsg();
@@ -11,7 +11,7 @@ function ErrorAlert({msg,closeMsg,error}) {
         }
     })
   return (
-    <div className={`sm:max-w-2xl sm:px-4 sm:py-2 px-2 py-1 border ${error?"border-red-700 text-red-700 bg-green-100":"border-green-700 text-green-700 bg-red-100"} border-red-700 text-red-700 bg-red-100 rounded-xl   absolute top-3 right-1`}>
+    <div className={`sm:max-w-2xl sm:px-4 sm:py-2 px-2 py-1 border border-red-700 text-red-700 bg-red-100 rounded-xl   absolute top-3 right-1`}>
         {error}
     </div>
   )

@@ -21,17 +21,22 @@ const handleRegister = async (req, res) => {
 
 const handleLogin = async (req,res) => {
     try{
-        const {username} = req.body;
+        const {username,password} = req.body;
         const user = await User.findOne({username:username});
+        console.log(user);
         if(!user){
-            throw "No user found";
+            return res.status(500).json({message: "user not found"});
+        }
+        const isMatch = await bcrypt.compare(password,user.password);
+        if(!isMatch){
+            return res.status(500).json({message: "incorrect password"});
         }
         const secretKey = process.env.JWTsecretKey;
         const token = jwt.sign({_id: user._id, username: user.username, role: user.role}, secretKey, {expiresIn: "168h"});
-        res.cookie("token",token,{httpOnly: true, sameSite: "strict"}).status(200).json({message: "User logedIn successfully"});
+        return res.cookie("token",token,{httpOnly: true,maxAge: 24 * 60 * 60 * 1000}).status(200).json(user);
     }
     catch(error){
-        res.status(500).json({message: error.message});
+        return res.status(500).json({message: error.message});
     }
 }
 
@@ -43,14 +48,15 @@ const handleLogOut = async (req,res) => {
     }
 }
 
-const verifyUser = (req,res) => {
+const verifyUser = async (req,res) => {
     const token = req.cookies.token;
     if(!token){
        return res.status(401).json({message: "Not LogedIn"});
     }
     try {
         const decode = jwt.verify(token,process.env.JWTsecretKey);
-        return res.status(200).json({message: "LogedIn"});
+        const user = await User.findOne({_id:decode._id})
+        return res.status(200).json(user);
     } catch (error) {
         return res.status(403).json({message: "invalid Tokken"});
     }

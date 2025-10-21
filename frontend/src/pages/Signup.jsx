@@ -5,6 +5,8 @@ import EmailVerification from '../components/EmailVerification.jsx';
 import { upload } from '../services/Cloudinary.js';
 import ErrorAlert from '../components/errorAlert.jsx';
 import { registerUser } from '../services/server.js';
+import SuccessAlert from '../components/successAlert.jsx';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Signup() {
   const [email,setEmail] = useState("");
@@ -23,7 +25,8 @@ function Signup() {
   const [emailOtpPreview,setEmailOtpPreview] = useState(false);
   const [phoneOtpPreview,setPhoneOtpPreview] = useState(false);
   const [error,setError] = useState("");
-  
+  const [success,setSuccess] = useState("");
+  const navigate = useNavigate();
 
   useEffect(()=>{
     const fetchCountries = async () => {
@@ -80,6 +83,10 @@ function Signup() {
     setError("");
   }
 
+  const closeSuccessMsg = () => {
+    setSuccess("");
+  }
+
   const handleVerifyPhoneNo = () => {
     if(verifiedPhoneNo || phoneNo.trim().length < 10) return;
     setPhoneOtpPreview(true);
@@ -118,26 +125,30 @@ function Signup() {
   }
 
   const handleSubmit = async (e) => {
-    if(!verifiedEmail || !verifiedPhoneNo) return;
     e.preventDefault();
+    if(!verifiedEmail || !verifiedPhoneNo){
+      setError("verify email and phone number");
+      return;
+    }
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    let avatar = "https://i.pinimg.com/736x/9d/16/4e/9d164e4e074d11ce4de0a508914537a8.jpg";
+    let avtar = "https://i.pinimg.com/736x/9d/16/4e/9d164e4e074d11ce4de0a508914537a8.jpg";
     if(file){
       const res = await upload(file);
       if(res.status === 200){
-        avatar = res.message;
+        avtar = res.message;
       }
       else{
         setError(res.message);
       }
     }
-    data.avatar = avatar;
+    data.avtar = avtar;
     data.phoneNo = Number(phoneNo);
     data.email = email;
     let result = await registerUser(data);
     if(result.ok){
-      console.log("User Registered");
+      setSuccess("Registered successfully");
+      navigate("/login");
     }
     else{
       result = await result.json();
@@ -149,8 +160,8 @@ function Signup() {
     <div className='w-full h-lvh bg-[#f0ebfa] flex justify-center items-center'>
       <div className='w-[70%] h-[70vh] bg-white rounded-2xl relative'>
         <div className='left-0 text-2xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
-        <h1 className='w-full text-center text-3xl font-serif'>Sign in.</h1>
-        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={handleSubmit}>
+        <h1 className='w-full text-center text-3xl font-serif'>Sign up.</h1>
+        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={handleSubmit} method='POST'>
             <div className='w-full h-full flex sm:flex-row flex-col justify-between items-center'>
               <div className='w-[48%] h-full  flex flex-col justify-around items-end'>
                   {/* name */}
@@ -255,10 +266,12 @@ function Signup() {
             </div>
             <button type='submit' className='bottom-0 left-[50%] m-auto px-3 py-2 rounded-2xl max-w-sm text-white bg-[#5500ff] text-center cursor-pointer'>register</button>
         </form>
+        <h2 className='text-center bottom-0.5 left-[40%] absolute'>Already have an account?<Link to={'/login' } className={"text-blue-600 hover:underline"}> Login</Link> </h2>
       </div>
       <PhoneVerifcation isOpen={phoneOtpPreview} onPhoneOtpPreviewClose={onPhoneOtpPreviewClose} phonecode={phoneCode} phoneNo={phoneNo} completeVerification={completePhoneVerification}/>
       <EmailVerification isOpen={emailOtpPreview} onEmailOtpPreviewClose={onEmailOtpPreviewClose} email={email} completeVerification={completeEmailVerification}/>
       <ErrorAlert error={error} closeMsg={closeErrorMsg} />
+      <SuccessAlert success={success} closeMsg={closeSuccessMsg} />
     </div>
   )
 }

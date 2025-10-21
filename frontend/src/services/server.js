@@ -12,4 +12,16 @@ const registerUser = async (user) => {
     return res;
 }
 
-export {registerUser};
+const loginUser = async(user) => {
+    let res = await fetch(`${baseURL}/user/login`,{
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(user)
+    });
+    return res;
+}
+
+export {registerUser, loginUser};
