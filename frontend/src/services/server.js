@@ -24,4 +24,27 @@ const loginUser = async(user) => {
     return res;
 }
 
-export {registerUser, loginUser};
+const updateUser = async(id,data) => {
+    let res = await fetch(`${baseURL}/user/${id}`,{
+        method: 'PATCH',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+        body: JSON.stringify(data)
+    });
+    return res;
+}
+
+const getAllBookings = async(id) => {
+    let res = await fetch(`${baseURL}/user/${id}/bookings`,{
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: "include",
+    });
+    return res;
+}
+
+export {registerUser, loginUser, getAllBookings, updateUser};

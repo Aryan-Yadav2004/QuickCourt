@@ -21,11 +21,11 @@ router.route("/verify").get(verifyUser);
 router.route("/:id")
 .get(isLogedIn,userAuthorization,getUser)
 .patch(isLogedIn,userAuthorization,userUpdateValidator,updateUser)
+router.route("/:id/bookings").get(isLogedIn,userAuthorization,getAllBookings);
+router.route("/:id/bookings/:bookingId").get(isLogedIn,userAuthorization,bookingAuthorization,getBooking);
+router.route("/:id/bookings/:bookingId/cancel").patch(isLogedIn,userAuthorization,bookingAuthorization,cancelBooking);
 
-router.route("/:id/bookings/:bookingId").get(isLogedIn,userAuthorization,getBooking);
-router.route("/:id/bookings/:bookingId/cancel").patch(isLogedIn,userAuthorization,cancelBooking);
 
-router.route("/:id/bookings").get(isLogedIn,userAuthorization,bookingAuthorization,getAllBookings);
 
 
 

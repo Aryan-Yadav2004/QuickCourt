@@ -13,6 +13,9 @@ const Schema = new mongoose.Schema({
         type: String,
         require: true
     },
+    courtImage: {
+        type: String,
+    },
     street: {
         type: String,
         require: true

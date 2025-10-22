@@ -9,7 +9,7 @@ function ErrorAlert({closeMsg,error}) {
         return () => {
             clearTimeout(timeOutId);
         }
-    })
+    },[])
   return (
     <div className={`sm:max-w-2xl sm:px-4 sm:py-2 px-2 py-1 border border-red-700 text-red-700 bg-red-100 rounded-xl   absolute top-3 right-1`}>
         {error}

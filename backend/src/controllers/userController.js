@@ -9,13 +9,10 @@ const updateUser = async (req,res) => {
         const newUser = req.body;
         const user = await User.findOne({_id: id});
         user.name = newUser.name;
-        user.username = newUser.username;
         user.street = newUser.street;
-        user.district = newUser.district;
+        user.city = newUser.city;
         user.state = newUser.state;
-        user.country = newUser.country;
         user.avtar = newUser.avtar;
-        user.phoneNo = newUser.phoneNo;
         await user.save();
         res.status(200).json({message: "User updated"});
     } catch (error) {
@@ -37,7 +34,7 @@ const getAllBookings = async(req,res) => {
     try{
         const { id } = req.params;
         const user = await User.findOne({_id: id}).populate("bookings");
-        res.status(500).json(user);
+        res.status(200).json(user.bookings);
     } catch (error) {
         res.status(500).json({message: error.message});
     }    

@@ -30,6 +30,7 @@ const createBooking = async (req,res) => {
             time: slot.time,
             price: slot.price,
             seats: seats,
+            courtImage: court.photoLink,
             status : "booked"
         });
         const booking = await bookingModel.save();
