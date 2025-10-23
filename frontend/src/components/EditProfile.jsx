@@ -113,29 +113,29 @@ function EditProfile() {
                     {/* username */}
                     <div className='w-[70%]'>
                         <label htmlFor="username">username:</label>
-                        <input type="text" id='username' name='username' value={user?.username} placeholder=" SonnyHayes1234" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 bg-gray-300 cursor-not-allowed focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" readOnly={true} disabled={true}/>
+                        <input type="text" id='username' name='username' value={user?.username} placeholder=" SonnyHayes1234" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 bg-gray-200 cursor-not-allowed focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" readOnly={true} disabled={true}/>
                     </div>
                     {/* Email */}
                     <div className='w-[70%]'>
                         <label htmlFor="email">email:</label>
-                        <input type="text" id='email' name='email' value={user?.email}  placeholder=" SonnyHayes@gmail.com" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] bg-gray-300 cursor-not-allowed focus:border-[#f0ebfa]"  readOnly={true}  disabled={true}/>
+                        <input type="text" id='email' name='email' value={user?.email}  placeholder=" SonnyHayes@gmail.com" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] bg-gray-200 cursor-not-allowed focus:border-[#f0ebfa]"  readOnly={true}  disabled={true}/>
                     </div>
                     {/* phoneno */}
                     <div className='w-[70%]'>
                         <label htmlFor="phoneNo">Phone No:</label>
-                        <input type="text" id='phoneNo' name='phoneNo' value={user?.phoneNo} placeholder=" XXXXXXXX78" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] bg-gray-300 cursor-not-allowed focus:border-[#f0ebfa]" readOnly={true}  disabled={true}/>                
+                        <input type="text" id='phoneNo' name='phoneNo' value={user?.phoneNo} placeholder=" XXXXXXXX78" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] bg-gray-200 cursor-not-allowed focus:border-[#f0ebfa]" readOnly={true}  disabled={true}/>                
                     </div>   
                     {/* role */}
                     <div className='w-[70%]'>
                         <label htmlFor="role">Role:</label>
-                        <input name="role" id="role" value={role} className="w-full px-4 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] bg-gray-300 cursor-not-allowed focus:border-[#f0ebfa]" readOnly={true} disabled={true} />
+                        <input name="role" id="role" value={role} className="w-full px-4 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] bg-gray-200 cursor-not-allowed focus:border-[#f0ebfa]" readOnly={true} disabled={true} />
                     </div>                 
                 </div>
                 <div className='w-[48%] h-full  flex flex-col justify-around items-start'>
                     {/* country */}
                     <div className='w-[70%]'>
                         <label htmlFor="country">Country:</label>
-                        <input id='country' name='country' value={user?.country} className="w-full px-4 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] bg-gray-300 cursor-not-allowed"  readOnly={true} disabled={true}/>
+                        <input id='country' name='country' value={user?.country} className="w-full px-4 py-2 border border-gray-300 rounded-md  focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] bg-gray-200 cursor-not-allowed"  readOnly={true} disabled={true}/>
                     </div>
                     {/* state */}
                     <div className='w-[70%]'>

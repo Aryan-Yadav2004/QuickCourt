@@ -24,3 +24,43 @@
         transform: rotate(360deg);
     }
 }
+.facilityContainer{
+    scrollbar-width: none;
+}
+.btn-hidden {
+    display: none;
+}
+
+.btn-visible {
+    display: flow-root;
+    z-index: 50;
+}
+
+.action-btn {
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.action-btn:nth-child(2) {
+    transition-delay: 0.05s;
+}
+
+.action-btn:nth-child(3) {
+    transition-delay: 0.1s;
+}
+
+.action-btn:nth-child(4) {
+    transition-delay: 0.15s;
+}
+
+.main-btn {
+    transition: all 0.3s ease;
+}
+
+.main-btn.active {
+    transform: rotate(45deg);
+    background: #ef4444;
+}
+
+.overlay {
+    transition: opacity 0.3s ease;
+}

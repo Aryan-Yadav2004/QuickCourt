@@ -51,7 +51,7 @@ function AllBookings() {
             </div>
           ))
         : 
-        <div className="w-full h-full flex justify-center items-center text-2xl text-center font-serif">
+        <div className="w-full h-full flex justify-center items-center text-2xl text-center text-[#9a9a9a] font-serif">
             No bookings yet!
         </div> }
         <ErrorAlert error={error} closeMsg={closeErrorMsg} />
