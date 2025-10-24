@@ -32,6 +32,11 @@ const Schema = new mongoose.Schema({
         },
         message: props => `${props.value} pin code should be of six digit`
     },
+    amenities: [
+        {
+            type: String,
+        }
+    ],
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -51,6 +56,10 @@ const Schema = new mongoose.Schema({
             ref: "Court",
         }
     ],
+    legalDocument: {
+        type: String,
+        require: true,
+    }
 });
 
 const Facility = mongoose.model("Facility",Schema);

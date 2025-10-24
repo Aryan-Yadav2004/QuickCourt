@@ -16,7 +16,7 @@ const createFacility = async (req,res) => {
         res.status(200).json({message: "facility created"});
         
     } catch (error) {
-        res.status(500).json({message: "failed to create Factility"});
+        res.status(500).json({message: error.message});
     }
 }
 

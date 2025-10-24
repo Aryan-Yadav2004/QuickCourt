@@ -133,15 +133,7 @@ function Signup() {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     let avtar = "https://i.pinimg.com/736x/9d/16/4e/9d164e4e074d11ce4de0a508914537a8.jpg";
-    if(file){
-      const res = await upload(file);
-      if(res.status === 200){
-        avtar = res.message;
-      }
-      else{
-        setError(res.message);
-      }
-    }
+     className='font-medium text-gray-700'
     data.avtar = avtar;
     data.phoneNo = Number(phoneNo);
     data.email = email;
@@ -166,17 +158,17 @@ function Signup() {
               <div className='w-[48%] h-full  flex flex-col justify-around items-end'>
                   {/* name */}
                   <div className='w-[70%]'>
-                    <label htmlFor="name">name:</label>
+                    <label htmlFor="name" className='font-medium text-gray-700'>name:</label>
                     <input type="text" id='name' name='name' placeholder=" Sonny Hayes" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
                   </div>
                   {/* username */}
                   <div className='w-[70%]'>
-                    <label htmlFor="username">username:</label>
+                    <label htmlFor="username" className='font-medium text-gray-700'>username:</label>
                     <input type="text" id='username' name='username' placeholder=" SonnyHayes1234" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
                   </div>
                   {/* Email */}
                   <div className='w-[70%]'>
-                    <label htmlFor="email">email:</label>
+                    <label htmlFor="email" className='font-medium text-gray-700'>email:</label>
                     <div className='w-full flex justify-between'>
                       <input type="text" id='email' name='email' value={email}  placeholder=" SonnyHayes@gmail.com" className="w-[79%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleEmail} required disabled={verifiedEmail}/>
                       <button className={`w-[19%] py-2 bg-green-200  font-medium border border-gray-300 rounded-md   text-center ${(email.length > 0 && !verifiedEmail)?"text-green-900 hover:cursor-pointer hover:bg-green-300" : "text-gray-500 hover:cursor-not-allowed"}`} type='button' onClick={handleVerifyEmail}>verify</button>
@@ -193,7 +185,7 @@ function Signup() {
                   </div>
                   {/* phoneno */}
                   <div className='w-[70%]'>
-                    <label htmlFor="phoneNo">Phone No:</label>
+                    <label htmlFor="phoneNo" className='font-medium text-gray-700'>Phone No:</label>
                     <div className='w-full flex justify-between gap-0.5'>
                       <div className='w-[18%] py-2 text-center border border-gray-300 rounded-md'>+{phoneCode}</div>
                       <input type="text" id='phoneNo' name='phoneNo' value={phoneNo} placeholder=" XXXXXXXX78" className="w-[78%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handlePhone} required disabled={verifiedPhoneNo}/>
@@ -211,14 +203,14 @@ function Signup() {
                   </div>
                   {/* password */}
                   <div className='w-[70%]'>
-                    <label htmlFor="password">password:</label>
+                    <label htmlFor="password" className='font-medium text-gray-700'>password:</label>
                     <input type="password" id='password' name='password'  placeholder="@#VEFAR#!#R$adfa" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
                   </div>
               </div>
               <div className='w-[48%] h-full  flex flex-col justify-around items-start'>
                     {/* country */}
                     <div className='w-[70%]'>
-                      <label htmlFor="country">Country:</label>
+                      <label htmlFor="country" className='font-medium text-gray-700'>Country:</label>
                       <select id='country' name='country' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleCountry}>
                         {countries.map(currCountry => (
                           <option key={currCountry.id}  value={currCountry.name}>{currCountry.name}</option>
@@ -227,7 +219,7 @@ function Signup() {
                     </div>
                     {/* state */}
                     <div className='w-[70%]'>
-                      <label htmlFor="state">State:</label>
+                      <label htmlFor="state" className='font-medium text-gray-700'>State:</label>
                       <select id='state' name='state' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleState}>
                         {states.map(currState => (
                           <option key={currState.id}  value={currState.name}>{currState.name}</option>
@@ -236,7 +228,7 @@ function Signup() {
                     </div>
                     {/* city */}
                     <div className='w-[70%]'>
-                      <label htmlFor="city">City:</label>
+                      <label htmlFor="city" className='font-medium text-gray-700'>City:</label>
                       <select id='city' name='city' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleCity}>
                         {cities.map(currCity => (
                           <option key={currCity.id}  value={currCity.name}>{currCity.name}</option>
@@ -245,12 +237,12 @@ function Signup() {
                     </div>
                     {/* street */}
                     <div className='w-[70%]'>
-                      <label htmlFor="street">Street:</label>
+                      <label htmlFor="street" className='font-medium text-gray-700'>Street:</label>
                       <input type="text" id='street' name='street'  placeholder=" Las Vegas Strip" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
                     </div>
                     {/* role */}
                     <div className='w-[70%]'>
-                      <label htmlFor="role">Role:</label>
+                      <label htmlFor="role" className='font-medium text-gray-700'>Role:</label>
                       <select name="role" id="role" className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]">
                         <option value="user">User</option>
                         <option value="facilityOwner">Facility Owner</option>
@@ -258,9 +250,9 @@ function Signup() {
                     </div>
                     {/* profile photo */}
                     <div className='w-[70%]'>
-                      <label htmlFor="avatar">Profile Image:</label>
-                      <input type="file" accept="image/*" className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={onFileChange}/>
-                      {avatarSizeError? <p className='text-red-500'>Image size should be less than or equal 10MB</p>:<></>}
+                      <label htmlFor="avatar" className='font-medium text-gray-700'>Profile Image:</label>
+                      <input type = "file" accept = "image/*" className = "block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={onFileChange}/>
+                      {avatarSizeError? <p className = 'text-red-500'>Image size should be less than or equal 10MB</p>:<></>}
                     </div>
               </div>
             </div>

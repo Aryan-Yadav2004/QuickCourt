@@ -47,4 +47,16 @@ const getAllBookings = async(id) => {
     return res;
 }
 
-export {registerUser, loginUser, getAllBookings, updateUser};
+const createFaility = async (facility) => {
+    let res = await fetch(`${baseURL}/facility/new`,{
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(facility),
+        credentials: "include",
+    })
+    return res;
+}
+
+export {registerUser, loginUser, getAllBookings, updateUser, createFaility};

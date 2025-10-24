@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import FacilityCard from './FacilityCard';
+import CreateFacility from './CreateFacility';
+import TrackRequest from './TrackRequest';
 function MyFacility() {
     const navigate = useNavigate();
     const [isKPIsActive,setIsKPIsActive] = useState(true);
@@ -8,24 +10,25 @@ function MyFacility() {
     const [isRequestHistoryActive,setIsRequestHistoryActive] = useState(false);
     const [isBookingsOverviewActive,setIsBookingsOverviewActive] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    
     const handleGroupBtn = () => {
       setIsOpen(!isOpen);
     }
     const handleCreateNewFacility = () => {
       setCreateNewFacilityActive(true);
-      setIsRequestHistoryActiveRequestHistoryActive(false);
+      setIsRequestHistoryActive(false);
       setIsBookingsOverviewActive(false);
       setIsKPIsActive(false);
     }
     const handleRequestHistory = () => {
       setCreateNewFacilityActive(false);
-      setIsRequestHistoryActiveRequestHistoryActive(true);
+      setIsRequestHistoryActive(true);
       setIsBookingsOverviewActive(false);
       setIsKPIsActive(false);
     }
     const handleBookingOverview = () => {
       setCreateNewFacilityActive(false);
-      setIsRequestHistoryActiveRequestHistoryActive(true);
+      setIsRequestHistoryActive(false);
       setIsBookingsOverviewActive(true);
       setIsKPIsActive(false);
     }
@@ -36,9 +39,9 @@ function MyFacility() {
 
           {/* Buttons with Transition */}
           <div className={`flex flex-col items-end gap-2 transition-all duration-500 ease-out ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5 pointer-events-none'}`}>
-            <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer text-gray-600 hover:bg-violet-500 hover:text-white font-bold shadow-md' onClick={handleCreateNewFacility}>Create</button>
-            <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer text-gray-600 hover:bg-violet-500 hover:text-white font-bold shadow-md' onClick={handleRequestHistory}>Track Request</button>
-            <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer text-gray-600 hover:bg-violet-500 hover:text-white font-bold shadow-md' onClick={handleBookingOverview}>Bookings</button>
+            <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer hover:bg-violet-500 text-white font-bold shadow-md' onClick={handleCreateNewFacility}>Create</button>
+            <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer hover:bg-violet-500 text-white font-bold shadow-md' onClick={handleRequestHistory}>Track Request</button>
+            <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer hover:bg-violet-500 text-white font-bold shadow-md' onClick={handleBookingOverview}>Bookings</button>
           </div>
 
           {/* Main + Button */}
@@ -60,6 +63,8 @@ function MyFacility() {
             </div>
           </>
         }
+        {isCreateNewFacilityActive && <CreateFacility/>}
+        {isRequestHistoryActive && <TrackRequest/>}
       </div>
   )
 }

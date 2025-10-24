@@ -14,11 +14,6 @@ const Schema = new mongoose.Schema({
             message: "No other sports available",
         }
     },
-    amenities: [
-        {
-            type: String,
-        }
-    ],
     reviews: [
         {
             type: mongoose.Schema.Types.ObjectId,

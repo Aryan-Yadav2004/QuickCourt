@@ -146,9 +146,9 @@ const pinCodeValidator = (pin) => {
 //passed
 const facilityValidator = (req,res,next) => {
     const data = req.body;
-    
+    console.log(data)
     if(!data.name || data.name.trim()==="" || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.pinCode || data.pinCode.length !== 6 || pinCodeValidator(data.pinCode)){
-       return res.status(400).json({message: "Provide Fcilit appropirate data"});
+       return res.status(400).json({message: "Provide Facility appropirate data"});
     }
     
     next();
