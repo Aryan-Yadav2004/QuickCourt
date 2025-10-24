@@ -48,9 +48,7 @@
     transition-delay: 0.1s;
 }
 
-.action-btn:nth-child(4) {
-    transition-delay: 0.15s;
-}
+
 
 .main-btn {
     transition: all 0.3s ease;
@@ -58,9 +56,5 @@
 
 .main-btn.active {
     transform: rotate(45deg);
-    background: #ef4444;
 }
 
-.overlay {
-    transition: opacity 0.3s ease;
-}
