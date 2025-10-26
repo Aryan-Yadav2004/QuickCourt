@@ -4,7 +4,7 @@ import { getCities, getCountries, getStates } from '../services/GeoDB.js';
 import ErrorAlert from './errorAlert.jsx';
 import SuccessAlert from './successAlert.jsx';
 import {useSelector} from "react-redux"
-import { createFaility } from '../services/server.js';
+import { createFacility } from '../services/server.js';
 function CreateFacility() {
     const [countries,setCountries] = useState([]);
     const [states,setStates] = useState([]);
@@ -122,8 +122,8 @@ function CreateFacility() {
                 }
             }
         }
-        const facility = {name: data.name, country: data.country, state: data.state, street: data.street, profileImg: profilePhotoLink, photos: photosArray, legalDocument: legalDocumentLink, owner: user._id, pinCode: data.pinCode, about: data.about, city: data.city, amenities: selectedAmenities}
-        const res = await createFaility(facility);
+        const facility = {name: data.name, country: data.country, state: data.state, street: data.street, profileImg: profilePhotoLink, photos: photosArray, legalDocument: legalDocumentLink, owner: user._id, pinCode: data.pinCode, about: data.about, city: data.city, amenities: selectedAmenities, status: "pending", createdAt: Date.now()}
+        const res = await createFacility(facility);
         
         if(res.ok){
             setSuccess("request sent");

@@ -75,4 +75,41 @@ let readFacility = async (req,res) => {
         res.status(500).json({message: error.message});
     }
 }
-export {createFacility, deleteFacility, updateFacility, readFacility};
+
+let readAllFacilitiesRequest = async (req,res) => {
+    try {
+        const token = req.cookies?.token;
+        const data = jwt.decode(token);
+        const owner = await User.findOne({_id: data._id}); 
+        let facilities = [];
+        for(let facilityId of owner.facility) {
+            let facility = await Facility.findOne({_id: facilityId});
+            facilities.push(facility);
+        }
+        res.status(200).json(facilities);
+    }
+    catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+let readAllAcceptedFacilities = async (req, res) => {
+    try {
+        const token = req.cookies?.token;
+        const data = jwt.decode(token);
+        const owner = await User.findOne({_id: data._id}); 
+        let facilities = [];
+        for(let facilityId of owner.facility) {
+            let facility = await Facility.findOne({_id: facilityId});
+            if(facility.status === "accepted") facilities.push(facility);
+        }
+        res.status(200).json(facilities);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+
+
+
+export {createFacility, deleteFacility, updateFacility, readFacility, readAllFacilitiesRequest, readAllAcceptedFacilities};

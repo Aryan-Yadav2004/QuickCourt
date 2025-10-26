@@ -1,6 +1,6 @@
 import express from "express";
 import v1CourtRouter from "./courtRouter.js";
-import { createFacility, deleteFacility, readFacility, updateFacility } from "../../controllers/facilityController.js";
+import { createFacility, deleteFacility, readAllAcceptedFacilities, readAllFacilitiesRequest, readFacility, updateFacility } from "../../controllers/facilityController.js";
 import { facilityValidator, isLogedIn, ownerAuthorization, ownerAuthorizationFacility } from "../../../middlewares.js";
 const router = express.Router();
 
@@ -13,7 +13,6 @@ router.delete("/:facilityId/delete",isLogedIn,ownerAuthorization,ownerAuthorizat
 router.patch("/:facilityId/edit",isLogedIn,ownerAuthorization,ownerAuthorizationFacility,facilityValidator,updateFacility);
 
 router.get("/:facilityId",readFacility);
-
-
-
+router.get("/allRequests",ownerAuthorization,readAllFacilitiesRequest);
+router.get("/allAcceptedFacility",ownerAuthorization,readAllAcceptedFacilities);
 export default router;

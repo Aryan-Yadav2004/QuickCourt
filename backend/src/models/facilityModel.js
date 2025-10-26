@@ -59,7 +59,17 @@ const Schema = new mongoose.Schema({
     legalDocument: {
         type: String,
         require: true,
-    }
+    },
+    status: {
+        type: String,
+        enum: {
+            values: ["accepted,rejected,pending"],
+        }
+    },
+    createdAt :{
+        type: Date,
+        require: true
+    },
 });
 
 const Facility = mongoose.model("Facility",Schema);
