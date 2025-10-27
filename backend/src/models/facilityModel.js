@@ -63,7 +63,7 @@ const Schema = new mongoose.Schema({
     status: {
         type: String,
         enum: {
-            values: ["accepted,rejected,pending"],
+            values: ["accepted","rejected","pending"],
         }
     },
     createdAt :{

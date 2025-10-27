@@ -17,7 +17,7 @@ function TrackRequest() {
         fetchRequest();
     },[])
   return (
-    <div className='w-full py-2 flex flex-col justify-start items-center '>
+    <div className='w-full py-2 flex flex-col justify-start items-center bg-gray-100'>
         <div className='w-full py-1  z-50 relative flex justify-end '>
             <select name="filter" id="filter" className='text-right text-gray-700 w-full px-4 py-2 max-w-40 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] relative' onChange={handleFilter}>
                 <option  value="all">All</option>
@@ -29,7 +29,7 @@ function TrackRequest() {
         </div>
         {(requests.length !== 0)? 
         <>
-            <h1 className='text-gray-300 font-medium text-3xl'>No request yet!</h1>
+            <h1 className='text-gray-700 font-medium text-3xl'>No request yet!</h1>
         </>
         :
         <>

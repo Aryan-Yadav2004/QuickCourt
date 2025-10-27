@@ -32,12 +32,12 @@ function AllBookings() {
 
     }
   return (
-    <div className='bookingsContainer w-full h-full flex flex-col justify-start items-center p-4 overflow-scroll relative'>
+    <div className='bookingsContainer w-full h-full bg-gray-100 flex flex-col justify-start items-center p-4 overflow-scroll relative'>
         {(bookings.length > 0)? //
           bookings.map((booking) => (
-            <div className='w-full sm:h-42 relative flex p-1 '>
+            <div className='w-full sm:h-42 relative flex p-1 rounded-2xl'>
               <img   src="https://plus.unsplash.com/premium_photo-1663039984787-b11d7240f592?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c3BvcnRzJTIwY291cnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600" className='w-[25%] h-full' alt="court image" />
-              <div className='w-[75%] h-full relative flex flex-col justify-start items-start px-1 flex-wrap gap-1 font-serif'>
+              <div className='w-[75%] h-full relative flex flex-col justify-start items-start px-1 flex-wrap gap-1 font-serif rounded-2xl bg-white'>
                 <p className='font-semibold text-xl'>Facility Name</p>
                 <p>sports</p>
                 <p>street, city</p>

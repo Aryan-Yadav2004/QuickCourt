@@ -76,14 +76,14 @@ let readFacility = async (req,res) => {
     }
 }
 
-let readAllFacilitiesRequest = async (req,res) => {
+let readAllOwnerFacility = async (req,res) => {
     try {
         const token = req.cookies?.token;
         const data = jwt.decode(token);
         const owner = await User.findOne({_id: data._id}); 
         let facilities = [];
         for(let facilityId of owner.facility) {
-            let facility = await Facility.findOne({_id: facilityId});
+            let facility = await Facility.findOne({_id: facilityId}).populate("courts");
             facilities.push(facility);
         }
         res.status(200).json(facilities);
@@ -93,23 +93,21 @@ let readAllFacilitiesRequest = async (req,res) => {
     }
 }
 
-let readAllAcceptedFacilities = async (req, res) => {
+
+
+// admin api
+const allPendingRequest = async (req,res) => {
     try {
-        const token = req.cookies?.token;
-        const data = jwt.decode(token);
-        const owner = await User.findOne({_id: data._id}); 
-        let facilities = [];
-        for(let facilityId of owner.facility) {
-            let facility = await Facility.findOne({_id: facilityId});
-            if(facility.status === "accepted") facilities.push(facility);
-        }
-        res.status(200).json(facilities);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * 10;
+        const total = await Facility.countDocuments({status: "pending"});
+        const pendingFacilities = await Facility.find({status: "pending"}).skip(skip).limit(limit);
+        res.status(200).res.json({facilities: pendingFacilities, total: total});
     } catch (error) {
-        res.status(500).json({message: error.message});
+        res.status(500).res.json({message: error.message});
     }
 }
 
 
-
-
-export {createFacility, deleteFacility, updateFacility, readFacility, readAllFacilitiesRequest, readAllAcceptedFacilities};
+export {createFacility, deleteFacility, updateFacility, readFacility, readAllOwnerFacility,allPendingRequest};

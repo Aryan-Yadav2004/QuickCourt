@@ -58,7 +58,7 @@ function MyFacility() {
         {isKPIsActive && 
           <>
             <div className='w-full h-90 border '>KPIs area</div>
-            <div className='flex flex-col justify-start gap-6 items-center w-full py-4'>
+            <div className='flex flex-col justify-start gap-6 items-center w-full py-4 bg-gray-100'>
               <h1 className='text-center font-bold text-2xl'>My Facilities</h1>
             </div>
           </>

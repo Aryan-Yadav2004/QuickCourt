@@ -32,6 +32,7 @@ const ownerAuthorizationFacility = async (req,res,next) => {
 const ownerAuthorization = (req,res,next)=>{
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
+    console.log(role);
     if(role === "facilityOwner"){
         next();
     }
