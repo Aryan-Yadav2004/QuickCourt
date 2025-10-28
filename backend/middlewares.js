@@ -4,6 +4,11 @@ import User from "./src/models/userModel.js";
 import Court from "./src/models/courtModel.js";
 import Booking from "./src/models/bookingModel.js";
 import Review from "./src/models/reviewsModel.js";
+import { v2 as cloudinary } from "cloudinary";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import dotenv from "dotenv";
+dotenv.config(); // must be FIRST
 //passed
 const isLogedIn = (req,res,next) => {
     if(req.cookies.token){
@@ -31,8 +36,7 @@ const ownerAuthorizationFacility = async (req,res,next) => {
 //passed
 const ownerAuthorization = (req,res,next)=>{
     const token = req.cookies?.token;
-    const {_id,role } = jwt.decode(token);
-    console.log(role);
+    const {_id, role} = jwt.decode(token);
     if(role === "facilityOwner"){
         next();
     }
@@ -179,5 +183,23 @@ const slotValidator = (req,res,next) => {
     }
     next();
 }
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "uploads", // optional folder name in Cloudinary
+    resource_type: "raw", // allows PDFs, images, videos, etc.
+  },
+});
+
+const upload = multer({ storage });
+export default upload;
 
 export { isLogedIn,slotValidator, reviewValidator, courtValidator,facilityValidator,ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization };

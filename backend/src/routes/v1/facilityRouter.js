@@ -12,7 +12,8 @@ router.delete("/:facilityId/delete",isLogedIn,ownerAuthorization,ownerAuthorizat
 
 router.patch("/:facilityId/edit",isLogedIn,ownerAuthorization,ownerAuthorizationFacility,facilityValidator,updateFacility);
 
-router.get("/:facilityId",readFacility);
 router.get("/allfacility",ownerAuthorization,readAllOwnerFacility);
 router.get("/allPendingRequest",isLogedIn,allPendingRequest);
+router.get("/:facilityId",readFacility);
+
 export default router;

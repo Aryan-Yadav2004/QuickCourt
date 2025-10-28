@@ -1,10 +1,23 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {useNavigate} from 'react-router-dom'
 import FacilityCard from './FacilityCard';
 import CreateFacility from './CreateFacility';
 import TrackRequest from './TrackRequest';
+import { setMyFacilities } from '../features/facility/facilitySlice';
+import { useDispatch } from 'react-redux';
+import { readAllFacilities } from '../services/server';
 function MyFacility() {
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    useEffect(()=>{
+      const fetchFacilities = async () => {
+        const res = await readAllFacilities();
+        if(!res.ok) return;
+        const facilities = await res.json();
+        dispatch(setMyFacilities(facilities));
+      }
+      fetchFacilities();
+    },[]);
+
     const [isKPIsActive,setIsKPIsActive] = useState(true);
     const [isCreateNewFacilityActive,setCreateNewFacilityActive] = useState(false);
     const [isRequestHistoryActive,setIsRequestHistoryActive] = useState(false);
@@ -32,6 +45,12 @@ function MyFacility() {
       setIsBookingsOverviewActive(true);
       setIsKPIsActive(false);
     }
+    const handleKPIsPage = ( ) => {
+      setCreateNewFacilityActive(false);
+      setIsRequestHistoryActive(false);
+      setIsBookingsOverviewActive(false);
+      setIsKPIsActive(true);
+    }
   return (
       <div className='w-full h-full p-4 relative facilityContainer overflow-scroll'>
         {/* Floating Button Group */}
@@ -42,6 +61,7 @@ function MyFacility() {
             <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer hover:bg-violet-500 text-white font-bold shadow-md' onClick={handleCreateNewFacility}>Create</button>
             <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer hover:bg-violet-500 text-white font-bold shadow-md' onClick={handleRequestHistory}>Track Request</button>
             <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer hover:bg-violet-500 text-white font-bold shadow-md' onClick={handleBookingOverview}>Bookings</button>
+            <button className='bg-violet-400 py-2 px-3 rounded-2xl cursor-pointer hover:bg-violet-500 text-white font-bold shadow-md' onClick={handleKPIsPage}>Dashboard</button>
           </div>
 
           {/* Main + Button */}

@@ -8,6 +8,7 @@ import v1SearchRouter from "./routes/v1/searchRouter.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { sendOtp } from "./auth/auth.js";
+import uploadRoute from "./routes/v1/upload.js";
 configDotenv();
 const app = express();
 const server = createServer(app);
@@ -27,7 +28,7 @@ app.use(cookieParser());
 app.use("/api/v1/user",v1UserRouter);
 app.use("/api/v1/facility",v1FacilityRouter);
 app.use("/api/v1/search",v1SearchRouter);
-
+app.use("/api/v1/upload",uploadRoute);
 
 app.get("/api/v1/hello",(req,res)=>{
     res.json({message: "message from server"});

@@ -133,7 +133,6 @@ function Signup() {
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
     let avtar = "https://i.pinimg.com/736x/9d/16/4e/9d164e4e074d11ce4de0a508914537a8.jpg";
-     className='font-medium text-gray-700'
     data.avtar = avtar;
     data.phoneNo = Number(phoneNo);
     data.email = email;

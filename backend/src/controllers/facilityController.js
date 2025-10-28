@@ -80,6 +80,7 @@ let readAllOwnerFacility = async (req,res) => {
     try {
         const token = req.cookies?.token;
         const data = jwt.decode(token);
+        console.log(data);
         const owner = await User.findOne({_id: data._id}); 
         let facilities = [];
         for(let facilityId of owner.facility) {

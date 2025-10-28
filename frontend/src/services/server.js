@@ -60,7 +60,7 @@ const createFacility = async (facility) => {
 }
 
 const readAllFacilities = async () => {
-    let res = await fetch(`${baseURL}/allRequests`,{
+    let res = await fetch(`${baseURL}/facility/allfacility`,{
         method: 'GET',
         headers: {
             "Content-Type": "application/json"
@@ -70,4 +70,16 @@ const readAllFacilities = async () => {
     return res;
 }
 
-export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities};
+const upLoadPdf = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    let res = await fetch(`${baseURL}/upload`,{
+        method: 'POST',
+        credentials: "include",
+        body: formData
+    });
+    return res;
+}
+
+export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf};

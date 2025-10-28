@@ -6,7 +6,7 @@ async function  upload(file) {
 
     try{
         const res = await fetch(
-            `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/raw/upload`,{method: "POST", body: formData}
+            `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`,{method: "POST", body: formData}
         )
         const data = await res.json()
         return {status: 200,message: data.secure_url}
@@ -15,4 +15,4 @@ async function  upload(file) {
         return {status: 500, message: err.message};
     }
 }
-export {upload}
+export {upload} 

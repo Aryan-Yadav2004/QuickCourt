@@ -90,7 +90,7 @@ function FacilityManagement() {
 
           </div>
           <div className='w-full p-1 flex flex-col gap-2 ml-4'>
-              <div className='p-1 flex gap-2'>
+                <div className='p-1 flex gap-2'>
                 <p>Legal Document: </p>
                 <a
                   href=""

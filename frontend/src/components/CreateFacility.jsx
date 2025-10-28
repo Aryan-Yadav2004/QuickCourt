@@ -4,7 +4,7 @@ import { getCities, getCountries, getStates } from '../services/GeoDB.js';
 import ErrorAlert from './errorAlert.jsx';
 import SuccessAlert from './successAlert.jsx';
 import {useSelector} from "react-redux"
-import { createFacility } from '../services/server.js';
+import { createFacility, upLoadPdf } from '../services/server.js';
 function CreateFacility() {
     const [countries,setCountries] = useState([]);
     const [states,setStates] = useState([]);
@@ -18,6 +18,7 @@ function CreateFacility() {
     const [error,setError] = useState("");
     const [success,setSuccess] = useState("");
     const [selectedAmenities,setSelectedAmenities] = useState([]);
+    const [isDisabled,setIsDisabled] = useState(false);
     const amenitiesList = ["Parking","Restrooms","Locker Rooms","Shower Rooms","Waiting Area","Changing Rooms","Drinking Water","Reception Desk","Free WiFi","Air Conditioning","Power Backup","First Aid Kit","Medical Room","Viewing Gallery","CCTV Surveillance","Security Guard"];
     useEffect(()=>{
     const fetchCountries = async () => {
@@ -65,6 +66,10 @@ function CreateFacility() {
     const onLegalDocumentChange = (e) => {
         const f = e.target.files[0];
         if(!f) return;
+        if(f.type !== "application/pdf"){
+            setError("Document Should be in pdf format");
+            return;
+        }
         setLegalDocument(f);
     }
     const onPhotosChange = (e) => {
@@ -85,6 +90,8 @@ function CreateFacility() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(isDisabled) return;
+        setIsDisabled(true);
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
         let profilePhotoLink = ""
@@ -95,17 +102,21 @@ function CreateFacility() {
             }
             else{
                 setError(resProfilePhoto.message + " error in profile photo");
+                setIsDisabled(false);
                 return;
             }
         }
-        let legalDocumentLink = "";
+        let legalDocLink = "";
         if(legalDocument){
-            const resLegalDocument = await upload(legalDocument);
-            if(resLegalDocument.status === 200){
-                legalDocumentLink = resLegalDocument.message;
+            let res = await upLoadPdf(legalDocument);
+            if(res.ok){
+                let data = await res.json();
+                legalDocLink = data.url;
             }
             else{
-                setError(resLegalDocument.message + " error in Legal document");
+                let data = await res.json();
+                setError(data.message);
+                setIsDisabled(false);
                 return;
             }
         }
@@ -118,13 +129,13 @@ function CreateFacility() {
                 }
                 else{
                     setError(resPhoto.message + " error in photos");
+                    setIsDisabled(false);
                     return;
                 }
             }
         }
-        const facility = {name: data.name, country: data.country, state: data.state, street: data.street, profileImg: profilePhotoLink, photos: photosArray, legalDocument: legalDocumentLink, owner: user._id, pinCode: data.pinCode, about: data.about, city: data.city, amenities: selectedAmenities, status: "pending", createdAt: Date.now()}
+        const facility = {name: data.name, country: data.country, state: data.state, street: data.street, profileImg: profilePhotoLink, photos: photosArray, legalDocument: legalDocLink, owner: user._id, pinCode: data.pinCode, about: data.about, city: data.city, amenities: selectedAmenities, status: "pending", createdAt: Date.now()}
         const res = await createFacility(facility);
-        
         if(res.ok){
             setSuccess("request sent");
         }
@@ -132,6 +143,7 @@ function CreateFacility() {
             let result = await res.json();
             setError(result.message);
         }
+        setIsDisabled(false);
     }
     const closeErrorMsg = () => {
         setError("");
@@ -217,7 +229,7 @@ function CreateFacility() {
             </div>
             <div className='sm:w-[33%] w-full sm:h-full h-[40vh] flex flex-col justify-start items-center gap-4'>
                 <div className='w-[70%]'>
-                    <label htmlFor="" class="block mb-1 font-medium text-gray-700">
+                    <label htmlFor="" className="block mb-1 font-medium text-gray-700">
                         Select Amenities:
                     </label>
                     <div class="flex flex-wrap gap-2 w-full">
@@ -230,7 +242,7 @@ function CreateFacility() {
                     </div>
                 </div>
             </div>
-            <button type='submit' className='bottom-0 left-[45%] absolute m-auto px-3 py-2 rounded-l-full rounded-r-full max-w-sm text-white bg-[#5500ff] text-center cursor-pointer'>Send Request</button>
+            <button type='submit' className={`bottom-0 left-[45%] absolute m-auto px-3 py-2 rounded-l-full rounded-r-full max-w-sm text-white ${isDisabled? "bg-[#d9c5ff] cursor-not-allowed":"bg-[#5500ff] cursor-pointer"} text-center`} disabled={isDisabled}>Send Request</button>
         </form>
     </div>
     <ErrorAlert error={error} closeMsg={closeErrorMsg} />
