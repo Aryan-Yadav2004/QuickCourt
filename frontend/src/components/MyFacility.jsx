@@ -4,20 +4,22 @@ import FacilityCard from './FacilityCard';
 import CreateFacility from './CreateFacility';
 import TrackRequest from './TrackRequest';
 import { setMyFacilities } from '../features/facility/facilitySlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { readAllFacilities } from '../services/server';
 function MyFacility() {
+    const [facilities,setFacilities] = useState([]);
     const dispatch = useDispatch();
     useEffect(()=>{
       const fetchFacilities = async () => {
         const res = await readAllFacilities();
         if(!res.ok) return;
-        const facilities = await res.json();
-        dispatch(setMyFacilities(facilities));
+        const newfacilities = await res.json();
+        dispatch(setMyFacilities(newfacilities));
+        setFacilities(newfacilities.filter((f)=> f.status === "accepted"));
       }
       fetchFacilities();
     },[]);
-
+    
     const [isKPIsActive,setIsKPIsActive] = useState(true);
     const [isCreateNewFacilityActive,setCreateNewFacilityActive] = useState(false);
     const [isRequestHistoryActive,setIsRequestHistoryActive] = useState(false);
@@ -52,7 +54,7 @@ function MyFacility() {
       setIsKPIsActive(true);
     }
   return (
-      <div className='w-full h-full p-4 relative facilityContainer overflow-scroll'>
+      <div className='w-full h-full p-4 relative facilityContainer overflow-scroll bg-gray-50'>
         {/* Floating Button Group */}
         <div className='fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2'>
 
@@ -77,9 +79,13 @@ function MyFacility() {
         {/* Page Content */}
         {isKPIsActive && 
           <>
-            <div className='w-full h-90 border '>KPIs area</div>
-            <div className='flex flex-col justify-start gap-6 items-center w-full py-4 bg-gray-100'>
+            <div className='w-full h-90 border bg-white'>KPIs area</div>
+            <div className='flex flex-col justify-start gap-6 min-h-[50vh] items-center w-full py-4 '>
               <h1 className='text-center font-bold text-2xl'>My Facilities</h1>
+              {(facilities.length === 0 ? <div className='w-full h-full flex justify-center items-center text-2xl text-gray-600'>No facility yet!</div>:
+              facilities.map((facility)=> (
+                <FacilityCard key={facility._id} facility={facility}/>
+              )))}
             </div>
           </>
         }

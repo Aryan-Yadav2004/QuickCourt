@@ -80,7 +80,6 @@ let readAllOwnerFacility = async (req,res) => {
     try {
         const token = req.cookies?.token;
         const data = jwt.decode(token);
-        console.log(data);
         const owner = await User.findOne({_id: data._id}); 
         let facilities = [];
         for(let facilityId of owner.facility) {
@@ -101,14 +100,26 @@ const allPendingRequest = async (req,res) => {
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
-        const skip = (page - 1) * 10;
+        const skip = (page - 1) * limit;
         const total = await Facility.countDocuments({status: "pending"});
-        const pendingFacilities = await Facility.find({status: "pending"}).skip(skip).limit(limit);
-        res.status(200).res.json({facilities: pendingFacilities, total: total});
+        const pendingFacilities = await Facility.find({status: "pending"}).skip(skip).limit(limit).populate("owner");
+        res.status(200).json({facilities: pendingFacilities, total: total}); 
     } catch (error) {
-        res.status(500).res.json({message: error.message});
+        res.status(500).json({message: error.message});
+    }
+}
+
+const replyRequest = async (req,res) => {
+    try {
+        const {facilityId} = req.params;
+        const {request} = req.body;
+        await Facility.updateOne({_id: facilityId},{$set: {status: request}});
+        res.status(200).json({message: "request sent"});
+    }
+    catch (error){
+        res.status(500).json({message: error.message});
     }
 }
 
 
-export {createFacility, deleteFacility, updateFacility, readFacility, readAllOwnerFacility,allPendingRequest};
+export {createFacility, deleteFacility, updateFacility, readFacility, readAllOwnerFacility,allPendingRequest, replyRequest};

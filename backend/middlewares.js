@@ -202,4 +202,13 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 export default upload;
 
-export { isLogedIn,slotValidator, reviewValidator, courtValidator,facilityValidator,ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization };
+const isAdmin = (req,res,next) => {
+    const token = req.cookies?.token;
+    const {_id,role } = jwt.decode(token);
+    if(role !== "admin"){
+        return res.status(401).json({message: "you are not authorized"});
+    }
+    next();
+}
+
+export { isLogedIn,slotValidator, reviewValidator, courtValidator,facilityValidator,ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization, isAdmin };

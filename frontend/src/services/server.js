@@ -82,4 +82,25 @@ const upLoadPdf = async (file) => {
     return res;
 }
 
-export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf};
+
+const allPendingRequest = async (page,limit) => {
+    const res = await fetch(`${baseURL}/facility/allPendingRequest?page=${page}&limit=${limit}`,{
+        method: 'GET',
+        credentials: "include",
+    });
+    return res;
+}
+
+const replyRequest = async(facilityId,answer) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/requestReply`,{
+        method: 'PATCH',
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({request: answer}),
+    })
+    return res;
+}
+
+export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest};
