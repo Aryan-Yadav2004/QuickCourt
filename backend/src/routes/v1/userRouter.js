@@ -1,8 +1,8 @@
 import express from "express";
-import { getAllBookings, getUser, updateUser } from "../../controllers/userController.js";
+import { getAllBookings, getAllUser, getUser, updateUser, updateUserStatus } from "../../controllers/userController.js";
 import {handleLogin, handleRegister, handleLogOut, verifyUser} from "../../auth/auth.js"
 import { cancelBooking, getBooking } from "../../controllers/bookingController.js";
-import { bookingAuthorization, isLogedIn, userAuthorization, userCreateValidator, userUpdateValidator } from "../../../middlewares.js";
+import { bookingAuthorization, isAdmin, isLogedIn, userAuthorization, userCreateValidator, userUpdateValidator } from "../../../middlewares.js";
 const router = express.Router();
 
 
@@ -17,6 +17,8 @@ router.route("/logout")
 
 
 router.route("/verify").get(verifyUser);
+//admin route
+router.route("/getUsers").get(isLogedIn,isAdmin,getAllUser);
 
 router.route("/:id")
 .get(isLogedIn,userAuthorization,getUser)
@@ -24,7 +26,7 @@ router.route("/:id")
 router.route("/:id/bookings").get(isLogedIn,userAuthorization,getAllBookings);
 router.route("/:id/bookings/:bookingId").get(isLogedIn,userAuthorization,bookingAuthorization,getBooking);
 router.route("/:id/bookings/:bookingId/cancel").patch(isLogedIn,userAuthorization,bookingAuthorization,cancelBooking);
-
+router.route("/:id/updateStatus").patch(isLogedIn,isAdmin,updateUserStatus);
 
 
 

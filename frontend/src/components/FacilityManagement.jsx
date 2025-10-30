@@ -59,7 +59,7 @@ function FacilityManagement() {
     let res = await replyRequest(facility._id,answer);
     if(res.ok){
       let data = await res.json();
-      setSuccess(data.message);
+      setSuccess("request answered");
       let newRequests = requests.filter((req) => facility._id !== req._id);
       setRequests(newRequests);
     }
@@ -117,7 +117,7 @@ function FacilityManagement() {
       </>
       :
       <>
-        <div className='w-full h-full p-2 bg-white rounded-2xl relative flex flex-col'>
+        <div className='w-full h-full p-2 bg-white rounded-2xl relative flex flex-col overflow-scroll facilityContainer'>
           <div className='p-1 rounded-full absolute top-1 left-1 cursor-pointer' onClick={handleNavigateBack}>
             <ArrowLeftCircle size={24} color='gray' />
           </div>

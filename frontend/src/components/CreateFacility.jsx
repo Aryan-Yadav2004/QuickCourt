@@ -154,7 +154,7 @@ function CreateFacility() {
     }
   return (
     <>
-    <div className='w-[90%] h-[80vh] mx-[auto] bg-white'>
+    <div className='w-[90%] h-[80vh] mx-[auto] bg-transparent'>
         <h1 className='font-bold font-serif text-center text-2xl'>Create Facility</h1>
         <form className='w-full h-full flex flex-col sm:flex-row justify-center items-center relative ' onSubmit={handleSubmit}>
             <div className='sm:w-[33%] w-full sm:h-full h-[40vh] flex flex-col justify-start items-center gap-4'>

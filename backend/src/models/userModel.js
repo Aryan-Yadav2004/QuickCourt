@@ -66,6 +66,14 @@ const Scheme = new mongoose.Schema({
     ],
     avtar: {
         type: String,
+    },
+    status: {
+        type: String,
+        enum: {
+            values: ["active", "banned"],
+            message: "status should be either or banned"
+        },
+        default: "active",
     }
 }); 
 

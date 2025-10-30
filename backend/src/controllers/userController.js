@@ -40,4 +40,30 @@ const getAllBookings = async(req,res) => {
     }    
 }
 
-export {updateUser, getUser, getAllBookings};
+const getAllUser = async (req,res) => {
+    try{
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
+        const skip = (page - 1) * limit;
+        const users = await User.find({}).skip(skip).limit(limit);
+        res.status(200).json(users);
+    }
+    catch (error) {
+        res.status(500).json({message: error.message})
+    }
+}
+
+const updateUserStatus = async (req,res) => {
+    try{
+        const {id} = req.params;
+        const {status} = req.body;
+        await User.updateOne({_id: id},{$set:{status:status}})
+        res.status(200).json({message: "updated status"})
+    }
+    catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+
+export {updateUser, getUser, getAllBookings,getAllUser, updateUserStatus};

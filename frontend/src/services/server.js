@@ -103,4 +103,28 @@ const replyRequest = async(facilityId,answer) => {
     return res;
 }
 
-export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest};
+
+const getAllUsers = async (page,limit) => {
+    const res = await fetch(`${baseURL}/user/getUsers?page=${page}&limit=${limit}`,{
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    return res;
+}
+
+const updateUserStatus = async (userId,status) => {
+    const res = await fetch(`${baseURL}/user/${userId}/updateStatus`,{
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({status: status}),
+    })
+    return res;
+}
+
+export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus};

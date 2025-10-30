@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Stats from './Stats';
 import FacilityManagement from './FacilityManagement';
+import UserManagement from './UserManagement';
 
 function AdminPanel() {
   const [tab,setTab] = useState("stats");
@@ -11,8 +12,9 @@ function AdminPanel() {
         <button className={`p-2 active:none  cursor-pointer ${tab==="facilityManagement"?"text-violet-500":"text-gray-800"} hover:text-violet-400 `} onClick={()=>{setTab("facilityManagement")}}>Facility Approval</button>
         <button className={`p-2 active:none  cursor-pointer ${tab==="userManagement"?"text-violet-500":"text-gray-800"} hover:text-violet-400 `} onClick={()=>{setTab("userManagement")}}>User Management</button>
       </div>
-      {tab==="stats" && <Stats/>}
-      {tab==="facilityManagement" && <FacilityManagement/>}
+      {tab === "stats" && <Stats/>}
+      {tab === "facilityManagement" && <FacilityManagement/>}
+      {tab === "userManagement" && <UserManagement /> }
     </div>
   )
 }
