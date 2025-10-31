@@ -115,6 +115,14 @@ const getAllUsers = async (page,limit) => {
     return res;
 }
 
+const getUser = async (userId) => {
+    const res = await fetch(`${baseURL}/user/${userId}`,{
+        method: 'GET',
+        credentials: 'include',
+    })
+    return res;
+}
+
 const updateUserStatus = async (userId,status) => {
     const res = await fetch(`${baseURL}/user/${userId}/updateStatus`,{
         method: 'PATCH',
@@ -127,4 +135,20 @@ const updateUserStatus = async (userId,status) => {
     return res;
 }
 
-export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus};
+const getFacility = async (facilityId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}`,{
+        method: 'GET',
+        credentials: "include",
+    })
+    return res;
+}
+
+const getUserByUsername = async (username) => {
+    const res = await fetch(`${baseURL}/user/getUserByUsername?username=${username}`,{
+        method: 'GET',
+        credentials: 'include',
+    })
+    return res;
+}
+
+export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility};

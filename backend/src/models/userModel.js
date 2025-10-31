@@ -74,6 +74,9 @@ const Scheme = new mongoose.Schema({
             message: "status should be either or banned"
         },
         default: "active",
+    },
+    joinedAt: {
+        type: Date,
     }
 }); 
 

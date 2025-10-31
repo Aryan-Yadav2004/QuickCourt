@@ -68,6 +68,9 @@ const userAuthorization = (req,res,next) => {
     if(_id === id){
         next();
     }
+    else if (role === "admin") {
+        next();
+    }
     else{
        return res.status(401).json({message: "you are  unauthorized"});
     }

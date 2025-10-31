@@ -69,7 +69,7 @@ const updateFacility = async(req,res) => {
 let readFacility = async (req,res) => {
     try {
         let { facilityId } = req.params; 
-        const facility = await Facility.findOne({_id: facilityId}).populate("courts");
+        const facility = await Facility.findOne({_id: facilityId}).populate("courts").populate('owner');
         res.status(200).json(facility);
     } catch (error) {
         res.status(500).json({message: error.message});

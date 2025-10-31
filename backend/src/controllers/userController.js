@@ -23,7 +23,7 @@ const updateUser = async (req,res) => {
 const getUser = async(req,res) => {
     try {
         const { id } = req.params;
-        const user = await User.findOne({_id: id});
+        const user = await User.findOne({_id: id}).populate('facility').populate('bookings');
         res.status(200).json(user);
     } catch (error) {
         res.status(500).json({message: error.message});
@@ -65,5 +65,14 @@ const updateUserStatus = async (req,res) => {
     }
 }
 
-
-export {updateUser, getUser, getAllBookings,getAllUser, updateUserStatus};
+const getUserByUsername = async(req,res) => {
+    try {
+        const username = req.query.username;
+        console.log(username);
+        const user = await User.findOne({username: username}).populate('facility').populate('bookings');
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+export {updateUser, getUser, getAllBookings,getAllUser, updateUserStatus, getUserByUsername};

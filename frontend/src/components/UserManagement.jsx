@@ -1,12 +1,16 @@
 import { Search } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react'
 import { getAllUsers, updateUserStatus } from '../services/server';
+import { useNavigate } from 'react-router-dom';
+
 function UserManagement() {
     const [page,setPage] = useState(1);
     const limit = useRef(2);
     const [loading,setLoading] = useState(false);
     const [users,setUsers] = useState([]);
     const [filter,setFilter] = useState("all");
+    const [search,setSearch] = useState("");
+    const navigate = useNavigate();
     useEffect(()=>{
         const fetchAllusers = async () => {
             const res = await getAllUsers(page,limit.current);
@@ -45,6 +49,9 @@ function UserManagement() {
         }
     }
 
+    const handleSearch = async () => {
+      navigate(`/user/${search}`)
+    }
     const handleFilter = (e) => {
         const f = e.target.value;
         setFilter(f);
@@ -58,16 +65,22 @@ function UserManagement() {
             <input
                 type="text"
                 placeholder="Search by username"
+                value={search}
                 className="w-full pl-10 pr-4 py-2 border border-[#dccafe] active:outline-0 focus:outline-0  focus:border-2 focus:border-[#b996ff] rounded-lg text-gray-700 "
-                // onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if(e.key === 'Enter'){
+                    handleSearch();
+                  }
+                }}
             />
             </div> 
             <div className="flex items-center gap-2">
                 <div className='w-full py-1   relative flex justify-end '>
-                    <select name="filter" id="filter" className='text-right  w-full px-4 py-2 max-w-40 border border-[#dccafe] active:outline-0 focus:outline-0  focus:border-2 focus:border-[#b996ff] text-gray-700 relative rounded-lg' onChange={handleFilter}>
+                    <select name="filter" id="filter" className='text-right  w-full px-4 py-2 min-w-40 border border-[#dccafe] active:outline-0 focus:outline-0  focus:border-2 focus:border-[#b996ff] text-gray-700 relative rounded-lg' onChange={handleFilter}>
                         <option value="all">All Roles</option>
                         <option value="user">Users</option>
-                        <option value="facilityOwner">Facility Owners</option>
+                        <option value="facilityOwner">Owners</option>
                     </select>
                     <img src="filter.svg" alt="filter" className='w-8 h-8 object-contain absolute right-30 top-2' />
                 </div>
@@ -115,7 +128,7 @@ function UserManagement() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium" onClick={()=> navigate(`/user/${user.username}`)}>
                       View
                     </button>
                     {user.status === 'active' ? (

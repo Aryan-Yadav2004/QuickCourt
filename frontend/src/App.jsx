@@ -7,6 +7,8 @@ import Layout from './layout/Layout.jsx';
 import Signup from './pages/Signup.jsx';
 import Login from './pages/Login.jsx';
 import Profile from './pages/Profile.jsx';
+import UserInfo from './pages/UserInfo.jsx';
+import FacilityDetails from './components/FacilityDetails.jsx';
 function App() {
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -30,8 +32,10 @@ function App() {
         <Route path='/' element={<Layout/>}>
           <Route path='' element={<Home/>}></Route>
           <Route path='/profile' element={<Profile/>}/>
+          <Route path='/user/:username' element={<UserInfo/>}/>
+          <Route path='/facility/:facilityId' element={<FacilityDetails/>}/>
         </Route>
-        <Route path='/signup' element={<Signup/>}/> 
+        <Route path='/signup' element={<Signup/>}/>
         <Route path='/login' element={<Login/>} />
       </Routes>
     </BrowserRouter>

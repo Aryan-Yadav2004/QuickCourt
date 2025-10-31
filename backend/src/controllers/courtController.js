@@ -28,6 +28,7 @@ let createCourt = async (req,res) => {
             timeSlots.push(result._id);
         };
         facility.courts.push(courtObj._id);
+        facility.sports.push(courtData.sport);
         await facility.save();
         courtObj.timeSlotBookingInfo = timeSlots;
         await courtObj.save();

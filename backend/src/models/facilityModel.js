@@ -70,6 +70,11 @@ const Schema = new mongoose.Schema({
         type: Date,
         require: true
     },
+    sports: [
+        {
+            type: String,
+        }
+    ]
 });
 
 const Facility = mongoose.model("Facility",Schema);
