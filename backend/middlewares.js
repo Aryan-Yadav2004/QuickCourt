@@ -28,8 +28,11 @@ const ownerAuthorizationFacility = async (req,res,next) => {
     if(facility.owner.equals(_id)){
         next();
     }
+    else if(role === "admin"){
+        next();
+    }
     else{
-      return  res.status(401).json({message: "you are unauthorized"});
+      return  res.status(401).json({message: "you are unauthorized!"});
     }
 }
 
@@ -37,11 +40,11 @@ const ownerAuthorizationFacility = async (req,res,next) => {
 const ownerAuthorization = (req,res,next)=>{
     const token = req.cookies?.token;
     const {_id, role} = jwt.decode(token);
-    if(role === "facilityOwner"){
+    if(role === "facilityOwner" || role === "admin"){
         next();
     }
     else{
-      return  res.status(401).json({message: "you are unauthorized"});
+      return  res.status(401).json({message: "you are unauthorized."});
     }
 }
 
@@ -49,6 +52,10 @@ const ownerAuthorization = (req,res,next)=>{
 const ownerAuthorizationCourt = async (req,res,next) => {
     const token = req.cookies?.token;
     const {_id,role } = jwt.decode(token);
+    if(role === "admin"){
+        next();
+        return;
+    }
     const {courtId} = req.params;
     const court = await Court.findOne({_id: courtId});
     const facility = await Facility.findOne({_id: court.facility_id});
@@ -155,7 +162,7 @@ const pinCodeValidator = (pin) => {
 const facilityValidator = (req,res,next) => {
     const data = req.body;
     console.log(data)
-    if(!data.name || data.name.trim()==="" || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()==="" || !data.country || data.country.trim()==="" || !data.pinCode || data.pinCode.length !== 6 || pinCodeValidator(data.pinCode)){
+    if(!data.name || data.name.trim()==="" || !data.profileImg || data.profileImg.trim() === ""){
        return res.status(400).json({message: "Provide Facility appropirate data"});
     }
     

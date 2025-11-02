@@ -4,7 +4,7 @@ import PhoneVerifcation from '../components/PhoneVerifcation.jsx';
 import EmailVerification from '../components/EmailVerification.jsx';
 import { upload } from '../services/Cloudinary.js';
 import ErrorAlert from '../components/errorAlert.jsx';
-import { registerUser } from '../services/server.js';
+import { registerUser } from '../services/server.js'; 
 import SuccessAlert from '../components/successAlert.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -155,7 +155,7 @@ function Signup() {
         <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={handleSubmit} method='POST'>
             <div className='w-full h-full flex sm:flex-row flex-col justify-between items-center'>
               <div className='w-[48%] h-full  flex flex-col justify-around items-end'>
-                  {/* name */}
+                  {/* name */} 
                   <div className='w-[70%]'>
                     <label htmlFor="name" className='font-medium text-gray-700'>name:</label>
                     <input type="text" id='name' name='name' placeholder=" Sonny Hayes" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>

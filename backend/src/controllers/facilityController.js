@@ -51,14 +51,10 @@ const updateFacility = async(req,res) => {
         const facility = await Facility.findOne({_id: facilityId});
         const newFacility = req.body;
         facility.name = newFacility.name;
-        facility.street = newFacility.street;
-        facility.state = newFacility.state;
-        facility.district = newFacility.district;
-        facility.country = newFacility.country;
-        facility.pinCode = newFacility.pinCode;
         facility.profileImg = newFacility.profileImg; 
         facility.about = newFacility.about;
         facility.photos = newFacility.photos;
+        facility.amenities = newFacility.amenities;
         await facility.save();
         res.status(200).json({message: "Facility Updated!"});
     } catch (error) {

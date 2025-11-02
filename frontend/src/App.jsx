@@ -9,6 +9,7 @@ import Login from './pages/Login.jsx';
 import Profile from './pages/Profile.jsx';
 import UserInfo from './pages/UserInfo.jsx';
 import FacilityDetails from './components/FacilityDetails.jsx';
+import EditFacility from './components/EditFacility.jsx';
 function App() {
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -34,6 +35,7 @@ function App() {
           <Route path='/profile' element={<Profile/>}/>
           <Route path='/user/:username' element={<UserInfo/>}/>
           <Route path='/facility/:facilityId' element={<FacilityDetails/>}/>
+          <Route path='/facility/:facilityId/edit' element={<EditFacility />} /> 
         </Route>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/login' element={<Login/>} />

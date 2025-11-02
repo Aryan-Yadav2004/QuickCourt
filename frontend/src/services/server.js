@@ -12,6 +12,8 @@ const registerUser = async (user) => {
     return res;
 }
 
+
+
 const loginUser = async(user) => {
     let res = await fetch(`${baseURL}/user/login`,{
         method: 'POST',
@@ -151,4 +153,17 @@ const getUserByUsername = async (username) => {
     return res;
 }
 
-export {registerUser, loginUser, getAllBookings, updateUser, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility};
+const updateFacility = async(facility,facilityId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/edit`,{
+        method: 'PATCH',
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(facility),
+    })
+    return res;
+}
+
+
+export {registerUser, loginUser, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility};

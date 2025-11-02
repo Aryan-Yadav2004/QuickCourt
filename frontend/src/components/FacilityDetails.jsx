@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getFacility } from '../services/server';
 import { useSelector } from 'react-redux';
-import { MapPin, Plus } from 'lucide-react'
+import { MapPin, Plus, Edit } from 'lucide-react'
+import Map from './Map';
 function FacilityDetails() {
+    const navigate = useNavigate();
     const { facilityId } = useParams();
     const [images, setImages] = useState([]);
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState("qeqweqweqwe");
     const [facility,setFacility] = useState(null);
-    const user = useSelector(state => state.user.userDetail)
+    const user = useSelector(state => state.user.userDetail);
+    const [address,setAddress] = useState("new Delhi, india");
     useEffect(() => {
         const fetchFacility = async () => {
             const res = await getFacility(facilityId);
@@ -17,6 +20,7 @@ function FacilityDetails() {
                 setFacility(data);
                 setImage(data.profileImg);
                 setImages([data.profileImg,...data.photos])
+                setAddress(`${data?.street} ${data?.city}, ${data?.state}, ${data?.country}`)
             }
             else{
                 console.log(data.message);
@@ -42,10 +46,13 @@ function FacilityDetails() {
             </div>
             {/* details */}
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  flex flex-col items-start px-2 py-3 gap-2'>
-              <h1 className=' text-4xl font-semibold text-gray-800'>{facility?.name}</h1>
+              <div className='w-[80%] p-1 flex justify-between items-center'>
+                <h1 className=' text-4xl font-semibold text-gray-800'>{facility?.name}</h1>
+                <Edit size={25} className='text-[#5500ff] cursor-pointer hover:text-[#9e6eff]' onClick={()=>navigate(`/facility/${facility?._id}/edit`)}/>
+              </div>
               <p className='text-gray-700 max-w-[80%] p-1'><b>About:</b> <i>{facility?.about}</i></p>
               <p className='text-gray-700 p-1'><b>Owner:</b><i>{facility?.owner?.name}</i></p>
-              <div className='w-full '>
+              <div className='w-full'>
                 <hr style={{color: "#a073fa", width: "80%",}} />
               </div>
               <div className='w-full p-1'>
@@ -96,20 +103,15 @@ function FacilityDetails() {
             </div>
         </div>
 
-        <div className='w-full p-1'>
-            
+        <div className='w-full p-1 h-[400px]'>
+            <Map address={address} />
         </div>
 
         {user?.role === 'admin' && 
         <div className='w-full p-1 flex flex-col gap-2 ml-4'>
             <div className='p-1 flex gap-2'>
             <p>Legal Document: </p>
-            <a
-                href={facility?.legalDocument}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline cursor-pointer"
-            >
+            <a href={facility?.legalDocument} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline cursor-pointer">
                 Download legal Document
             </a>
             </div>
