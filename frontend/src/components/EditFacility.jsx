@@ -20,6 +20,7 @@ import SuccessAlert from './successAlert';
     const navigate = useNavigate();
     const [error,setError] = useState("");
     const [success,setSuccess] = useState("");
+    const [loading, setLoading] = useState(false);
     const amenitiesList = ["Parking","Restrooms","Locker Rooms","Shower Rooms","Waiting Area","Changing Rooms","Drinking Water","Reception Desk","Free WiFi","Air Conditioning","Power Backup","First Aid Kit","Medical Room","Viewing Gallery","CCTV Surveillance","Security Guard"];
     useEffect(() => {
         const fetchFacility = async () => {
@@ -28,15 +29,14 @@ import SuccessAlert from './successAlert';
             const newPhotos = ["","","","",""];
             
             if(res.ok){
-                setFacility(data);
-                setImage(data.profileImg);
-                setAddress(`${data?.street} ${data?.city}, ${data?.state}, ${data?.country}`);
-                setNewData(prev => ({...prev,name: data.name, about: data.about, pinCode: data.pinCode, amenities: [...data.amenities]}));
-                data.photos.forEach((photo,index)=>{
-                  newPhotos[index] = photo;
-                });
-                setImages(newPhotos);
-                console.log("hi")
+              setFacility(data);
+              setImage(data.profileImg);
+              setAddress(`${data?.street} ${data?.city}, ${data?.state}, ${data?.country}`);
+              setNewData(prev => ({...prev,name: data.name, about: data.about, pinCode: data.pinCode, amenities: [...data.amenities]}));
+              data.photos.forEach((photo,index)=>{
+                newPhotos[index] = photo;
+              });
+              setImages(newPhotos);
             }
             else{
                 console.log(data.message);
@@ -50,12 +50,14 @@ import SuccessAlert from './successAlert';
     },[newData?.about]);
 
     const handleTextArea = () => {
+      if (loading) return;
       const textarea = textareaRef.current;
       textarea.style.height = "auto";
       textarea.style.height = textarea.scrollHeight + 'px';
     }
 
     const handleAmenitiyChange = (amenity) => {
+      if (loading) return;
       if(newData?.amenities.includes(amenity)){
         setNewData((prev)=> ({...prev,amenities: [...prev.amenities.filter(a => a !== amenity)]}));
       }
@@ -65,6 +67,7 @@ import SuccessAlert from './successAlert';
     }
 
     const handlePhotos = (file,index) => {
+      if (loading) return;
       let newFiles = [...files];
       if(file.size > 10 * 1024 * 1024){
         setError("image size should be less than 10MB");
@@ -79,6 +82,7 @@ import SuccessAlert from './successAlert';
     }
 
     const handleRemovePhoto = (index) => {
+      if (loading) return;
       let newPhotos = [...images];
       newPhotos[index] = "";
       setImages(newPhotos);
@@ -88,17 +92,20 @@ import SuccessAlert from './successAlert';
     }
 
     const handleProfilePhoto = (file) => {
+      if(loading) return;
       setProfileImgFile(file);
       const url = URL.createObjectURL(file);
       setImage(url);
     }
     const handleRemoveProfilePhoto =  () => {
+      if(loading) return;
       setImage("");
       setProfileImgFile(null);
     }
     const handleSubmit = async (e)=>{
       e.preventDefault();
-
+      if(loading) return;
+      setLoading(true);
       try {
         let profileImgLink = image;
         if(profileImgFile){
@@ -159,28 +166,28 @@ import SuccessAlert from './successAlert';
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  p-2 flex flex-col items-center'>
                 {image === "" ? 
                   <div className={`w-full h-full  border border-gray-300 flex items-center justify-center  cursor-pointer`} style={{backgroundImage: 'url(/plus.png)', backgroundPosition: "center",backgroundRepeat: 'no-repeat', backgroundSize:"50px"}} >
-                    <input type="file" className='w-full h-full text-transparent bg-transparent cursor-pointer' onChange={(e)=>handleProfilePhoto(e.target.files[0])} required/>
+                    <input type="file" className={`w-full h-full text-transparent bg-transparent ${loading ? "cursor-not-allowed":"cursor-pointer"} `} onChange={(e)=>handleProfilePhoto(e.target.files[0])} required/>
                   </div>
                 :
                   <div className='w-[90%] h-[70%]  bg-gray-100 flex items-center justify-center overflow-hidden relative'>
-                    <div className='w-[20px] h-[20px] pb-1 text-gray-800 flex justify-center items-center rounded-full absolute top-0 bg-gray-300 opacity-60 right-0 cursor-pointer' onClick={handleRemoveProfilePhoto}>x</div>
+                    <div className={`w-[20px] h-[20px] pb-1 text-gray-800 flex justify-center items-center rounded-full absolute top-0 bg-gray-300 opacity-60 right-0  ${loading ? "cursor-not-allowed":"cursor-pointer"}`} onClick={handleRemoveProfilePhoto}>x</div>
                     <img src={image} alt="preview" className="w-full h-full object-contain" />
                   </div>
                 }
                 <div className='w-[90%] h-[30%]  flex justify-around items-center'>
-                {images.map((imageLink, index)=>{
+                {images.map((imageLink, index) => {
                     return(
-                    imageLink === ""? (
-                      <div key={index + 'a'} className={`w-20 h-20  border border-gray-300 flex items-center justify-center cursor-pointer`} style={{backgroundImage: 'url(/plus.png)', backgroundPosition: "center",backgroundRepeat: 'no-repeat', backgroundSize:"50px"}} >
-                        <input type="file" className='w-20 h-20 text-transparent bg-transparent cursor-pointer' onChange={(e)=>handlePhotos(e.target.files[0],index)}/>
-                      </div>
-                      ):(
-                      <div key={index + 'b'} className={`w-20 h-20  border border-gray-300 flex items-center justify-center  relative`} >
-                        <div className='w-[20px] h-[20px] pb-1 text-gray-800 flex justify-center items-center rounded-full absolute top-0 bg-gray-300 opacity-60 right-0 cursor-pointer' onClick={()=>handleRemovePhoto(index)}>x</div>
-                        <img src={imageLink} alt="preview" className="w-full h-full object-contain" />
-                      </div>
+                      imageLink === ""? (
+                        <div key={index + 'a'} className={`w-20 h-20  border border-gray-300 flex items-center justify-center cursor-pointer`} style={{backgroundImage: 'url(/plus.png)', backgroundPosition: "center",backgroundRepeat: 'no-repeat', backgroundSize:"50px"}} >
+                          <input type="file" className='w-20 h-20 text-transparent bg-transparent cursor-pointer' onChange={(e)=>handlePhotos(e.target.files[0],index)}/>
+                        </div>
+                        ):(
+                        <div key={index + 'b'} className={`w-20 h-20  border border-gray-300 flex items-center justify-center  relative`} >
+                          <div className={`w-[20px] h-[20px] pb-1 text-gray-800 flex justify-center items-center rounded-full absolute top-0 bg-gray-300 opacity-60 right-0 ${loading ? "cursor-not-allowed":"cursor-pointer"}`} onClick={()=>handleRemovePhoto(index)}>x</div>
+                          <img src={imageLink} alt="preview" className="w-full h-full object-contain" />
+                        </div>
                       )
-                    ) 
+                    )
                   }
                 )}
                 </div>
@@ -189,11 +196,11 @@ import SuccessAlert from './successAlert';
             {/* details */}
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  flex flex-col items-start px-2 py-3 gap-2'>
               <div className='w-[80%] p-1 flex justify-between items-center'>
-                <input className=' text-4xl font-semibold text-gray-800 w-[60%] p-0.5 focus:outline-none active:outline-none' value={newData?.name} onChange={(e) => setNewData({...newData, name:e.target.value})}/>
-                <button className='p-1 active:outline-none focus:outline-none cursor-pointer' onClick={handleSubmit} type='submit'><Save size={25} className='text-[#5500ff]'/></button>
+                <input className=' text-4xl font-semibold text-gray-800 w-[60%] p-0.5 focus:outline-none active:outline-none' value={newData?.name} onChange={(e) => { if(loading) return; setNewData({...newData, name:e.target.value})}}/>
+                <button type="submits" className={`p-1 active:outline-none focus:outline-none  ${loading ? "cursor-not-allowed":"cursor-pointer"}`} onClick={handleSubmit}><Save size={25} className={`${loading?"text-[#a273ff]":"text-[#5500ff]"}`}/></button>
               </div>
               <p className='text-gray-700 max-w-[80%] p-1'><b>About:</b> </p>
-              <i className='w-full'><textarea className='min-w-[80%] resize-none overflow-hidden min-h-[40px] p-[8px] rounded-[6px] outline-none' rows={1} ref={textareaRef} name="about" value={newData?.about}  onChange={(e)=>{setNewData({...newData,about: e.target.value})}}></textarea></i>
+              <i className='w-full'><textarea className='min-w-[80%] resize-none overflow-hidden min-h-[40px] p-[8px] rounded-[6px] outline-none' rows={1} ref={textareaRef} name="about" value={newData?.about}  onChange={(e)=>{if (loading) return; setNewData({...newData,about: e.target.value})}}></textarea></i>
               <p className='text-gray-700 p-1'><b>Owner:</b><i>{facility?.owner?.name}</i></p>
               <div className='w-full'>
                 <hr style={{color: "#a073fa", width: "80%",}} />

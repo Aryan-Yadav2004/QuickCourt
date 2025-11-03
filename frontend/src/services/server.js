@@ -165,5 +165,13 @@ const updateFacility = async(facility,facilityId) => {
     return res;
 }
 
+const deleteFacility = async (facilityId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/delete`,{
+        method: 'DELETE',
+        credentials: "include",
+    });
+    return res;
+}
 
-export {registerUser, loginUser, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility};
+
+export {registerUser, loginUser, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility};

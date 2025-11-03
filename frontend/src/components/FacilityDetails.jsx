@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
-import { getFacility } from '../services/server';
+import { deleteFacility, getFacility } from '../services/server';
 import { useSelector } from 'react-redux';
-import { MapPin, Plus, Edit } from 'lucide-react'
+import { MapPin, Plus, Edit, Trash2} from 'lucide-react'
 import Map from './Map';
+import ErrorAlert from './errorAlert';
 function FacilityDetails() {
     const navigate = useNavigate();
     const { facilityId } = useParams();
@@ -12,6 +13,9 @@ function FacilityDetails() {
     const [facility,setFacility] = useState(null);
     const user = useSelector(state => state.user.userDetail);
     const [address,setAddress] = useState("new Delhi, india");
+    const [deleteAlert,setDeleteAlert] = useState(false);
+    const authorize = (user?._id === facility?.owner._id || user?.role === "admin");
+    const [error,setError] = useState("");
     useEffect(() => {
         const fetchFacility = async () => {
             const res = await getFacility(facilityId);
@@ -28,8 +32,21 @@ function FacilityDetails() {
         }
         fetchFacility();
     },[]);
+    const handleDeleteFacility =  async ()=>{
+        const res = await deleteFacility(facilityId);
+        const result = await res.json();
+        if(res.ok){
+            navigate("/");
+        }
+        else{
+
+        }
+    }
+    const closeErrorMsg = () => {
+        setError("");
+    }
   return (
-    <div className='w-full h-full p-2 bg-white rounded-2xl relative flex flex-col overflow-scroll facilityContainer'>
+    <div className={`w-full h-full p-2 bg-white rounded-2xl relative flex flex-col ${deleteAlert?"cursor-not-allowed overflow-hidden" : "overflow-scroll"} facilityContainer`}>
         <div className='w-full h-[70vh]  flex flex-col sm:flex-row'>
             {/* image */}
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  p-2 flex flex-col items-center'>
@@ -48,7 +65,12 @@ function FacilityDetails() {
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  flex flex-col items-start px-2 py-3 gap-2'>
               <div className='w-[80%] p-1 flex justify-between items-center'>
                 <h1 className=' text-4xl font-semibold text-gray-800'>{facility?.name}</h1>
-                <Edit size={25} className='text-[#5500ff] cursor-pointer hover:text-[#9e6eff]' onClick={()=>navigate(`/facility/${facility?._id}/edit`)}/>
+                {authorize && 
+                    <div className='p-1 flex items-center gap-1'>
+                        <Edit size={25} className='text-[#5500ff] cursor-pointer hover:text-[#9e6eff]' onClick={()=>{if(deleteAlert) return navigate(`/facility/${facility?._id}/edit`)}}/>
+                        <Trash2 size={25} className='text-red-500 cursor-pointer hover:text-red-400' onClick={()=>setDeleteAlert(true)} />   
+                    </div>
+                }
               </div>
               <p className='text-gray-700 max-w-[80%] p-1'><b>About:</b> <i>{facility?.about}</i></p>
               <p className='text-gray-700 p-1'><b>Owner:</b><i>{facility?.owner?.name}</i></p>
@@ -128,8 +150,18 @@ function FacilityDetails() {
             </div> */}
         </div>
         }
+        {deleteAlert && 
+            <div className='w-full h-[100vh] overflow-hidden flex items-center justify-center bg-tranparent  z-50 absolute top-0'>
+                <div className='w-[30%] p-2 bg-gray-100 rounded-lg  relative flex flex-col items-center gap-4  justify-center'>
+                    <button className='top-1 right-1 absolute text-gray-600 cursor-pointer' onClick={()=>setDeleteAlert(false)}>x</button>
+                    <p className='text-gray-600 italic'>Warning: Deleting this facility will permanently remove all associated data, including every court linked to it and the complete history of all booking details. Once deleted, this information cannot be recovered. Please confirm if you really want to proceed with this action.</p>
+                    <button className='bg-red-500 p-2 rounded-2xl text-white' onClick={handleDeleteFacility}>Confirm</button>
+                </div>
+            </div>
+        }
+        <ErrorAlert error={error} closeMsg={closeErrorMsg} />
         </div>
-  )
+    )
 }
 
 export default FacilityDetails;
