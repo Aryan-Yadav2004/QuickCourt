@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { MapPin, Plus, Edit, Trash2} from 'lucide-react'
 import Map from './Map';
 import ErrorAlert from './errorAlert';
+import CourtCard from './CourtCard';
 function FacilityDetails() {
     const navigate = useNavigate();
     const { facilityId } = useParams();
@@ -39,14 +40,14 @@ function FacilityDetails() {
             navigate("/");
         }
         else{
-
+            console.log(msg.message);
         }
     }
     const closeErrorMsg = () => {
         setError("");
     }
   return (
-    <div className={`w-full h-full p-2 bg-white rounded-2xl relative flex flex-col ${deleteAlert?"cursor-not-allowed overflow-hidden" : "overflow-scroll"} facilityContainer`}>
+    <div className={`w-full h-full p-2 bg-gray-50 rounded-2xl relative flex flex-col ${deleteAlert?"cursor-not-allowed overflow-hidden" : "overflow-scroll"} facilityContainer`}>
         <div className='w-full h-[70vh]  flex flex-col sm:flex-row'>
             {/* image */}
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  p-2 flex flex-col items-center'>
@@ -67,7 +68,7 @@ function FacilityDetails() {
                 <h1 className=' text-4xl font-semibold text-gray-800'>{facility?.name}</h1>
                 {authorize && 
                     <div className='p-1 flex items-center gap-1'>
-                        <Edit size={25} className='text-[#5500ff] cursor-pointer hover:text-[#9e6eff]' onClick={()=>{if(deleteAlert) return navigate(`/facility/${facility?._id}/edit`)}}/>
+                        <Edit size={25} className='text-[#5500ff] cursor-pointer hover:text-[#9e6eff]' onClick={()=>{if(deleteAlert) return;  navigate(`/facility/${facility?._id}/edit`)}}/>
                         <Trash2 size={25} className='text-red-500 cursor-pointer hover:text-red-400' onClick={()=>setDeleteAlert(true)} />   
                     </div>
                 }
@@ -96,32 +97,22 @@ function FacilityDetails() {
             </div>
             <div className='p-1 flex gap-2'>
                 <p className='font-medium text-gray-700 text-xl'>Sports: </p>
-                <div className='px-1.5 py-0.5 rounded-l-full rounded-r-full bg-[#5500ff] text-white'>volleyball</div>
-                <div className='px-1.5 py-0.5 rounded-l-full rounded-r-full bg-[#5500ff] text-white'>football</div>
-                <div className='px-1.5 py-0.5 rounded-l-full rounded-r-full bg-[#5500ff] text-white'>badminton</div>
-                <div className='px-1.5 py-0.5 rounded-l-full rounded-r-full bg-[#5500ff] text-white'>cricket</div>
-                <div className='px-1.5 py-0.5 rounded-l-full rounded-r-full bg-[#5500ff] text-white'>tennis</div>
+                {facility?.sports.map((sport, index)=>(
+                    <div key={index} className='px-1.5 py-0.5 rounded-l-full rounded-r-full bg-[#5500ff] text-white'>{sport}</div>
+                ))}
             </div>
         </div>
 
         <div className='w-full py-1 px-[3%] flex flex-col justify-start items-start mt-5 '>
             <div className='w-full p-1 flex justify-between items-center'>
                 <h1 className=' text-4xl font-semibold text-gray-800'>Courts</h1>
-                <Plus size={25} className='text-[#5500ff] cursor-pointer'/>
+                {authorize && <Plus size={25} className='text-[#5500ff] cursor-pointer' onClick={()=>{navigate('/facility/:facilityId/court/create')}}/>}
             </div>
             <hr style={{color:'#a073fa',width: "100%"}}/>
             <div className='w-full p-1 flex justify-around items-start flex-wrap gap-4'>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
-                <div className='w-52 bg-blue-600 h-72'></div>
+                {facility?.courts.map((court,index)=>(
+                    <CourtCard key={index} court={court} />
+                ))}
             </div>
         </div>
 

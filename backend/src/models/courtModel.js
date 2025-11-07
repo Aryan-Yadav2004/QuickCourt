@@ -26,6 +26,36 @@ const Schema = new mongoose.Schema({
     photoLink : {
         type: String,
     },
+    price: {
+        type: Number,
+        min: 0,
+        required: true,
+    },
+    schedule: {
+        days: {
+            type: [String],
+            enum: ["monday","tuesday","wednesday","thrusday","friday","saturday","sunday"],
+        },
+        time: [ 
+            {
+                type: Object,
+                hour: {
+                    type: Number,
+                    min: 0,
+                    max: 12,
+                },
+                minute: {
+                    type: Number,
+                    min: 0,
+                    max: 59,
+                },
+                meridian: {
+                    type: String,
+                    enum: ["AM","PM"],
+                }
+            }
+        ]
+    },
     timeSlotBookingInfo: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -105,7 +105,6 @@ const replyRequest = async(facilityId,answer) => {
     return res;
 }
 
-
 const getAllUsers = async (page,limit) => {
     const res = await fetch(`${baseURL}/user/getUsers?page=${page}&limit=${limit}`,{
         method: 'GET',
@@ -173,5 +172,16 @@ const deleteFacility = async (facilityId) => {
     return res;
 }
 
+const createCourt = async(facilityId,court) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/new`,{
+        method: 'POST',
+        credentials: "include",
+        headers: {
+            "Content-type": "application/json",
+        },
+        body: JSON.stringify(court),
+    });
+    return res;
+}
 
-export {registerUser, loginUser, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility};
+export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility};

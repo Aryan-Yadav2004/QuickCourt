@@ -172,8 +172,17 @@ const facilityValidator = (req,res,next) => {
 //passed
 const courtValidator = (req,res,next) => {
     const data = req.body;
-    if(!data.sport || data.sport.trim()===""){
-       return res.status(400).json({message: "provide appropirate data"});
+    if(!data.sport || data.sport.trim()==="" || !data.schedule || !data.schedule.days || !data.schedule.time){
+        return res.status(400).json({message: "provide appropirate data"});
+    }
+    console.log(data.schedule);
+    if(!data.price || typeof(data.price) !== "number"  || data.price < 0 || !data.schedule.time ){
+        return res.status(400).json({message: "provide appropirate data "});
+    }
+    for(let t of data.schedule.time){
+        if(!t.hour || t.hour < 0 || t.hour > 12 || (!t.minute  && t.minute !== 0) || t.minute < 0 || t.minute > 59 || !t.meridian || !(t.meridian ==="AM" || t.meridian==="PM")){
+            return res.status(400).json({message: "provide appropirate data "});
+        }
     }
     next();
 }

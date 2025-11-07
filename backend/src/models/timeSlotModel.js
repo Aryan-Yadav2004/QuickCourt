@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const Schema = new mongoose.Schema({
-    time: {
+    time:  {
         type: Date,
         require: true,
     },

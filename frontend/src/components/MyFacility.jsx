@@ -15,7 +15,7 @@ function MyFacility() {
         if(!res.ok) return;
         const newfacilities = await res.json();
         dispatch(setMyFacilities(newfacilities));
-        setFacilities(newfacilities.filter((f)=> f.status === "accepted"));
+        setFacilities(newfacilities.filter((f)=> f?.status === "accepted"));
       }
       fetchFacilities();
     },[]);
@@ -84,7 +84,7 @@ function MyFacility() {
               <h1 className='text-center font-bold text-2xl'>My Facilities</h1>
               {(facilities.length === 0 ? <div className='w-full h-full flex justify-center items-center text-2xl text-gray-600'>No facility yet!</div>:
               facilities.map((facility)=> (
-                <FacilityCard key={facility._id} facility={facility}/>
+                <FacilityCard key={facility?._id} facility={facility}/>
               )))}
             </div>
           </>

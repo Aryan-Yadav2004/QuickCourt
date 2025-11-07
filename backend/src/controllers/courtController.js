@@ -6,32 +6,22 @@ let createCourt = async (req,res) => {
         let { facilityId } = req.params;
         const facility = await Facility.findOne({_id: facilityId});
         const courtData = req.body;
-        console.log(req.body);
         const court = new Court({
             about: courtData.about,
-            amenities: courtData.amenities,
             photoLink: courtData.photoLink,
             sport: courtData.sport,
             facility_id: facility._id, 
+            price: courtData.price,
+            schedule: {
+                days: courtData.schedule.days,
+                time: courtData.schedule.time,
+            }
         });
         const courtObj = await court.save();
-        let timeSlots = [];
-        for(let time of courtData.times) {
-            let slot = new Slot({
-                time: new Date(time.date),
-                totalSeats: time.totalSeats,
-                price: time.price,
-                court_id: courtObj._id,
-                rating: 0,
-            })
-            let result = await slot.save();
-            timeSlots.push(result._id);
-        };
+        
         facility.courts.push(courtObj._id);
         facility.sports.push(courtData.sport);
         await facility.save();
-        courtObj.timeSlotBookingInfo = timeSlots;
-        await courtObj.save();
         res.status(200).json({message: "court created"});
     } catch (error) {
         res.status(500).json({message: error.message});
