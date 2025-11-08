@@ -184,4 +184,13 @@ const createCourt = async(facilityId,court) => {
     return res;
 }
 
-export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility};
+const getCourt = async(facilityId, courtId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}`,{
+        method: 'GET',
+        credentials: 'include',
+        
+    })
+    return res;
+}
+
+export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt};
