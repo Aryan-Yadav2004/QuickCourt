@@ -16,12 +16,13 @@ const createReview = async (req,res) => {
         const {_id, username, role} = jwt.decode(token);
         const user = await User.findOne({_id: _id});
         const court = await Court.findOne({_id: courtId});
-        const { reviewDescription, rating } = req.body;
+        const { reviewDescription, rating, date } = req.body;
         const review = new Review({
             user_id: user._id,
             court_id: court._id,
             review: reviewDescription,
             rating: rating,
+            date: date,
         });
         
         const result = await review.save();

@@ -12,6 +12,7 @@ import FacilityDetails from './components/FacilityDetails.jsx';
 import EditFacility from './components/EditFacility.jsx';
 import CreateCourt from './components/CreateCourt.jsx';
 import CourtDetail from './components/CourtDetail.jsx';
+import EditCourt from './components/EditCourt.jsx';
 function App() {
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -42,6 +43,7 @@ function App() {
             <Route path='court/create' element={<CreateCourt/>} />
             <Route path='court/:courtId'>
               <Route path='' element={<CourtDetail/>}/>
+              <Route path='edit' element={<EditCourt/>}/>
             </Route>
           </Route>
         </Route>

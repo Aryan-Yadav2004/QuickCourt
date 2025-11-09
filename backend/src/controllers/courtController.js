@@ -1,3 +1,4 @@
+import { populate } from "dotenv";
 import Court from "../models/courtModel.js";
 import Facility from "../models/facilityModel.js";
 import Slot from "../models/timeSlotModel.js";
@@ -35,10 +36,10 @@ const updateCourt = async(req, res) => {
 
         const newCourtData = req.body;
         court.sport = newCourtData.sport;
-        court.amenities = newCourtData.amenities;
         court.photoLink = newCourtData.photoLink;
         court.about = newCourtData.about;
-
+        court.schedule.days = newCourtData.schedule.days;
+        court.schedule.time = newCourtData.schedule.time;
         await court.save();
         res.status(200).json({message: "updated court"})
     } catch (error) {
@@ -66,8 +67,10 @@ const deleteCourt = async (req,res) => {
 const readCourt = async (req,res) => {
     try {
         const { courtId } = req.params;
-        const court = await Court.findOne({_id: courtId}).populate("reviews");
-        res.status(200).json(court);
+        const court = await Court.findOne({_id: courtId}).populate({path: 'reviews', populate: {path: 'user_id', select: "username avtar"}});
+        const facility = await Facility.findOne({_id: court.facility_id});
+
+        res.status(200).json({...court, location: `${facility.street} ${facility.city} ${facility.state} ${facility.country}`, name: facility.name, owner_id: facility.owner});
     } catch (error) {
         res.status(500).json({message: error.message});
     }

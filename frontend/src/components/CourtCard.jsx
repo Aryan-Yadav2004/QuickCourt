@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 function CourtCard({court}) {
   const navigate = useNavigate();
   return (
-    <div className='w-60 h-80 flex flex-col items-center justify-around rounded-2xl overflow-clip cursor-pointer' onClick={() => navigate(`/facility`)}>
+    <div className='w-60 h-80 flex flex-col items-center justify-around rounded-2xl overflow-clip cursor-pointer' onClick={() => navigate(`/facility/${court.facility_id}/court/${court._id}`)}>
         <div className='w-full h-[50%] '>
             <img src={court?.photoLink} alt="profile photo" className='w-full h-full object-cover object-center ' />
         </div>

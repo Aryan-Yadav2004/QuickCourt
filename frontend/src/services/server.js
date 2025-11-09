@@ -193,4 +193,34 @@ const getCourt = async(facilityId, courtId) => {
     return res;
 }
 
-export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt};
+const createReview = async(facilityId,courtId,review) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/reviews/new`,{
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            "Content-type": "application/json",
+        },
+        body: JSON.stringify(review),
+    })
+    return res;
+}
+
+const deleteReview = async(facilityId,courtId,reviewId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/reviews/${reviewId}/delete`,{
+        method: 'DELETE',
+        credentials: 'include',
+    })
+    return res; 
+}
+const updateCourt = async(facilityId,courtId,court) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/edit`,{
+        method: 'PATCH',
+        credentials: "include",
+        headers: {
+            "Content-type": "application/json",
+        },
+        body: JSON.stringify(court),
+    });
+    return res;
+}
+export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteReview};

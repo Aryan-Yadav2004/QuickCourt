@@ -7,7 +7,7 @@ const router = express.Router({mergeParams: true});
 
 router.route("/new").post(isLogedIn,ownerAuthorization,ownerAuthorizationFacility,courtValidator ,createCourt);
 router.route("/:courtId/delete").delete(isLogedIn,ownerAuthorization,ownerAuthorizationCourt,deleteCourt);
-router.route("/:courtId/edit").patch(isLogedIn,ownerAuthorization,ownerAuthorizationCourt,courtValidator,slotValidator,updateCourt);
+router.route("/:courtId/edit").patch(isLogedIn,ownerAuthorization,ownerAuthorizationCourt,courtValidator,updateCourt);
 router.route("/:courtId").get(readCourt);
 router.route("/:courtId/slot/:slotId").post(isLogedIn,ownerAuthorization,ownerAuthorizationCourt,createBooking);
 router.use("/:courtId/reviews",reviewRouter);

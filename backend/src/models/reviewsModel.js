@@ -18,7 +18,11 @@ const Schema = new mongoose.Schema({
         type: Number,
         max: 5,
         min: 0,
-    }
+    },
+    date: {
+        type: Date,
+        require: true,
+    },
 });
 const Review = mongoose.model("Review", Schema);
 export default Review;
