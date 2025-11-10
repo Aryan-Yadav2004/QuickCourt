@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
-import { createReview, deleteReview, getCourt } from '../services/server';
+import { createReview, deleteCourt, deleteReview, getCourt } from '../services/server';
 import { Star, User } from 'lucide-react';
 import BasicRating from './BasicRating';
 import ErrorAlert from './errorAlert';
@@ -23,7 +23,6 @@ function CourtDetail() {
             const data = await res.json();
             if(res.ok){
                 setCourt(data);
-                console.log(data); 
             }
             else{
                 setError(data.message);
@@ -67,6 +66,16 @@ function CourtDetail() {
             window.location.reload();
         }
     }
+    const handleDelete = async () => {
+        const res = await deleteCourt(facilityId,courtId);
+        const result = await res.json();
+        if(res.ok){
+            navigate(`/facility/${facilityId}`);
+        }
+        else{
+            setError(result.message);
+        }
+    }
   return (
     <div className='w-full min-h-screen flex flex-col justify-start items-center relative bg-gray-50 '>
         <div className='w-full h-[45vh] flex justify-between bg-white border border-t-0 border-r-0 border-l-0 border-b-[#d9c7ff]'>
@@ -75,12 +84,12 @@ function CourtDetail() {
             </div>
             <div className='w-[70%] h-full flex  justify-center items-center  '>
                 <div className='w-full h-[80%] flex flex-col justify-around items-start relative'>
-                    <div className={`w-[60%] p-1 flex ${user?._id === court?.owner_id?'justify-between':'justify-start'}`}>
+                    <div className={`w-[80%] p-1 flex ${user?._id === court?.owner_id?'justify-between':'justify-start'}`}>
                         <h1 className='font-semibold text-gray-700 text-3xl'>{court?.name}</h1>
                         {(user?._id === court?.owner_id) && 
                         <div className='flex p-1 gap-2'>
                             <Edit size={25} className='text-[#5500ff] hover:text-[#935cff] cursor-pointer' onClick={()=>navigate(`/facility/${court?._doc.facility_id}/court/${court?._doc._id}/edit`)}/>
-                            <Trash2 size={25} className='text-red-500 hover:text-red-700 cursor-pointer' />
+                            <Trash2 size={25} className='text-red-500 hover:text-red-700 cursor-pointer' onClick={handleDelete}/>
                         </div>
                         }
                     </div>
@@ -88,10 +97,6 @@ function CourtDetail() {
                     <p className='text-gray-700'><span className='font-semibold'>Sport: </span><i>{court?._doc.sport}</i></p>
                     <p className='text-gray-700 max-w-52 p-1]'><span className='font-semibold'>about: </span><i>{court?._doc.about}</i></p>
                     <p className='text-gray-700'><span className='font-semibold'>Price: </span><i>&#8377; {court?._doc.price}</i></p>
-                    <div className='absolute top-2 right-5 items-center py-0.5 px-1 rounded-[7px] flex bg-green-700'>
-                        <img src="/star.svg" alt="star"  className='w-4 h-4 object-contain'/>
-                        <div className='text-white font-semibold text-[16px]'>4.5</div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -127,7 +132,7 @@ function CourtDetail() {
         <div className='w-full p-1 flex flex-col justify-start items-center bg-white'>
             <div className='w-full min-h-[50vh] p-5 flex flex-col justify-start items-start gap-4'>
                 <h1 className='text-gray-700 text-3xl font-semibold'>Reviews & Ratings</h1>
-                <p className='text-gray-700 text-2xl'> 4.5 (3K)</p>
+                <p className='text-gray-700 text-2xl'>{`${court?._doc.rating} (${court?._doc.totalReviews})`} </p>
                 <hr  className='text-gray-300 w-full ' />
                 {isLoged && 
                 <> 

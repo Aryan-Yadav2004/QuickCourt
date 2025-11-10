@@ -106,17 +106,17 @@ function FacilityDetails() {
         <div className='w-full py-1 px-[3%] flex flex-col justify-start items-start mt-5 '>
             <div className='w-full p-1 flex justify-between items-center'>
                 <h1 className=' text-4xl font-semibold text-gray-800'>Courts</h1>
-                {authorize && <Plus size={25} className='text-[#5500ff] cursor-pointer' onClick={()=>{navigate('/facility/:facilityId/court/create')}}/>}
+                {authorize && <Plus size={25} className='text-[#5500ff] cursor-pointer' onClick={()=>{navigate(`/facility/${facilityId}/court/create`)}}/>}
             </div>
             <hr style={{color:'#a073fa',width: "100%"}}/>
-            <div className='w-full p-1 flex justify-around items-start flex-wrap gap-4'>
+            <div className='w-full p-1 flex justify-start items-start flex-wrap gap-6'>
                 {facility?.courts.map((court,index)=>(
                     <CourtCard key={index} court={court} />
                 ))}
             </div>
         </div>
 
-        <div className='w-full p-1 h-[400px]'>
+        <div className='w-full p-1 h-[400px] mt-10'>
             <Map address={address} />
         </div>
 

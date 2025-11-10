@@ -2,6 +2,7 @@ import { populate } from "dotenv";
 import Court from "../models/courtModel.js";
 import Facility from "../models/facilityModel.js";
 import Slot from "../models/timeSlotModel.js";
+import Review from "../models/reviewsModel.js";
 let createCourt = async (req,res) => {
     try {
         let { facilityId } = req.params;
@@ -57,8 +58,9 @@ const deleteCourt = async (req,res) => {
         const facility = await Facility.findOne({_id: court.facility_id});
         facility.courts = facility.courts.filter(id => !id.equals(court._id));
         await facility.save();
+        await Review.deleteMany({court_id: court._id});
         await Court.deleteMany({_id: courtId});
-        res.status(200).json({message: "deletedCourt sucessfully"});
+        res.status(200).json({message: "Court deleted sucessfully"});
     } catch (error) {
         res.status(500).json({message: error.message});
     }

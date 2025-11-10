@@ -3,6 +3,7 @@ import Facility from "../models/facilityModel.js";
 import Court from "../models/courtModel.js";
 import User from "../models/userModel.js";
 import Slot from "../models/timeSlotModel.js";
+import Review from "../models/reviewsModel.js";
 const createFacility = async (req,res) => {
     try {
         const token = req.cookies?.token;
@@ -29,6 +30,7 @@ const deleteFacility = async (req,res) => {
             for(let slots of court.timeSlotBookingInfo){
                 await Slot.deleteMany({_id: {$in: slots}});
             }
+            await Review.deleteMany({court_id: court});
         }
         await Court.deleteMany({_id: {$in: facility.courts}});
         

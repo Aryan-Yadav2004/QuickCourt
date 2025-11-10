@@ -74,7 +74,15 @@ const Schema = new mongoose.Schema({
         {
             type: String,
         }
-    ]
+    ],
+    rating: {
+        type: Number,
+        default: 0,
+    },
+    totalReviews:{
+        type: Number,
+        default: 0,
+    },
 });
 
 const Facility = mongoose.model("Facility",Schema);

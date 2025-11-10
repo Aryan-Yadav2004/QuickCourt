@@ -69,7 +69,15 @@ const Schema = new mongoose.Schema({
     facility_id:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Facility"
-    }
+    },
+    overAllRating: {
+        type: Number,
+        default: 0,
+    },
+    totalReviews:{
+        type: Number,
+        default: 0,
+    },
 });
 
 const Court = mongoose.model("Court",Schema);
