@@ -78,6 +78,10 @@ const Schema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    seats: {
+        type: Number,
+        default: 0,
+    }
 });
 
 const Court = mongoose.model("Court",Schema);

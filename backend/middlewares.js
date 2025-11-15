@@ -172,7 +172,7 @@ const facilityValidator = (req,res,next) => {
 //passed
 const courtValidator = (req,res,next) => {
     const data = req.body;
-    if(!data.sport || data.sport.trim()==="" || !data.schedule || !data.schedule.days || !data.schedule.time){
+    if(!data.sport || data.sport.trim()==="" || !data.schedule || !data.schedule.days || !data.schedule.time || !data.seats || typeof(data.seats) !== "number"){
         return res.status(400).json({message: "provide appropirate data"});
     }
     console.log(data.schedule);

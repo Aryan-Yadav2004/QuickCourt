@@ -14,7 +14,8 @@ function CreateCourt() {
   const [schedule,setSchedule] = useState([]);
   const [time,setTime] = useState({hour: '1', minute: '0', meridian: 'AM'});
   const [weekdays,setWeekdays] = useState([]); 
-  const weeks = ["monday","tuesday","wednesday","thrusday","friday","saturday","sunday"];
+  const [seats,setSeats] = useState(0);
+  const weeks = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
   const sports = ["soccer", "cricket", "basketball", "tennis", "volleyball", "rugby", "hockey", "baseball", "table tennis", "badminton", "athletics", "swimming", "boxing", "wrestling", "judo", "karate", "taekwondo", "fencing", "archery", "cycling", "golf", "gymnastics", "skiing", "snowboarding", "figure skating", "speed skating", "curling", "equestrian", "rowing", "canoeing", "sailing", "shooting", "triathlon", "polo", "surfing", "skateboarding", "climbing", "e-sports"];
   sports.sort();
   const hours = Array.from({length: 12},(_,i)=>(i + 1));
@@ -70,7 +71,7 @@ function CreateCourt() {
         meridian: s.meridian
       }
     ))
-    const court = {sport: data.sport, about: data.about, photoLink: link, price: parseInt(price), schedule: {days: weekdays, time: t}}
+    const court = {sport: data.sport, about: data.about, photoLink: link, price: parseInt(price), schedule: {days: weekdays, time: t}, seats: parseInt(seats)}
     const res = await createCourt(facilityId,court);
     if(res.ok){
       navigate(`/facility/${facilityId}`);
@@ -115,7 +116,11 @@ function CreateCourt() {
             </div>
             <div className='p-2  flex flex-col gap-1'>
               <p className='text-xl font-medium text-gray-700'>Price (in ruppee per hour):</p>
-              <input type="number" placeholder='150' className='w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-[#f0ebfa] focus:border-[#f0ebfa]' min={0} onChange={(e)=>setPrice(e.target.value)} required/>
+              <input type="number" placeholder='150' value={price} className='w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-[#f0ebfa] focus:border-[#f0ebfa]' min={0} onChange={(e)=>setPrice(e.target.value)} required/>
+            </div>
+            <div className='p-2  flex flex-col gap-1'>
+              <p className='text-xl font-medium text-gray-700'>Seat available:</p>
+              <input type="number" placeholder='5' value={seats} className='w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-[#f0ebfa] focus:border-[#f0ebfa]' min={0} onChange={(e)=>setSeats(e.target.value)} required/>
             </div>
           </div>
           <div className='p-2 w-full flex flex-col gap-1'>

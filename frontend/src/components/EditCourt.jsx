@@ -12,11 +12,12 @@ function EditCourt() {
     const [file,setFile] = useState(null);
     const [addTimerToggle,setAddTimerToggle] = useState(false);
     const [price,setPrice] = useState(0);
+    const [seats,setSeats] = useState(0);
     const [schedule,setSchedule] = useState([]);
     const [time,setTime] = useState({hour: '1', minute: '0', meridian: 'AM'});
     const [weekdays,setWeekdays] = useState([]); 
-    const [about, setAbout] = useState(court?._doc.about || "");
-    const weeks = ["monday","tuesday","wednesday","thrusday","friday","saturday","sunday"];
+    const [about, setAbout] = useState(court?.about || "");
+    const weeks = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
     const sports = ["soccer", "cricket", "basketball", "tennis", "volleyball", "rugby", "hockey", "baseball", "table tennis", "badminton", "athletics", "swimming", "boxing", "wrestling", "judo", "karate", "taekwondo", "fencing", "archery", "cycling", "golf", "gymnastics", "skiing", "snowboarding", "figure skating", "speed skating", "curling", "equestrian", "rowing", "canoeing", "sailing", "shooting", "triathlon", "polo", "surfing", "skateboarding", "climbing", "e-sports"];
     sports.sort();
     const hours = Array.from({length: 12},(_,i)=>(i + 1));
@@ -28,12 +29,13 @@ function EditCourt() {
             const data = await res.json();
             if(res.ok){
                 setCourt(data);
-                setImage(data?._doc.photoLink);
-                setPrice(data?._doc.price);
-                setWeekdays(data?._doc.schedule.days);
-                const newSchedule = data?._doc.schedule.time.map((t)=>({hour: t.hour.toString(), minute: t.minute.toString(), meridian: t.meridian}))
+                setImage(data?.photoLink);
+                setPrice(data?.price);
+                setWeekdays(data?.schedule.days);
+                const newSchedule = data?.schedule.time.map((t)=>({hour: t.hour.toString(), minute: t.minute.toString(), meridian: t.meridian}))
                 setSchedule(newSchedule);
-                setAbout(data?._doc.about);
+                setAbout(data?.about);
+                setSeats(data?.seats);
             }
             else{
                 setError(data.message);
@@ -70,7 +72,7 @@ function EditCourt() {
             minute: parseInt(s.minute),
             meridian: s.meridian
         }))
-        const court = {sport: sport, about: about, photoLink: photoLink, price: parseInt(price), schedule: {days: weekdays, time: t}}
+        const court = {sport: sport, about: about, photoLink: photoLink, price: parseInt(price), schedule: {days: weekdays, time: t},seats: parseInt(seats)}
         const res = await updateCourt(facilityId,courtId,court);
         if(res.ok){
             navigate(`/facility/${facilityId}/court/${courtId}`);
@@ -137,12 +139,16 @@ function EditCourt() {
             <div className='p-2 flex flex-col gap-1'>
               <p className='text-xl font-medium text-gray-700'>Sports:</p>
               <select id='sport' name='sport' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required>
-                {sports.map((sport) => (<option key={sport} defaultValue={court?._doc.sport}>{sport}</option>))}
+                {sports.map((sport) => (<option key={sport} defaultValue={court?.sport}>{sport}</option>))}
               </select>
             </div>
             <div className='p-2  flex flex-col gap-1'>
               <p className='text-xl font-medium text-gray-700'>Price (in ruppee per hour):</p>
               <input type="number" placeholder='150' value={price} className='w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-[#f0ebfa] focus:border-[#f0ebfa]' min={0} onChange={(e)=>setPrice(e.target.value)} required/>
+            </div>
+            <div className='p-2  flex flex-col gap-1'>
+              <p className='text-xl font-medium text-gray-700'>Seats available:</p>
+              <input type="number" placeholder='150' value={seats} className='w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-[#f0ebfa] focus:border-[#f0ebfa]' min={0} onChange={(e)=>setSeats(e.target.value)} required/>
             </div>
           </div>
           <div className='p-2 w-full flex flex-col gap-1'>
@@ -181,7 +187,7 @@ function EditCourt() {
                   <p className='text-gray-700 text-2xl'>:</p>
                   <select name="meridian" id="meridian" className='w-[20%] px-3 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"' onChange={(e)=>setTime(prev=>({...prev,meridian: e.target.value}))}>
                     <option value="AM">AM</option>
-                    <option value="PM">PM</option>
+                    <option value="PM">PM</option> 
                   </select>
                   <button type='button' className='px-3 py-2 text-white font-semibold rounded-2xl border-0 bg-violet-500 cursor-pointer' onClick={handleTimer} >confirm</button>
                 </div>

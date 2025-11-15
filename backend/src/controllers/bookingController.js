@@ -50,7 +50,7 @@ const createBooking = async (req,res) => {
     }
 }
 
-const getBooking = async(req,res)=>{
+const getBooking = async(req,res) => {
     try{
         const { bookingId } = req.params;
         const booking = await Booking.findOne({_id: bookingId});
@@ -64,7 +64,7 @@ const cancelBooking = async(req,res) => {
     try{
         const { bookingId } = req.params;
         const booking = await Booking.findOne({_id: bookingId});
-        const slot = await Slot.findOne({_id: booking.slot_id}); 
+        const slot = await Slot.findOne({_id: booking.slot_id});
         slot.bookings = slot.bookings.filter(currBookingId => !currBookingId.equals(booking._id));
         await slot.save();
         booking.status = "cancelled";

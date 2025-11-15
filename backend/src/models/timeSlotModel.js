@@ -5,11 +5,6 @@ const Schema = new mongoose.Schema({
         type: Date,
         require: true,
     },
-    totalSeats: {
-        type: Number,
-        require: true,
-        min: 0,
-    },
     price: {
         type: Number,
         require: true,
@@ -25,6 +20,6 @@ const Schema = new mongoose.Schema({
             ref: "Booking",
         }
     ]
-});
+}); 
 const Slot = mongoose.model("Slot",Schema);
 export default Slot;
