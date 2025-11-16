@@ -1,3 +1,5 @@
+
+
 const baseURL = "http://localhost:3000/api/v1";
 
 const registerUser = async (user) => {
@@ -232,4 +234,40 @@ const deleteCourt = async(facilityId,courtId) => {
     return res;
 }
 
-export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview};
+const createOrder = async(slot_id, court_id, seats) => {
+    const res = await fetch(`${baseURL}/payment/orders`,{
+        method: 'POST',
+        credentials: 'include',
+        headers:{
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({slot_id: slot_id,court_id: court_id,seats: seats}),
+    });
+    return res;
+}
+
+const verifyPayment = async (razorpay_payment_id, razorpay_order_id, razorpay_signature, orderAmount) => {
+    const res = await fetch(`${baseURL}/payment/verify`,{
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({razorpay_payment_id: razorpay_payment_id,razorpay_order_id: razorpay_order_id, razorpay_signature, orderAmount: orderAmount})
+    });
+    const result = await res.json(); 
+    return result;
+}
+
+const createFundAccount = async (detail) => {
+    const res = await fetch(`${baseURL}/payment/createFundAccount`,{
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(detail)
+    });
+    return res;
+}
+
+export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount};

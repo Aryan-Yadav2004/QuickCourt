@@ -160,6 +160,9 @@ function CourtDetail() {
         // set CSS var for gradient
         e.target.style.setProperty("--value-percent", percent + "%");
     };
+    const handleBooking = () => {
+        navigate(`/payment?slot_id=${slotDetails._id}&court_id=${courtId}&seats=${seats}`)
+    }
   return (
     <div className={`w-full min-h-screen flex flex-col justify-start items-center relative bg-gray-50 `} >
         <div className='w-full h-[45vh] flex justify-between bg-white '>
@@ -279,7 +282,7 @@ function CourtDetail() {
                     <p> &#8377; {court?.price * seats}</p>
                 </div>
                 
-                <button className='py-2 px-1 rounded-lg text-white bg-[#5500ff] mx-auto'>Book</button>
+                <button className='py-2 px-1 rounded-lg text-white bg-[#5500ff] mx-auto' onClick={handleBooking}>Book</button>
                 <X size={15}  className='absolute text-gray-500 top-1 right-1 cursor-pointer' onClick={closeSlotBookingView}/>
             </div>
         </div>}

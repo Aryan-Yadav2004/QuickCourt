@@ -19,7 +19,7 @@ const months = {
   December: 11,
 };
 
-const days = ["monday","tuesday","wednesday","thrusday","friday","saturday","sunday"];
+const days = ["sunday","monday","tuesday","wednesday","thrusday","friday","saturday"];
 
 let createCourt = async (req,res) => {
     try {
@@ -130,8 +130,7 @@ const readCourt = async (req,res) => {
         const dayAfter = [];
         for(let t of timeSlots){
             const currTime = new Date(t.time);
-            let d = days[currTime.getDay() - 1];
-            console.log(day, d,nextDay);
+            let d = days[currTime.getDay()];
             if(day === d){
                 today.push(t); 
             }

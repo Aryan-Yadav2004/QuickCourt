@@ -4,7 +4,7 @@ import PhoneVerifcation from '../components/PhoneVerifcation.jsx';
 import EmailVerification from '../components/EmailVerification.jsx';
 import { upload } from '../services/Cloudinary.js';
 import ErrorAlert from '../components/errorAlert.jsx';
-import { registerUser } from '../services/server.js'; 
+import { createFundAccount, registerUser } from '../services/server.js'; 
 import SuccessAlert from '../components/successAlert.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -12,8 +12,9 @@ function Signup() {
   const [email,setEmail] = useState("");
   const [phoneNo,setPhoneNo] = useState("");
   const [country,setCountry] = useState("");//
-  const [verifiedEmail,setVerifiedEmail] = useState(false);
+  const [verifiedEmail,setVerifiedEmail] = useState(false); 
   const [verifiedPhoneNo,setVerifiedPhoneNo] = useState(false);
+  const [role, setRole] = useState('user');
   const [phoneCode,setPhoneCode] = useState("");//
   const [countries,setCountries] = useState([]);
   const [states,setStates] = useState([]);
@@ -130,9 +131,28 @@ function Signup() {
       setError("verify email and phone number");
       return;
     }
+    
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
+    if(role === "facilityOwner"){
+      const anotherRes = await createFundAccount({name: data.name, ifsc_code: data.ifsc_code, account_number: data.account_number, phone_number: Number(phoneNo), email: email});
+      const anotherResult = await anotherRes.json();
+      if(!anotherRes.ok){
+        setError(anotherResult.message);
+        return;
+      }
+      data.fundAccountId = anotherResult.fund_account_id;
+    }
     let avtar = "https://i.pinimg.com/736x/9d/16/4e/9d164e4e074d11ce4de0a508914537a8.jpg";
+    if(file){
+        const avatarRes = await upload(file);
+        if(avatarRes.status === 200){
+            avtar = avatarRes.message;
+        }
+        else{
+            setError(avatarRes.message);
+        }
+    }
     data.avtar = avtar;
     data.phoneNo = Number(phoneNo);
     data.email = email;
@@ -149,24 +169,24 @@ function Signup() {
 
   return (
     <div className='w-full h-lvh bg-[#f0ebfa] flex justify-center items-center'>
-      <div className='w-[70%] h-[70vh] bg-white rounded-2xl relative'>
+      <div className='w-[70%] min-h-[70vh] py-0.5 bg-white rounded-2xl relative'>
         <div className='left-0 text-2xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
         <h1 className='w-full text-center text-3xl font-serif'>Sign up.</h1>
         <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={handleSubmit} method='POST'>
             <div className='w-full h-full flex sm:flex-row flex-col justify-between items-center'>
-              <div className='w-[48%] h-full  flex flex-col justify-around items-end'>
+              <div className={`${role === "facilityOwner"?"w-[30%]":"w-[48%]"} h-full  flex flex-col justify-start gap-4 ${role === "facilityOwner"?"items-center":"items-end "}`}>
                   {/* name */} 
-                  <div className='w-[70%]'>
+                  <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                     <label htmlFor="name" className='font-medium text-gray-700'>name:</label>
                     <input type="text" id='name' name='name' placeholder=" Sonny Hayes" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
                   </div>
                   {/* username */}
-                  <div className='w-[70%]'>
+                  <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                     <label htmlFor="username" className='font-medium text-gray-700'>username:</label>
                     <input type="text" id='username' name='username' placeholder=" SonnyHayes1234" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]"/>
                   </div>
                   {/* Email */}
-                  <div className='w-[70%]'>
+                  <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                     <label htmlFor="email" className='font-medium text-gray-700'>email:</label>
                     <div className='w-full flex justify-between'>
                       <input type="text" id='email' name='email' value={email}  placeholder=" SonnyHayes@gmail.com" className="w-[79%] px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleEmail} required disabled={verifiedEmail}/>
@@ -183,7 +203,7 @@ function Signup() {
                     }
                   </div>
                   {/* phoneno */}
-                  <div className='w-[70%]'>
+                  <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                     <label htmlFor="phoneNo" className='font-medium text-gray-700'>Phone No:</label>
                     <div className='w-full flex justify-between gap-0.5'>
                       <div className='w-[18%] py-2 text-center border border-gray-300 rounded-md'>+{phoneCode}</div>
@@ -201,14 +221,14 @@ function Signup() {
                     }
                   </div>
                   {/* password */}
-                  <div className='w-[70%]'>
+                  <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                     <label htmlFor="password" className='font-medium text-gray-700'>password:</label>
                     <input type="password" id='password' name='password'  placeholder="@#VEFAR#!#R$adfa" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
                   </div>
               </div>
-              <div className='w-[48%] h-full  flex flex-col justify-around items-start'>
+              <div className={`${role === "facilityOwner"?"w-[30%]":"w-[48%]"} h-full  flex flex-col justify-around ${role === "facilityOwner"?"items-center":"items-start"}`}>
                     {/* country */}
-                    <div className='w-[70%]'>
+                    <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                       <label htmlFor="country" className='font-medium text-gray-700'>Country:</label>
                       <select id='country' name='country' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleCountry}>
                         {countries.map(currCountry => (
@@ -217,7 +237,7 @@ function Signup() {
                       </select>
                     </div>
                     {/* state */}
-                    <div className='w-[70%]'>
+                    <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                       <label htmlFor="state" className='font-medium text-gray-700'>State:</label>
                       <select id='state' name='state' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleState}>
                         {states.map(currState => (
@@ -226,7 +246,7 @@ function Signup() {
                       </select>
                     </div>
                     {/* city */}
-                    <div className='w-[70%]'>
+                    <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                       <label htmlFor="city" className='font-medium text-gray-700'>City:</label>
                       <select id='city' name='city' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleCity}>
                         {cities.map(currCity => (
@@ -235,25 +255,40 @@ function Signup() {
                       </select>
                     </div>
                     {/* street */}
-                    <div className='w-[70%]'>
+                    <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                       <label htmlFor="street" className='font-medium text-gray-700'>Street:</label>
                       <input type="text" id='street' name='street'  placeholder=" Las Vegas Strip" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
                     </div>
                     {/* role */}
-                    <div className='w-[70%]'>
+                    <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                       <label htmlFor="role" className='font-medium text-gray-700'>Role:</label>
-                      <select name="role" id="role" className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]">
+                      <select name="role" id="role" onChange={(e) => setRole(e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]">
                         <option value="user">User</option>
                         <option value="facilityOwner">Facility Owner</option>
                       </select>
                     </div>
                     {/* profile photo */}
-                    <div className='w-[70%]'>
+                    <div className={`${role === "facilityOwner"?"w-[90%]":"w-[70%]"}`}>
                       <label htmlFor="avatar" className='font-medium text-gray-700'>Profile Image:</label>
                       <input type = "file" accept = "image/*" className = "block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={onFileChange}/>
                       {avatarSizeError? <p className = 'text-red-500'>Image size should be less than or equal 10MB</p>:<></>}
                     </div>
+                                       
               </div>
+              {role === 'facilityOwner' &&
+                <div className='w-[30%] h-100 flex flex-col justify-start gap-4 items-start'>
+                      {/* Account number */} 
+                    <div className='w-[90%]'>
+                      <label htmlFor="account_number" className='font-medium text-gray-700'>Account No.:</label>
+                      <input type="text" id='account_number' name='account_number'  placeholder="XXXXXXXXX7856" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                    </div>
+                    {/* IFSC code */}
+                    <div className='w-[90%]'>
+                      <label htmlFor="ifsc_code" className='font-medium text-gray-700'>IFSC code:</label>
+                      <input type="text" id='ifsc_code' name='ifsc_code'  placeholder="XXXXXXXXXX2254" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                    </div>
+              </div> 
+              } 
             </div>
             <button type='submit' className='bottom-0 left-[50%] m-auto px-3 py-2 rounded-2xl max-w-sm text-white bg-[#5500ff] text-center cursor-pointer'>register</button>
         </form>

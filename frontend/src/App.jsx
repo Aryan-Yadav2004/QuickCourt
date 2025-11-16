@@ -13,8 +13,10 @@ import EditFacility from './components/EditFacility.jsx';
 import CreateCourt from './components/CreateCourt.jsx';
 import CourtDetail from './components/CourtDetail.jsx';
 import EditCourt from './components/EditCourt.jsx';
+import Payment from './pages/Payment.jsx';
 function App() {
   const dispatch = useDispatch();
+  
   useEffect(()=>{
     const checkLogin = async ()=>{
       const res = await fetch('http://localhost:3000/api/v1/user/verify',{
@@ -49,6 +51,7 @@ function App() {
         </Route>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/login' element={<Login/>} />
+        <Route path='/payment' element={<Payment />} />
       </Routes>
     </BrowserRouter>
   )

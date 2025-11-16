@@ -75,6 +75,9 @@ const Scheme = new mongoose.Schema({
         },
         default: "active",
     },
+    fundAccountId: {
+        type: String,
+    },
     joinedAt: {
         type: Date,
     }
