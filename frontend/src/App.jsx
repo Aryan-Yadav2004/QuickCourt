@@ -14,6 +14,7 @@ import CreateCourt from './components/CreateCourt.jsx';
 import CourtDetail from './components/CourtDetail.jsx';
 import EditCourt from './components/EditCourt.jsx';
 import Payment from './pages/Payment.jsx';
+import TicketDetail from './pages/ticketDetail.jsx';
 function App() {
   const dispatch = useDispatch();
   
@@ -48,6 +49,7 @@ function App() {
               <Route path='edit' element={<EditCourt/>}/>
             </Route>
           </Route>
+          <Route path='/bookings/:bookingId' element={<TicketDetail/>} />
         </Route>
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/login' element={<Login/>} />

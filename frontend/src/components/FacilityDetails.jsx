@@ -52,7 +52,7 @@ function FacilityDetails() {
             {/* image */}
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  p-2 flex flex-col items-center'>
                 <div className='w-[90%] h-[70%]  bg-gray-100 flex items-center justify-center overflow-hidden'>
-                <img src={image} alt="preview" className="w-full h-full object-contain" />
+                    <img src={image} alt="preview" className="w-full h-full object-contain" />
                 </div>
                 <div className='w-[90%] h-[30%]  flex justify-around items-center'>
                 {images.map((imageLink)=>(

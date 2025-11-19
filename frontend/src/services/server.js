@@ -246,14 +246,14 @@ const createOrder = async(slot_id, court_id, seats) => {
     return res;
 }
 
-const verifyPayment = async (razorpay_payment_id, razorpay_order_id, razorpay_signature, orderAmount) => {
+const verifyPayment = async (razorpay_payment_id, razorpay_order_id, razorpay_signature, orderAmount, slot_id, user_id, seats) => {
     const res = await fetch(`${baseURL}/payment/verify`,{
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify({razorpay_payment_id: razorpay_payment_id,razorpay_order_id: razorpay_order_id, razorpay_signature, orderAmount: orderAmount})
+        body: JSON.stringify({razorpay_payment_id: razorpay_payment_id,razorpay_order_id: razorpay_order_id, razorpay_signature, orderAmount: orderAmount ,slot_id: slot_id, user_id: user_id, seats: seats}),
     });
     const result = await res.json(); 
     return result;
@@ -270,4 +270,11 @@ const createFundAccount = async (detail) => {
     return res;
 }
 
-export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount};
+const getBookingTicket = async (userId, bookingId) => {
+    const res = await fetch(`${baseURL}/user/${userId}/bookings/${bookingId}`,{
+        method: 'GET',
+        credentials: 'include'
+    });
+    return res;
+} 
+export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket};

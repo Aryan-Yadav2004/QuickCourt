@@ -1,6 +1,6 @@
 import React from 'react'
 import { createOrder, verifyPayment } from '../services/server';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -19,6 +19,7 @@ function Payment() {
         });
     }
     const { search } = useLocation();
+    const navigate = useNavigate();
     const query = new URLSearchParams(search);
     const slot_id = query.get('slot_id');
     const court_id = query.get('court_id');
@@ -51,9 +52,9 @@ function Payment() {
             order_id: order_id,
             handler: async function (response) {
                 // step 3: payment successfull, ab verification ke liye backend ko bhejenge
-                const verificationResponse = await verifyPayment(response.razorpay_payment_id,response.razorpay_order_id,response.razorpay_signature, orderAmount);
+                const verificationResponse = await verifyPayment(response.razorpay_payment_id,response.razorpay_order_id,response.razorpay_signature, orderAmount, slot_id, user?._id,seats);
                 if(verificationResponse?.success){
-                    alert('Payment successful and verified! money transfer ho gaya');
+                    navigate(`/bookings/${verificationResponse?.booking_id}`);
                 }
                 else{
                     alert('Payment verificatoin failed');
@@ -67,6 +68,12 @@ function Payment() {
             theme: {
                 color: '#5500ff'
             },
+            modal: {
+                ondismiss: function() {
+                    console.log("hello")
+                    navigate("/");  // Jaha navigate karna ho
+                }
+            }
         };
         const paymentObject = new window.Razorpay(options);
         paymentObject.open(); // modal open karo
