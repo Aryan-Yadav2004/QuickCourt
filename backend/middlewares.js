@@ -230,4 +230,7 @@ const isAdmin = (req,res,next) => {
     next();
 }
 
+
+
+
 export { isLogedIn,slotValidator, reviewValidator, courtValidator,facilityValidator,ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization, isAdmin };

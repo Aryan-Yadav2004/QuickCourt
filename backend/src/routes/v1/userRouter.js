@@ -27,9 +27,4 @@ router.route("/:id/bookings").get(isLogedIn,userAuthorization,getAllBookings);
 router.route("/:id/bookings/:bookingId").get(isLogedIn,userAuthorization,bookingAuthorization,getBooking);
 router.route("/:id/bookings/:bookingId/cancel").patch(isLogedIn,userAuthorization,bookingAuthorization,cancelBooking);
 router.route("/:id/updateStatus").patch(isLogedIn,isAdmin,updateUserStatus);
-
-
-
-
-
 export default router;

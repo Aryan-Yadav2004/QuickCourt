@@ -14,6 +14,10 @@ const Schema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Court",
     },
+    totalSeatsBooked: {
+        type: Number,
+        default: 0
+    },
     bookings:[
         {
             type:mongoose.Schema.Types.ObjectId,

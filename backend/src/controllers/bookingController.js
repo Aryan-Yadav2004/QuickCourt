@@ -29,7 +29,7 @@ const createBooking = async (req,res) => {
             country: facility.country,
             time: slot.time,
             price: slot.price,
-            seats: seats,
+            seats: seats, 
             courtImage: court.photoLink,
             status : "booked"
         });
@@ -66,7 +66,8 @@ const cancelBooking = async(req,res) => {
         const booking = await Booking.findOne({_id: bookingId});
         const slot = await Slot.findOne({_id: booking.slot_id});
         slot.bookings = slot.bookings.filter(currBookingId => !currBookingId.equals(booking._id));
-        await slot.save();
+        slot.totalSeatsBooked = slot.totalSeatsBooked - booking.seats;
+        await slot.save(); 
         booking.status = "cancelled";
         await booking.save();
         res.status(200).json({message: "cancelled ticket"});
@@ -76,15 +77,19 @@ const cancelBooking = async(req,res) => {
         
 }
 
-const completeBooking = async(req,res)=>{
+const completeBooking = async()=>{
     try{
-        const { bookingId } = req.params;
-        const booking = await Booking.findOne({_id: bookingId});
-        booking.status = "completed";
-        await booking.save();
-        res.status(200).json({message: "completed ticket"});
+        const now = new Date();
+        const result = await Booking.updateMany(
+            {
+                status: 'booked',
+                time: { $lt: now }
+            },
+            {$set: {status: 'completed'}}
+        );
+        console.log(result.modifiedCount);
     } catch(error) {
-        res.status(500).json({message: error.message});
+        console.log(error.message);
     }
     
 }

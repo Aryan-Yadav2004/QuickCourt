@@ -19,7 +19,7 @@ const months = {
   December: 11,
 };
 
-const days = ["sunday","monday","tuesday","wednesday","thrusday","friday","saturday"];
+const days = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
 
 let createCourt = async (req,res) => {
     try {
@@ -44,19 +44,19 @@ let createCourt = async (req,res) => {
         facility.sports.push(courtData.sport);
         await facility.save();
         const now = new Date();
-        const day = now.toLocaleDateString("en-US",{weekday: 'long'});
+        const day = now.toLocaleDateString("en-US",{weekday: 'long'}).toLocaleLowerCase();
         const date = now.getDate();
-        console.log(date)
         const month = now.toLocaleDateString("en-US",{month: 'long'});
         const year = now.getFullYear();
         const index = days.indexOf(day);
+        console.log(date, day, month, year, index);
         for(let i = 0; i < 3; i++){
-            const currDay = (i + index < 7)? days[i + index]:days[i];
+            const currDay = days[(i + index) % 7];
             if(!courtObj.schedule.days.includes(currDay)) continue;
             for(let t of courtObj.schedule.time){
                 let hour24 = t.hour; 
                 if(t.meridian === "PM" && t.hour < 12){
-                    hour24 += t.hour;
+                    hour24 += 12;
                 } 
                 if(t.meridian === "AM" && t.hour === 12){
                     hour24 = 0;
@@ -66,7 +66,6 @@ let createCourt = async (req,res) => {
                     price: courtObj.price,
                     court_id: courtObj._id,
                 });
-                console.log(date + i);
                 const slot = await obj.save();
                 courtObj.timeSlotBookingInfo.push(slot._id);
             }

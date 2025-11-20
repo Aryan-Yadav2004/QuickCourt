@@ -10,6 +10,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import { sendOtp } from "./auth/auth.js";
 import uploadRoute from "./routes/v1/upload.js";
+import cron from 'node-cron';
+import { completeBooking } from "./controllers/bookingController.js";
 configDotenv();
 const app = express();
 const server = createServer(app);
@@ -47,6 +49,8 @@ app.get("/",async (req,res)=>{
     console.log("hello");
     res.send("hello");
 })
+
+cron.schedule("*/1 * * * *", completeBooking);
 
 const start = async () => {
     const dbURL = process.env.DBurl;

@@ -35,7 +35,7 @@ const Schema = new mongoose.Schema({
     schedule: {
         days: {
             type: [String],
-            enum: ["monday","tuesday","wednesday","thrusday","friday","saturday","sunday"],
+            enum: ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],
         },
         time: [ 
             {
