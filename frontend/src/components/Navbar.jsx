@@ -15,9 +15,9 @@ function Navbar() {
             {open? <X size={28}/>: <Menu size={28}/>}
         </div>
          <div className="hidden md:flex gap-8 text-lg">
-            <div  className="hover:cursor-pointer text-[#5500ff] ">Home</div>
-            <div  className="hover:cursor-pointer">Book</div>
-            <div  className="hover:cursor-pointer">About Us</div>
+            <NavLink  to={''} className={({isActive}) => (`hover:cursor-pointer ${isActive?"text-[#5500ff]":"text-gray-800"}`)}>Home</NavLink>
+            <NavLink to={'/book'}  className={({isActive}) => (`hover:cursor-pointer ${isActive?"text-[#5500ff]":"text-gray-800"}`)}>Book</NavLink>
+            <NavLink  className="hover:cursor-pointer">About Us</NavLink>
         </div>
 
         {

@@ -21,4 +21,20 @@ const getCities = async(countryIso2,stateIso2)=>{
     const cities = await response.json();
     return cities;
 }
-export {getCountries,getStates,getCities};
+
+const getCitiesByCountry = async (countryCode) => {
+  const response = await fetch(`https://api.countrystatecity.in/v1/countries/${countryCode}/cities`, {
+    headers: { 'X-CSCAPI-KEY': apikey }
+  });
+
+  if (response.ok) {
+    const cities = await response.json();
+    return cities;
+  } else {
+    console.error('Country not found or no cities available');
+    return [];
+  }
+};
+
+
+export {getCountries,getStates,getCities, getCitiesByCountry};

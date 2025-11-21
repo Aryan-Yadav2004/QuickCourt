@@ -205,7 +205,7 @@ function CourtDetail() {
         <div className='w-full min-h-[40vh] flex justify-items-start px-16 py-2'>
             <div className='w-[50%] p-1 flex flex-wrap justify-start items-start gap-2'>
                 {timings?.map((slot)=>{
-                    const c = color(court?.seats,slot?.bookings.length)
+                    const c = color(court?.seats,slot?.totalSeatsBooked)
                     return (<div key={slot._id} className={`px-2 py-1 border rounded-lg ${c.border} ${c.text} cursor-pointer bg-white ${c.hoverBg} hover:text-white`} onClick={()=>{if(slotDetails) return; handleSlotDetail(slot)}}>{extractTime(slot?.time)}</div>)
                 })}
             </div>
@@ -267,7 +267,7 @@ function CourtDetail() {
                 
                 <div className='flex w-full p-1 justify-between'> 
                     <p>Seats Available:</p>
-                    <p>{court?.seats - slotDetails?.bookings.length}</p>
+                    <p>{court?.seats - slotDetails?.totalSeatsBooked}</p>
                 </div>
                 <label className='w-full'>
                     <div className='flex w-full p-1 justify-between'> 

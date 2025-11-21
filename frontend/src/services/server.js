@@ -277,4 +277,21 @@ const getBookingTicket = async (userId, bookingId) => {
     });
     return res;
 } 
-export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket};
+
+const cancelBooking = async (userId, bookingId) => {
+    const res = await fetch(`${baseURL}/user/${userId}/bookings/${bookingId}/cancel`,{
+        method: 'PATCH',
+        credentials: 'include'
+    });
+    return res;
+}
+
+const getCountryISO = async () => {
+  const res = await fetch("https://ipapi.co/json/");
+  const data = await res.json();
+  return data;
+};
+
+
+
+export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO};

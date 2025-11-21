@@ -2,12 +2,17 @@ import React, { useEffect, useRef, useState } from 'react'
 import {TicketX, Phone} from 'lucide-react'
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { getBookingTicket } from '../services/server';
+import { getBookingTicket, cancelBooking } from '../services/server';
+import ErrorAlert from '../components/errorAlert';
+import SuccessAlert from '../components/successAlert';
 import html2canvas from 'html2canvas';
 function TicketDetail() {
   const { bookingId } = useParams();
   const user = useSelector(state => state.user.userDetail);
   const [ticket,setTicket] = useState(null);
+  const [error,setError] = useState("");
+  const [success,setSuccess] = useState("");
+  const [loading,setLoading] = useState(false);
   const tragetRef = useRef(null);
   useEffect(()=>{
     if (!user) return;
@@ -51,6 +56,33 @@ function TicketDetail() {
       alert("Screenshot failed. Check console for details (possible CORS issue with images).");
     }
   }
+  const closeErrorMsg = () => {
+      setError("");
+    }
+    const closeSuccessMsg = () => {
+    setSuccess("");
+  }
+    function isTimeExceed(isoString){
+      if(!isoString) return false;
+      const target = new Date(isoString);
+      const fiveMinutesAfter = new Date(target.getTime() + 20 * 60 * 1000);
+      if(isNaN(target)) throw new Error("Invalid date string");
+      return Date.now() > fiveMinutesAfter.getTime();
+    }
+    const handleCancel = async (e, bookingId) => {
+      e.stopPropagation();
+      if(loading) return;
+      setLoading(true);
+      const res = await cancelBooking(user?._id,bookingId);
+      const data = await res.json();
+      if(res.ok){
+        setSuccess("successfully cancelled you ticket and amount will be refunded to you soon!");
+      }
+      else{
+        setError(data.message);
+      }
+      setLoading(false);
+    }
   const bookedColor = (status) => {
     if(status === 'booked') return 'text-[#5500ff]';
     if(status === 'cancelled') return 'text-red-500';
@@ -64,6 +96,7 @@ function TicketDetail() {
   flexDirection: "column",
   alignItems: "center",
   backgroundColor: "#f9fafb",
+  position: 'relative',
   gap: '10px'
 }}>
   <div
@@ -192,10 +225,10 @@ function TicketDetail() {
       justifyContent: "space-around",
       alignItems: "center"
     }}>
-      <div style={{ display: "flex", flexDirection: "column", padding: "4px", alignItems: "center", cursor: "pointer" }}>
-        <TicketX size={22} style={{ color: "#6b7280" }} />
+      {(ticket?.status === "booked" && !isTimeExceed(ticket?.time)) && <div style={{ display: "flex", flexDirection: "column", padding: "4px", alignItems: "center", cursor: "pointer" }} onClick={(e)=>handleCancel(e,ticket?._id)}>
+        <TicketX size={22} style={{ color: "#6b7280" }}  />
         <p style={{ fontSize: "10px", color: "#6b7280" }}>Cancel</p>
-      </div>
+      </div>}
 
       <div style={{ display: "flex", flexDirection: "column", padding: "4px", alignItems: "center", cursor: "pointer" }}>
         <Phone size={20} style={{ color: "#6b7280" }} />
@@ -204,8 +237,9 @@ function TicketDetail() {
     </div>
 
   </div>
-
-  <button className='px-2 py-1 rounded-l-full rounded-r-full bg-[#5500ff] text-white cursor-pointer' onClick={handleDownload}>Download</button>
+  <ErrorAlert error={error} closeMsg={closeErrorMsg} />
+  <SuccessAlert success={success} closeMsg={closeSuccessMsg} />
+  <button className={`px-2 py-1 rounded-l-full rounded-r-full bg-[#5500ff] text-white ${loading?"cursor-not-allowed":"cursor-pointer"}`} onClick={handleDownload}>Download</button>
 </div>
 
   )
