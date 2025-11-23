@@ -119,5 +119,14 @@ const replyRequest = async (req,res) => {
     }
 }
 
+const searchContent = async (req,res) => {
+    try {
+        const facilities = await Facility.find({}, "name profileImg");
+        res.status(200).json(facilities);
+    }
+    catch (error){
+        res.status(500).json({message: error.message});
+    }
+}
 
-export {createFacility, deleteFacility, updateFacility, readFacility, readAllOwnerFacility,allPendingRequest, replyRequest};
+export {createFacility, deleteFacility, updateFacility, readFacility, readAllOwnerFacility,allPendingRequest, replyRequest, searchContent};

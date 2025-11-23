@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setLoged, setUser } from './features/user/userSlice.js'
+import { setSearch } from './features/search/searchSlice.js';
 import Home from './pages/Home.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Layout from './layout/Layout.jsx';
@@ -16,10 +17,11 @@ import EditCourt from './components/EditCourt.jsx';
 import Payment from './pages/Payment.jsx';
 import TicketDetail from './pages/ticketDetail.jsx';
 import Book from './pages/Book.jsx';
+import { searchContent } from './services/server.js';
 function App() {
   const dispatch = useDispatch();
   
-  useEffect(()=>{
+  useEffect(()=>{ 
     const checkLogin = async ()=>{
       const res = await fetch('http://localhost:3000/api/v1/user/verify',{
         method: "GET",
@@ -31,6 +33,8 @@ function App() {
         const user = await res.json();
         dispatch(setUser(user));
       }
+      const res2 = await searchContent();
+      dispatch(setSearch(res2));
     }
     checkLogin();
   },[]);

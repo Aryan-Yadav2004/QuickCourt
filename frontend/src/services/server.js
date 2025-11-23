@@ -292,6 +292,13 @@ const getCountryISO = async () => {
   return data;
 };
 
+const searchContent = async () => {
+    const res = await fetch(`${baseURL}/facility/searchContent`,{
+        method: 'GET',
+    })
+    const result = await res.json();
+    return result;
+}
 
 
-export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO};
+export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO, searchContent};
