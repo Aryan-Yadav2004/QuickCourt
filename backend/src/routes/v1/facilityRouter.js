@@ -1,6 +1,6 @@
 import express from "express";
 import v1CourtRouter from "./courtRouter.js";
-import { allPendingRequest, createFacility, deleteFacility, readAllOwnerFacility, readFacility, replyRequest, searchContent, updateFacility } from "../../controllers/facilityController.js";
+import { allPendingRequest, Bookingtrend, createFacility, deleteFacility, Earning, getFacilityListing, readAllOwnerFacility, readFacility, replyRequest, searchContent, updateFacility } from "../../controllers/facilityController.js";
 import { facilityValidator, isAdmin, isLogedIn, ownerAuthorization, ownerAuthorizationFacility } from "../../../middlewares.js";
 const router = express.Router();
 
@@ -12,5 +12,8 @@ router.patch("/:facilityId/requestReply",isLogedIn,isAdmin,replyRequest);
 router.get("/allfacility",ownerAuthorization,readAllOwnerFacility);
 router.get("/allPendingRequest",isLogedIn,isAdmin,allPendingRequest);
 router.get("/searchContent",searchContent);
+router.post('/facilities',getFacilityListing);
+router.get('/bookingtrend',isLogedIn, ownerAuthorization,Bookingtrend);
+router.get('/earnings',isLogedIn, ownerAuthorization,Earning);
 router.get("/:facilityId",readFacility);
 export default router;

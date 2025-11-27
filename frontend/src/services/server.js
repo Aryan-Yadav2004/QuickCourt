@@ -300,5 +300,48 @@ const searchContent = async () => {
     return result;
 }
 
+const getFacilityListing = async (filter,page,limit) => {
+    const res = await fetch(`${baseURL}/facility/facilities`,{
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({filter,page,limit}),
+    });
+    return res
+}
 
-export {registerUser, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO, searchContent};
+const getSlotBookingDetails = async(id, time) => {
+    const res = await fetch(`${baseURL}/user/${id}/ownerBookingdetails/${time}`,{
+        method: 'GET',
+        credentials: 'include'
+    })
+    return res;
+}
+
+const getBookingTrend = async () => {
+    const res = await fetch(`${baseURL}/facility/bookingtrend`,{
+        method: "GET",
+        credentials: 'include'
+    });
+    return res;
+}
+
+const getEarning = async () => {
+    const res = await fetch(`${baseURL}/facility/earnings`,{
+        method: "GET",
+        credentials: 'include'
+    });
+    return res;
+}
+
+const getAdminStats = async (id) => {
+    const res = await fetch(`${baseURL}/user/${id}/stats`,{
+        method: "GET",
+        credentials: 'include'
+    });
+    return res;
+}
+
+
+export { getAdminStats ,registerUser, getEarning ,getBookingTrend, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO, searchContent, getFacilityListing, getSlotBookingDetails};

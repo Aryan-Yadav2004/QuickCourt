@@ -1,8 +1,8 @@
 import express from "express";
-import { getAllBookings, getAllUser, getUser, getUserByUsername, updateUser, updateUserStatus } from "../../controllers/userController.js";
+import { getAdminStats, getAllBookings, getAllUser, getFacilityBookingDetails, getUser, getUserByUsername, updateUser, updateUserStatus } from "../../controllers/userController.js";
 import {handleLogin, handleRegister, handleLogOut, verifyUser} from "../../auth/auth.js"
 import { cancelBooking, getBooking } from "../../controllers/bookingController.js";
-import { bookingAuthorization, isAdmin, isLogedIn, userAuthorization, userCreateValidator, userUpdateValidator } from "../../../middlewares.js";
+import { bookingAuthorization, isAdmin, isLogedIn, ownerAuthorization, userAuthorization, userCreateValidator, userUpdateValidator } from "../../../middlewares.js";
 const router = express.Router();
 
 
@@ -27,4 +27,6 @@ router.route("/:id/bookings").get(isLogedIn,userAuthorization,getAllBookings);
 router.route("/:id/bookings/:bookingId").get(isLogedIn,userAuthorization,bookingAuthorization,getBooking);
 router.route("/:id/bookings/:bookingId/cancel").patch(isLogedIn,userAuthorization,bookingAuthorization,cancelBooking);
 router.route("/:id/updateStatus").patch(isLogedIn,isAdmin,updateUserStatus);
+router.route("/:id/ownerBookingdetails/:time").get(isLogedIn,ownerAuthorization,getFacilityBookingDetails);
+router.route("/:id/stats").get(isLogedIn,isAdmin, getAdminStats);
 export default router;

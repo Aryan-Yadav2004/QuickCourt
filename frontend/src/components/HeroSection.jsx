@@ -13,10 +13,6 @@ function HeroSection() {
                 <div>sports enthusiasts just like you!</div>
             </div>
             <div className='p-4 pl-0  flex gap-2'>
-                <button className='w-38 h-14 hover:cursor-pointer p-1 rounded-4xl text-2xl  text-[#5500ff] border-1 border-[#5500ff]  flex gap-1 items-center' onClick={()=>console.log("facility")}>
-                    <img className='w-12 h-12' src="facility.svg" alt='facility' />
-                    <span>Facility</span>
-                </button>
                 <button className='w-38 h-14 hover:cursor-pointer p-1 rounded-4xl text-2xl  text-white border-1 bg-[#5500ff]  flex gap-1 items-center' onClick={()=>console.log("court")}>
                     <img className='w-12 h-12' src="volleyballBtn.svg" alt='volleyball' />
                     <span>Court</span>

@@ -129,4 +129,95 @@ const searchContent = async (req,res) => {
     }
 }
 
-export {createFacility, deleteFacility, updateFacility, readFacility, readAllOwnerFacility,allPendingRequest, replyRequest, searchContent};
+const getFacilityListing = async (req,res) => {
+    try {
+        const filter = req.body.filter;
+        const page = req.body.page || 1;
+        const limit = req.body.limit || 10;
+        const skip = (page - 1) * limit;
+        let newFilter = {startsWith: {$lte: filter.startsWith}, rating: {$gte: filter.rating}};
+        if(filter.sport) newFilter = {...newFilter, sports: filter.sport};
+        if(filter.city) newFilter = {...newFilter, city: filter.city};
+        console.log(newFilter);
+        const facilities = await Facility.find(newFilter).skip(skip).limit(limit);
+        res.status(200).json(facilities);
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+}
+
+
+const Bookingtrend = async (req,res) => {
+    try {
+        const token = req.cookies?.token;
+        const { _id } = jwt.decode(token);
+        const facilities = await Facility.find({owner: _id});
+        // 0 -> January, sunday
+        let now = new Date();
+        let mon =  now.getMonth();
+        let date = now.getDate();
+        let day = now.getDay();
+        let week = Array(7).fill(0);
+        let month = Array(31).fill(0);
+        let year = Array(12).fill(0); 
+        for(let facility of facilities){
+            for(let cId of facility.courts){
+                const court = await Court.findOne({_id: cId});
+                const slots = await Slot.find({court_id: court._id});
+                for(let slot of slots){
+                    const time = new Date(slot.time);
+                    year[time.getMonth()] += slot.totalSeatsBooked;
+                    if(mon === time.getMonth()){
+                        month[time.getDate()] += slot.totalSeatsBooked;
+                        if(time.getDate() <= date && date - 7 < time.getDate() ){
+                            console.log(time.getDate(), time.getDay());
+                            week[time.getDay()] += slot.totalSeatsBooked;
+                        }
+                    }
+                }
+            }
+        }
+        res.status(200).json({week, month, year});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+        console.log(error.message)
+    }
+}
+const Earning = async (req,res) => {
+    try {
+        const token = req.cookies?.token;
+        const { _id } = jwt.decode(token);
+        const facilities = await Facility.find({owner: _id});
+        // 0 -> January, sunday
+        let now = new Date();
+        let mon =  now.getMonth();
+        let date = now.getDate();
+        let day = now.getDay();
+        let week = Array(7).fill(0);
+        let month = Array(31).fill(0);
+        let year = Array(12).fill(0); 
+        for(let facility of facilities){
+            for(let cId of facility.courts){
+                const court = await Court.findOne({_id: cId});
+                const slots = await Slot.find({court_id: court._id});
+                for(let slot of slots){
+                    const time = new Date(slot.time);
+                    year[time.getMonth()] += slot.totalSeatsBooked * slot.price;
+                    if(mon === time.getMonth()){
+                        month[time.getDate()] += slot.totalSeatsBooked * slot.price;
+                        if(time.getDate() <= date && date - 7 < time.getDate() ){
+                            console.log(time.getDate(), time.getDay());
+                            week[time.getDay()] += slot.totalSeatsBooked * slot.price;
+                        }
+                    }
+                }
+            }
+        }
+        res.status(200).json({week, month, year});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+        console.log(error.message)
+    }
+}
+
+export {Bookingtrend, Earning, createFacility, deleteFacility, updateFacility, readFacility, readAllOwnerFacility,allPendingRequest, replyRequest, searchContent, getFacilityListing};

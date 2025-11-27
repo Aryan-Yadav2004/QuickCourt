@@ -113,3 +113,37 @@
   border-radius: 50%;
   border: none;
 }
+/* Remove default calendar icon */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+/* calendar popup styles (webkit browsers) */
+::-webkit-datetime-edit,
+::-webkit-datetime-edit-text,
+::-webkit-datetime-edit-month-field,
+::-webkit-datetime-edit-day-field,
+::-webkit-datetime-edit-year-field {
+  color: #4b5563;
+  padding: 0 2px;
+  border-radius: 8px;
+}
+
+/* Selected date circle */
+::-webkit-datetime-edit-fields-wrapper {
+  border-radius: 9999px !important;
+}
+
+/* Calendar popup day hover */
+::-webkit-calendar-picker-indicator:hover {
+  background: #eee5ff !important;
+}
+
+/* Remove ugly spinner */
+input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}

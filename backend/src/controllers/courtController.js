@@ -42,6 +42,12 @@ let createCourt = async (req,res) => {
         
         facility.courts.push(courtObj._id);
         facility.sports.push(courtData.sport);
+        if(facility.startsWith === 0){
+            facility.startsWith = courtData.price; 
+        }
+        else{
+            facility.startsWith = Math.min(facility.startsWith,courtData.price);
+        }
         await facility.save();
         const now = new Date();
         const day = now.toLocaleDateString("en-US",{weekday: 'long'}).toLocaleLowerCase();
@@ -49,7 +55,6 @@ let createCourt = async (req,res) => {
         const month = now.toLocaleDateString("en-US",{month: 'long'});
         const year = now.getFullYear();
         const index = days.indexOf(day);
-        console.log(date, day, month, year, index);
         for(let i = 0; i < 3; i++){
             const currDay = days[(i + index) % 7];
             if(!courtObj.schedule.days.includes(currDay)) continue;
@@ -89,6 +94,10 @@ const updateCourt = async(req, res) => {
         court.schedule.days = newCourtData.schedule.days;
         court.schedule.time = newCourtData.schedule.time;
         court.seats = newCourtData.seats;
+        court.price = newCourtData.price;
+        const facility = await Facility.findOne({_id: court.facility_id})
+        facility.startsWith = Math.min(facility.startsWith, newCourtData.price);
+        await facility.save();
         await court.save();
         res.status(200).json({message: "updated court"})
     } catch (error) {
@@ -140,7 +149,7 @@ const readCourt = async (req,res) => {
                 dayAfter.push(t);
             }
         }
-        res.status(200).json({sport: court.sport, reviews: court.reviews, rating: court.rating, photoLink: court.photoLink, price: court.price, schedule: court.schedule, about: court.about,facility_id: court.facility_id,overAllRating: court.overAllRating, totalReviews: court.totalReviews, seats: court.seats, location: `${facility.street} ${facility.city} ${facility.state} ${facility.country}`, name: facility.name, owner_id: facility.owner, timeSlots: {today: today, tomorrow: tomorrow, dayAfter: dayAfter}});
+        res.status(200).json({_id: court._id,sport: court.sport, reviews: court.reviews, rating: court.rating, photoLink: court.photoLink, price: court.price, schedule: court.schedule, about: court.about,facility_id: court.facility_id,overAllRating: court.overAllRating, totalReviews: court.totalReviews, seats: court.seats, location: `${facility.street} ${facility.city} ${facility.state} ${facility.country}`, name: facility.name, owner_id: facility.owner, timeSlots: {today: today, tomorrow: tomorrow, dayAfter: dayAfter}});
     } catch (error) {
         res.status(500).json({message: error.message});
     }

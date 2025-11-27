@@ -1,27 +1,30 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function FacilityCard({facility}) {
+    const navigate = useNavigate();
   return (
-    <div className="bg-[#ffffff] rounded-lg  w-full">
-        <div className="flex flex-col sm:flex-row">
-            <div className="w-full sm:w-48 md:w-64 flex-shrink-0">
-                <img 
-                    src={facility.profileImg} 
-                    alt="Profile" 
-                    className="w-full h-48 sm:h-full object-cover rounded-lg "
-                />
-             </div>
-            
-            <div className="p-6 flex-1  relative">
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">{facility.name}</h2>
-                <p><b>Location:</b> {`${facility.street}, ${facility.city}`}</p>
-                <p>{`${facility.state}, ${facility.country}`}</p>
-                <p><b>About: </b>{facility.about}</p>
-                <p>Starts With: </p>
-                <div className='absolute top-2 right-2 items-center py-1 px-2 rounded-[10px] flex bg-green-700'>
-                    <img src="/star.svg" alt="star"  className='w-5 h-5 object-contain'/>
-                    <div className='text-white font-semibold'>4.5</div>
+    <div className='w-[75%] h-38 flex relative hover:shadow-lg cursor-pointer rounded-2xl' onClick={()=>navigate(`/facility/${facility._id}`)}>
+        <div className='w-[25%] h-full bg-gray-100 overflow-clip rounded-2xl'>
+            <img src={facility.profileImg} alt="" className='w-full h-full border-0 object-cover'/>
+        </div>
+        <div className='w-[75%] h-full px-4 flex flex-col justify-start gap-2'>
+            <div className='text-gray-700 font-semibold text-2xl'>{facility.name}</div>
+            <div className='w-full py-1 flex'>
+                <div className='w-6 h-6'>
+                    <img src='location.svg' alt="map pin" className='h-full w-full object-contain'/>
                 </div>
+                <div className='text-gray-700'>{`${facility.street}, ${facility.city} , ${facility.state}, ${facility.country}`}</div>
+            </div>
+            <div className='p-1 max-w-76 gap-1 flex flex-wrap'>
+                {facility.sports.map((sport)=>(
+                    <div  className='px-1.5 py-0.5 rounded-l-full rounded-r-full text-[12px] bg-[#5500ff] text-white'>{sport}</div>
+                ))}
+            </div>
+            <div className='text-gray-700'>starts with: ₹ {facility.startsWith} </div>
+            <div className='absolute top-2 right-2 items-center py-0.5 px-1 rounded-[7px] flex bg-green-700'>
+                <img src="/star.svg" alt="star"  className='w-4 h-4 object-contain'/>
+                <div className='text-white font-semibold text-[16px]'>{facility.rating}</div>
             </div>
         </div>
     </div>

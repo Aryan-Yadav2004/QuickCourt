@@ -14,6 +14,7 @@ const handleRegister = async (req, res) => {
     const hashedPassword = await bcrypt.hash(myPlaintextPassword, saltRounds);
     req.body.password = hashedPassword;
     const user = new User(req.body);
+    user.joinedAt = new Date();
     const result = await user.save();
     console.log(result);
     res.status(200).json({message: "User registerd successfully"});

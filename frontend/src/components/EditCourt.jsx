@@ -84,8 +84,8 @@ function EditCourt() {
     }
     const handleTimer = () => {
         if(!time?.hour || (!time?.minute && time?.minute !== "0")  || !time.meridian) {
-        setError("select time");
-        return;
+          setError("select time");
+          return;
         }
         if(schedule.some((t)=>JSON.stringify(t) === JSON.stringify(time))){
         setError("Time already chosen");

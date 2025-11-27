@@ -46,7 +46,7 @@ function Profile() {
         </div>
         <div className={`w-[80%] ml-4 h-[6vh] flex justify-start items-center text-[18px] text-gray-700 cursor-pointer  ${isAllBookingsActive ?  "pl-8 bg-gray-200 rounded-2xl":"pl-4"}`} onClick={handleAllBookings}>All Bookings</div>
         <div className={`w-[80%] ml-4 h-[6vh] flex justify-start items-center text-[18px] text-gray-700  cursor-pointer ${isEditProfileActive ?  "pl-8 bg-gray-200 rounded-2xl":"pl-4"}`} onClick={handleEditProfile}>Edit Profile</div>
-        {user?.role === "facilityOwner" && <div className={`w-[80%] ml-4 h-[6vh] flex justify-start items-center text-[18px] text-gray-700  cursor-pointer ${isMyFacilityActive ?  "pl-8 bg-gray-200 rounded-2xl":"pl-4"}`} onClick={handleMyFacility}>My Facility</div>}
+        {user?.role === "facilityOwner" && <div className={`w-[80%] ml-4 h-[6vh] flex justify-start items-center text-[18px] text-gray-700  cursor-pointer ${isMyFacilityActive ?  "pl-8 bg-gray-200 rounded-2xl":"pl-4"}`} onClick={handleMyFacility}>My Facilities</div>}
         {user?.role === "admin" && <div className={`w-[80%] ml-4 h-[6vh] flex justify-start items-center text-[18px] text-gray-700  cursor-pointer ${isAdminPanelActive ?  "pl-8 bg-gray-200 rounded-2xl":"pl-4"}`} onClick={handleAdminPanel}>Admin Panel</div>}
       </div>
       <div className='sm:w-[80%] w-full  h-[100vh] '>

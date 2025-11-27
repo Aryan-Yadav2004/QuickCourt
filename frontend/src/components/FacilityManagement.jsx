@@ -138,7 +138,7 @@ function FacilityManagement() {
             {/* details */}
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  flex flex-col items-start px-2 py-3 gap-2'>
               <h1 className=' text-4xl font-semibold text-gray-800'>{request.name}</h1>
-              <p className='text-gray-700 max-w-[80%] p-1'><b>About:</b> <i>{request.about}</i></p>
+              <p className='text-gray-700 max-w-96 p-1 text-wrap'><b>About:</b> <i>{request.about}</i> </p>
               <p className='text-gray-700 p-1'><b>Owner:</b> <i>{request.owner.name}</i> </p>
               <div className='w-full '>
                 <hr style={{color: "#a073fa", width: "80%",}} />

@@ -83,6 +83,10 @@ const Schema = new mongoose.Schema({
         type: Number,
         default: 0,
     },
+    startsWith:{
+        type: Number,
+        default: 0,
+    },
 });
 
 const Facility = mongoose.model("Facility",Schema);
