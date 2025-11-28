@@ -119,6 +119,9 @@ function MyFacility() {
       left: 20,
       bottom: 25,
     };
+    const renderCustomBarLabel = ({ x, y, width, value }) => {
+        return <text x={x + width / 2} y={y} fill="#666" textAnchor="middle" dy={-6}>{`${value}`}</text>;
+    };
   return (
       <div className='w-full h-full p-4 relative facilityContainer overflow-scroll bg-gray-50'>
         {/* Floating Button Group */}
@@ -170,7 +173,7 @@ function MyFacility() {
                       dataKey="name"
                     />
                     <YAxis  />
-                    <Bar dataKey="uv" fill="#5500ff"  />
+                    <Bar dataKey="uv" fill="#5500ff" label={renderCustomBarLabel} />
                   </BarChart>
                 </div>
                 <div className='w-full h-[25%] flex justify-center items-center'>
