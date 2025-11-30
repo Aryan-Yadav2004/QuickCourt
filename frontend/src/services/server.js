@@ -343,5 +343,12 @@ const getAdminStats = async (id) => {
     return res;
 }
 
+const handleLogOut = async (id) => {
+    const res = await fetch(`${baseURL}/user/${id}/logout`,{
+        method: 'POST',
+        credentials: 'include'
+    });
+    return res;
+}
 
-export { getAdminStats ,registerUser, getEarning ,getBookingTrend, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO, searchContent, getFacilityListing, getSlotBookingDetails};
+export { getAdminStats ,registerUser, getEarning ,getBookingTrend, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO, searchContent, getFacilityListing, getSlotBookingDetails, handleLogOut};

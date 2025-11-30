@@ -62,13 +62,13 @@ function Stats() {
     };
 
   return (
-    <div className="flex flex-col justify-start items-center w-full h-full  gap-2">
+    <div className="flex flex-col justify-start items-center w-full max-h-[87vh] overflow-scroll  gap-2" style={{scrollbarWidth: "none"}}>
         <div className='w-full h-[120vh] flex flex-col'>
             <div className='w-full h-[50%] flex'>
-                <div className='w-[50%] h-full flex flex-col'>
+                <div className='w-[50%] h-full flex  flex-col gap-4'>
                     <h1 className='text-center text-gray-700 font-semibold'>User Registrations</h1>
                     <div className='w-full h-[75%]'>
-                        <LineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 600 }} responsive data={userReg}>
+                        <LineChart style={{ width: '100%', aspectRatio: 1.7, maxWidth: 600 }} responsive data={userReg}>
                             <CartesianGrid />
                             <Line dataKey="uv" fill='#5500ff' /> 
                             <XAxis dataKey="name" />
@@ -83,7 +83,7 @@ function Stats() {
                 </div>
                 <div className='w-[50%] h-full flex flex-col'>
                     <h1 className='text-center text-gray-700 font-semibold'>Most Active Sports</h1>
-                    <PieChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 600 }}>
+                    <PieChart style={{ width: '100%', aspectRatio: 1.7, maxWidth: 600 }}>
                         <Pie
                             activeShape={{
                             fill: '#5500ff',
@@ -97,10 +97,10 @@ function Stats() {
                 </div>
             </div>
             <div className='w-full h-[50%] flex'>
-                <div className='w-[50%] h-full flex flex-col'>
+                <div className='w-[50%] h-full flex flex-col gap-4'>
                     <h1 className='text-center text-gray-700 font-semibold'>Earnings</h1>
                     <div className='w-full h-[75%]'>
-                        <BarChart style={{width: '100%', aspectRatio: 1.618, maxWidth: 600 }} responsive  data={earning}>
+                        <BarChart style={{width: '100%', aspectRatio: 1.7, maxWidth: 600 }} responsive  data={earning}>
                         <XAxis
                             dataKey="name"
                         />
@@ -114,10 +114,10 @@ function Stats() {
                         <button className={`w-[15%]  py-0.5 rounded-r-full border-1 border-[#5500ff] active:outline-0 focus:outline-0 cursor-pointer ${earningPeriod === "week"?"text-white bg-[#5500ff]":"text-gray-600"}`} onClick={() => {setEarningPeriod("week")}}>Weekly</button>
                     </div>
                 </div>
-                <div className='w-[50%] h-full flex flex-col'>
+                <div className='w-[50%] h-full flex flex-col gap-4'>
                     <h1 className='text-center text-gray-700 font-semibold'>Bookings</h1>
                     <div className='w-full h-[75%]'>
-                        <LineChart style={{ width: '100%', aspectRatio: 1.618, maxWidth: 600 }} responsive data={booking}>
+                        <LineChart style={{ width: '100%', aspectRatio: 1.7, maxWidth: 600 }} responsive data={booking}>
                             <CartesianGrid />
                             <Line dataKey="uv" fill='#5500ff' /> 
                             <XAxis dataKey="name" />

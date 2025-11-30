@@ -230,7 +230,13 @@ const isAdmin = (req,res,next) => {
     next();
 }
 
+const isUserBanned = async (req,res,next) => {
+    const {username,password} = req.body;
+    const user = await User.findOne({username: username});
+    if(user?.status === "banned"){
+        return res.status(401).json({message: "user is banned"});
+    }
+    next();
+}
 
-
-
-export { isLogedIn,slotValidator, reviewValidator, courtValidator,facilityValidator,ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization, isAdmin };
+export { isLogedIn, isUserBanned , slotValidator, reviewValidator, courtValidator,facilityValidator,ownerAuthorizationFacility,userUpdateValidator, userCreateValidator ,ownerAuthorizationCourt, ownerAuthorization, userAuthorization, bookingAuthorization, reviewAuthorization, isAdmin };

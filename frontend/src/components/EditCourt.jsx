@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ErrorAlert from './errorAlert';
 import { getCourt, updateCourt } from '../services/server';
 import { upload } from '../services/Cloudinary';
+import NProgress from 'nprogress'; 
+import "nprogress/nprogress.css";
 function EditCourt() {
     const {facilityId,courtId} = useParams(); 
     const [court, setCourt] = useState(null); 
@@ -42,45 +44,49 @@ function EditCourt() {
             }
         }   
         fetchCourt();
+        NProgress.configure({showSpinner: false});
     },[])
 
     const closeErrorMsg = () => {
         setError("");
     }
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const form = new FormData(e.target);
-        const data = Object.fromEntries(form.entries())
-        const {sport} = data;
-        let photoLink = image;
-        if(schedule.length === 0){
-            setError("set atleast on timeSlot");
-            return;
-        }
-        if(file){
-            const msg = await upload(file);
-            if(msg.status === 200){
-                photoLink = msg.message;
-            }
-            else{
-                setError(msg.message);
-                return;
-            } 
-        }
-        const t = schedule.map((s)=>({
-            hour: parseInt(s.hour),
-            minute: parseInt(s.minute),
-            meridian: s.meridian
-        }))
-        const court = {sport: sport, about: about, photoLink: photoLink, price: parseInt(price), schedule: {days: weekdays, time: t},seats: parseInt(seats)}
-        const res = await updateCourt(facilityId,courtId,court);
-        if(res.ok){
-            navigate(`/facility/${facilityId}/court/${courtId}`);
-        }
-        else{
-            const result = await res.json();
-            setError(result.message);
-        }
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const data = Object.fromEntries(form.entries())
+      const {sport} = data;
+      let photoLink = image;
+      if(schedule.length === 0){
+        setError("set atleast on timeSlot");
+        NProgress.done();
+        return;
+      }
+      if(file){
+          const msg = await upload(file);
+          if(msg.status === 200){
+              photoLink = msg.message;
+          }
+          else{
+              setError(msg.message);
+              NProgress.done();
+              return;
+          } 
+      }
+      const t = schedule.map((s)=>({
+          hour: parseInt(s.hour),
+          minute: parseInt(s.minute),
+          meridian: s.meridian
+      }))
+      const court = {sport: sport, about: about, photoLink: photoLink, price: parseInt(price), schedule: {days: weekdays, time: t},seats: parseInt(seats)}
+      const res = await updateCourt(facilityId,courtId,court);
+      if(res.ok){
+          navigate(`/facility/${facilityId}/court/${courtId}`);
+      }
+      else{
+        const result = await res.json();
+        setError(result.message);
+      }
+      NProgress.done();
     }
     const handleTimer = () => {
         if(!time?.hour || (!time?.minute && time?.minute !== "0")  || !time.meridian) {
@@ -121,7 +127,7 @@ function EditCourt() {
   return (
     <div className='w-full h-[100vh] relative flex flex-col jusitfy-start items-center gap-4 p-4'>
       <h1 className='text-3xl font-semibold'>Create Court</h1>
-      <form className='flex justify-between items-center w-full h-[70vh] relative' onSubmit={handleSubmit}>
+      <form className='flex justify-between items-center w-full h-[70vh] relative' onSubmit={(e)=>{NProgress.start(); handleSubmit(e)}}>
         <div className='w-[50%] h-full flex justify-center items-start'>
           {image === "" ? 
             <div className={`w-[80%] h-[50vh]  border border-gray-300 flex items-center justify-center  cursor-pointer`} style={{backgroundImage: 'url(/plus.png)', backgroundPosition: "center",backgroundRepeat: 'no-repeat', backgroundSize:"50px"}} >

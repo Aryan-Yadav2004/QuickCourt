@@ -4,8 +4,9 @@ import { getCities, getCountries, getStates } from '../services/GeoDB';
 import { updateUser } from '../services/server';
 import ErrorAlert from './errorAlert';
 import SuccessAlert from './successAlert';
-import {upload} from '../services/Cloudinary.js'
-
+import {upload} from '../services/Cloudinary.js';
+import NProgress from 'nprogress'; 
+import "nprogress/nprogress.css";
 function EditProfile() {
     const user = useSelector((state) => state.user?.userDetail);
     const [states,setStates] = useState([]);
@@ -38,9 +39,11 @@ function EditProfile() {
             setCountrtyIso2(iso2);
         }
         fetchCountries();
-    });
+        NProgress.configure({showSpinner: false});
+    },[]);
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const formData = new FormData(e.target)
         console.log(formData);
         const data = Object.fromEntries(formData.entries());
@@ -64,6 +67,7 @@ function EditProfile() {
             let result = await res.json();
             setError(result.message);
         }
+        NProgress.done();
     }
     const handleState = async (e) => {
         const value = e.target.value.trim();
@@ -102,10 +106,10 @@ function EditProfile() {
     }
   return (
     <div className='w-full h-[70vh] bg-white relative  flex justify-center items-center'>
-        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={handleSubmit} method='POST'>
+        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={(e) => {NProgress.start(); handleSubmit(e);}} method='POST'>
             <div className='w-full h-full flex sm:flex-row flex-col justify-between items-center'>
                 <div className='w-[48%] h-full  flex flex-col justify-around items-end'>
-                    {/* name */}  
+                    {/* name */}
                     <div className='w-[70%]'>
                         <label htmlFor="name">name:</label>
                         <input type="text" id='name' name='name' value={name} placeholder=" Sonny Hayes" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleName}/>

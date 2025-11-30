@@ -26,27 +26,27 @@ function UserManagement() {
         fetchAllusers();
     },[page]);
     const handleLoadmore = async () => {
-        if(loading) return;
-        setLoading(true);
-        setPage(page + 1);
+      if(loading) return;
+      setLoading(true);
+      setPage(page + 1);
     }
 
     const handleStatus = async (userId,status) => {
-        const res = await updateUserStatus(userId,status);
-        const data = await res.json()
-        if(res.ok){
-            console.log(data.message);
-            const newUsers = users.map(user => {
-                if(user._id === userId) {
-                    return {...user,status: status}
-                }
-                return user;
-            });
-            setUsers(newUsers);
-        }
-        else{
-            console.log(data.message);
-        }
+      const res = await updateUserStatus(userId,status);
+      const data = await res.json()
+      if(res.ok){
+        console.log(data.message);
+        const newUsers = users.map(user => {
+          if(user._id === userId) {
+            return {...user,status: status}
+          }
+          return user;
+        });
+        setUsers(newUsers);
+      }
+      else{
+        console.log(data.message);
+      }
     }
 
     const handleSearch = async () => {
@@ -116,7 +116,9 @@ function UserManagement() {
                   <span className={`px-2 py-1 rounded text-xs font-semibold ${
                     user?.role === 'facilityOwner' ? 'bg-blue-100 text-blue-700' : 'bg-purple-100 text-purple-700'
                   }`}>
-                    {user?.role === 'facilityOwner'? "Owner":"User"}
+                    {user?.role === 'facilityOwner'? "Owner":""}
+                    {user?.role === 'user'? "User":""}
+                    {user?.role === 'admin'? "Admin":""}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -128,11 +130,11 @@ function UserManagement() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-2">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium" onClick={()=> navigate(`/user/${user.username}`)}>
+                    <button className="text-blue-600 hover:text-blue-800 text-sm cursor-pointer font-medium" onClick={()=> navigate(`/user/${user.username}`)}>
                       View
                     </button>
                     {user.status === 'active' ? (
-                      <button className="text-red-600 hover:text-red-800 text-sm font-medium" onClick={()=>handleStatus(user._id,"banned")}>
+                      <button className="text-red-600 hover:text-red-800 cursor-pointer  text-sm font-medium" onClick={()=>handleStatus(user._id,"banned")}>
                         Ban
                       </button>
                     ) : (

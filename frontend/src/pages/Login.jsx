@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ErrorAlert from '../components/errorAlert';
 import SuccessAlert from '../components/successAlert';
 import { loginUser } from '../services/server';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { setLoged, setUser } from '../features/user/userSlice';
+import NProgress from 'nprogress';
 
 
 
 
 function Login() {
+    useEffect(()=>{
+        NProgress.configure({showSpinner: false});
+    },[]);
     const navigate = useNavigate();
     const [success,setSuccess] = useState("");
     const [error,setError] = useState(""); 
@@ -31,6 +35,7 @@ function Login() {
             
             setError(result.message);
         }
+        NProgress.done();
     }
 
     const closeErrorMsg = () => {
@@ -46,7 +51,7 @@ function Login() {
         <div className='w-[40%] h-[50vh] bg-white rounded-2xl relative'>
             <div className='left-0 text-2xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
             <h1 className='w-full text-center text-3xl font-serif'>Login.</h1>
-            <form className='w-full h-[80%] flex flex-col gap-2 items-center justify-center' onSubmit={handleSubmit} method='POST'>
+            <form className='w-full h-[80%] flex flex-col gap-2 items-center justify-center' onSubmit={(e) => { NProgress.start(); handleSubmit(e)}} method='POST'>
                 {/* username */}
                 <div className='w-[70%]'>
                     <label htmlFor="username">username:</label>

@@ -1,4 +1,16 @@
 @import "tailwindcss";
+@import "nprogress/nprogress.css";
+
+#nprogress .bar {
+  background: #5500ff !important;   /* Your color */
+  width: 10px;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px blue, 0 0 5px blue !important;
+  width: 15px;
+}
+
 #loader{
     padding: 4px;
     width: 100%;

@@ -10,7 +10,7 @@ export const userSlice = createSlice({
     initialState: initialState,
     reducers: {
         setLoged: (state) => {
-            state.isLoged = true;
+            state.isLoged = !state.isLoged;
         },
         setUser: (state,action) => {
             state.userDetail = action.payload;

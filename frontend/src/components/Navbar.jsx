@@ -9,7 +9,7 @@ function Navbar() {
     const user = useSelector((state) => state.user.userDetail);
     const navigate = useNavigate();
   return (
-    <div className='w-full h-20 top-0 relative flex items-center justify-around border-1 border-[#e3d7fb]'>
+    <div className='w-full h-20 top-0 relative flex items-center justify-around border-1  border-[#e3d7fb]'>
         <div className='left-0 text-3xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
         <div className='md:hidden cursor-pointer m-2 right-0 absolute max-w-8' onClick={()=>setOpen(!open)}>
             {open? <X size={28}/>: <Menu size={28}/>}

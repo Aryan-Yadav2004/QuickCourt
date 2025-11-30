@@ -74,7 +74,7 @@ function Book() {
   return (
     <div className='w-full min-h-screen py-1 flex flex-col  justify-start items-center'>
         {/* search bar */}
-        <div ref={searchBarRef} className='w-[50%] min-h-14 py-1 z-50 flex flex-col justify-start gap-1'>
+        <div ref={searchBarRef} className='w-[50%] min-h-14 py-1  flex flex-col justify-start gap-1 relative' >
             {/* searchbar */}
             <div className='w-full h-14 border border-[#f0ebfa] rounded-2xl  flex justify-between items-center shadow-lg '>
                 <div className='w-[28%] h-full flex justify-between items-center pl-2'  onClick={() => setHideBoxes(prev => ({...prev,all: false, cities: false, search: true, filter: true}))} >
@@ -97,14 +97,14 @@ function Book() {
 
 
             {/* area */}
-            <div ref={boxRef} className={`w-full py-1 z-50 gap-0.5 ${hideBoxes.all?"hidden":"flex justify-between items-start"}`}>
-                <div className={`w-[28%] h-98 z-50 px-2 pt-2 flex flex-col justify-start items-start shadow-lg  border border-[#f0ebfa] overflow-scroll  rounded-2xl ${hideBoxes.cities?"invisible":""}`} style={{ scrollbarWidth: 'none' }}>
+            <div ref={boxRef} className={`w-full top-full left-0 absolute py-1 z-[999] gap-0.5 ${hideBoxes.all?"hidden":"flex justify-between items-start"}`}>
+                <div className={`w-[28%] h-98 z-50 px-2 pt-2 flex flex-col justify-start items-start shadow-lg  border bg-white border-[#f0ebfa] overflow-scroll  rounded-2xl ${hideBoxes.cities?"invisible":""}`} style={{ scrollbarWidth: 'none' }}>
                     {cities.map((city)=>{
                         if(city === 'none') return <div key={0} className='py-1 pl-1 rounded-lg w-full hover:bg-[#f0ebfa] cursor-pointer text-gray-800' onClick={()=>{setCity(""); setPage({currpage: 1, add: false})}}>none</div>
                         return <div key={city.id} className='py-1 pl-1 rounded-lg w-full hover:bg-[#f0ebfa] cursor-pointer text-gray-800' onClick={()=>{setCity(city.name); setPage({currpage: 1, add: false})}}>{city.name}</div>
                     })}
                 </div>
-                <div className={`w-[55%] z-50  h-98 px-3 py-2 shadow-lg  flex flex-col justify-start gap-1 border overflow-scroll border-[#f0ebfa] rounded-2xl ${hideBoxes.search?"invisible":""}`} style={{ scrollbarWidth: 'none' }}>
+                <div className={`w-[55%] z-50  h-98 px-3 py-2 shadow-lg  flex flex-col justify-start gap-1 border overflow-scroll border-[#f0ebfa] bg-white rounded-2xl ${hideBoxes.search?"invisible":""}`} style={{ scrollbarWidth: 'none' }}>
                     {searchedFacilities.map(facility => (
                         <div key={facility._id} className='w-full py-1 flex justify-between items-center cursor-pointer rounded-l-full rounded-r-full hover:bg-[#f0ecf9b4]' onClick={()=>navigate(`/facility/${facility._id}`)}>
                             <div className='w-14 h-14  object-contain flex justify-center items-center'>
@@ -116,7 +116,7 @@ function Book() {
                         </div>
                     ))}
                 </div>
-                <div className={`w-[17%] z-50 h-48 flex flex-col pt-2  justify-start items-center shadow-lg  border border-[#f0ebfa] rounded-2xl ${hideBoxes.filter?"invisible":""}`} >
+                <div className={`w-[17%] z-50 h-48 flex flex-col pt-2  justify-start items-center shadow-lg bg-white border border-[#f0ebfa] rounded-2xl ${hideBoxes.filter?"invisible":""}`} >
                     {/* Price */}
                     <div className='w-full h-[33%] flex flex-col px-2 justify-start items-start gap-1'>
                         <div className='w-full flex justify-between'>

@@ -12,6 +12,7 @@ import { sendOtp } from "./auth/auth.js";
 import uploadRoute from "./routes/v1/upload.js";
 import cron from 'node-cron';
 import { completeBooking } from "./controllers/bookingController.js";
+import { createTimeSlot } from "./controllers/slotController.js";
 configDotenv();
 const app = express();
 const server = createServer(app);
@@ -51,7 +52,10 @@ app.get("/",async (req,res)=>{
 })
 
 cron.schedule("*/1 * * * *", completeBooking);
-
+cron.schedule("0 0 * * *",async ()=>{
+    console.log("cron is running at 12:00 PM");
+    await createTimeSlot();
+},{timezone: "Asia/Kolkata"});
 const start = async () => {
     const dbURL = process.env.DBurl;
     const port = process.env.PORT;

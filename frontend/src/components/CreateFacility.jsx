@@ -5,6 +5,11 @@ import ErrorAlert from './errorAlert.jsx';
 import SuccessAlert from './successAlert.jsx';
 import {useSelector} from "react-redux"
 import { createFacility, upLoadPdf } from '../services/server.js';
+import NProgress from 'nprogress'; 
+import "nprogress/nprogress.css";
+
+
+
 function CreateFacility() {
     const [countries,setCountries] = useState([]);
     const [states,setStates] = useState([]);
@@ -21,11 +26,12 @@ function CreateFacility() {
     const [isDisabled,setIsDisabled] = useState(false);
     const amenitiesList = ["Parking","Restrooms","Locker Rooms","Shower Rooms","Waiting Area","Changing Rooms","Drinking Water","Reception Desk","Free WiFi","Air Conditioning","Power Backup","First Aid Kit","Medical Room","Viewing Gallery","CCTV Surveillance","Security Guard"];
     useEffect(()=>{
-    const fetchCountries = async () => {
-        const res = await getCountries();
-        setCountries(res);
-    }
-    fetchCountries();
+        const fetchCountries = async () => {
+            const res = await getCountries();
+            setCountries(res);
+        }
+        fetchCountries();
+        NProgress.configure({showSpinner: false});
     },[]);
     const handleCountry = async(e) => {
         let value = e.target.value;
@@ -90,7 +96,11 @@ function CreateFacility() {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(isDisabled) return;
+        NProgress.start();
+        if(isDisabled) {
+            NProgress.done();
+            return;
+        }
         setIsDisabled(true);
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
@@ -144,6 +154,7 @@ function CreateFacility() {
             setError(result.message);
         }
         setIsDisabled(false);
+        NProgress.done();
     }
     const closeErrorMsg = () => {
         setError("");
@@ -161,12 +172,12 @@ function CreateFacility() {
                 {/* name */}
                 <div className='w-[70%]'>
                     <label htmlFor="name" className='font-medium text-gray-700'>Facility name:</label>
-                    <input type="text" id='name' name='name' placeholder="Game Arena" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                    <input type="text" id='name' name='name' placeholder="Game Arena" className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] ${isDisabled?"cursor-not-allowed":"cursor-pointer"}`} required />
                 </div>
                 {/* country */}
                 <div className='w-[70%]'>
                     <label htmlFor="country" className='font-medium text-gray-700'>Country:</label>
-                    <select id='country' name='country' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleCountry} required>
+                    <select id='country' name='country' className={`w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] ${isDisabled?"cursor-not-allowed":"cursor-pointer"}`} onChange={handleCountry} required>
                         {countries.map(currCountry => (
                         <option key={currCountry.id}  value={currCountry.name}>{currCountry.name}</option>
                         ))}
@@ -175,7 +186,7 @@ function CreateFacility() {
                 {/* state */}
                 <div className='w-[70%]'>
                     <label htmlFor="state" className='font-medium text-gray-700'>State:</label>
-                    <select id='state' name='state' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" onChange={handleState} required>
+                    <select id='state' name='state' className={`w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] ${isDisabled?"cursor-not-allowed":"cursor-pointer"}`} onChange={handleState} required>
                         {states.map(currState => (
                         <option key={currState.id}  value={currState.name}>{currState.name}</option>
                         ))}
@@ -184,7 +195,7 @@ function CreateFacility() {
                 {/* city */}
                 <div className='w-[70%]'>
                     <label htmlFor="city" className='font-medium text-gray-700'>City:</label>
-                    <select id='city' name='city' className="w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required>
+                    <select id='city' name='city' className={`w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] ${isDisabled?"cursor-not-allowed":"cursor-pointer"}`} required>
                     {cities.map(currCity => (
                         <option key={currCity.id}  value={currCity.name}>{currCity.name}</option>
                     ))}
@@ -193,36 +204,36 @@ function CreateFacility() {
                 {/* street */}
                 <div className='w-[70%]'>
                     <label htmlFor="street" className='font-medium text-gray-700'>Street:</label>
-                    <input type="text" id='street' name='street'  placeholder=" Las Vegas Strip" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                    <input type="text" id='street' name='street'  placeholder=" Las Vegas Strip" className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] ${isDisabled?"cursor-not-allowed":"cursor-pointer"}`} required />
                 </div>
                 {/* pinCode */}
                 <div className='w-[70%]'>
                     <label htmlFor="pinCode" className='font-medium text-gray-700'>Pin Code:</label>
-                    <input type="text"  id='pinCode' name='pinCode'  placeholder="88999" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                    <input type="text"  id='pinCode' name='pinCode'  placeholder="88999" className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] ${isDisabled?"cursor-not-allowed":"cursor-pointer"}`} required />
                 </div>
             </div>
             <div className='sm:w-[33%] w-full sm:h-full h-[40vh] flex flex-col justify-start items-center '>
                 {/* about */}
                 <div className='w-[70%]'>
                     <label htmlFor="abuot" className='font-medium text-gray-700'>About:</label>
-                    <textarea type="text" id='about' name='about'  placeholder=" Give brief description about your facility" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa]" required />
+                    <textarea type="text" id='about' name='about'  placeholder=" Give brief description about your facility" className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] ${isDisabled?"cursor-not-allowed":"cursor-pointer"}`} required />
                 </div>
                 {/* profile photo */}
                 <div className='w-[70%]'>
                     <label htmlFor="profileImg" className='font-medium text-gray-700'>Profile Image:</label>
-                    <input type="file" id='profileImg' accept="image/*" name='profileImg'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={onProfilePhotoChange} required/>
+                    <input type="file" id='profileImg' accept="image/*" name='profileImg'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={() => {if(isDisabled) return; onProfilePhotoChange(e);}} required/>
                     {profilePhotoSizeError? <p className='text-red-500'>Image size should be less than or equal 10MB</p>:<></>}
                 </div>
                 {/* Facility photos */}
                 <div className='w-[70%]'>
                     <label htmlFor="photos" className='font-medium text-gray-700'>Facility Images:</label>
-                    <input type="file" id='photos' accept="image/*" name='photos'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={onPhotosChange} multiple={true} required/>
+                    <input type="file" id='photos' accept="image/*" name='photos'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={(e)=>{if(isDisabled) return; onPhotosChange(e);}} multiple={true} required/>
                     {photosSizeError? <p className='text-red-500'>Image size should be less than or equal 10MB</p>:<></>}
                 </div>
                 {/* Legal Document */}
                 <div className='w-[70%]'>
                     <label htmlFor="legalDocument" className='font-medium text-gray-700'>Legal Document:</label>
-                    <input type="file" id='legalDocument' accept="" name='legalDocument'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={onLegalDocumentChange} required/>
+                    <input type="file" id='legalDocument' accept="" name='legalDocument'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={(e) => {if(isDisabled) return; onLegalDocumentChange(e)}} required/>
                     <p className='text-gray-500'>* Upload a legal document in pdf or any other format that proves your ownership toward facility</p>
                 </div>
                 
@@ -235,7 +246,7 @@ function CreateFacility() {
                     <div class="flex flex-wrap gap-2 w-full">
                         {amenitiesList.map((amenity)=>(
                             <label class="flex items-center space-x-2">
-                                <input type="checkbox" class="accent-[#a78bfa] w-4 h-4 focus:ring-[#f0ebfa]" onChange={()=>handleAmenitiyChange(amenity)}/>
+                                <input type="checkbox" class="accent-[#a78bfa] w-4 h-4 focus:ring-[#f0ebfa]" onChange={()=>{if(isDisabled) return; handleAmenitiyChange(amenity)}}/>
                                 <span>{amenity}</span>
                             </label>
                         ))}

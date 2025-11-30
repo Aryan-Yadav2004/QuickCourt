@@ -59,21 +59,23 @@ function BookingTrend() {
             </tr>
             </thead>
 
-            {slots.map(slot => (
+            {slots.map(slot => { if(slot.amount !== 0) return(
                 <tbody key={slot.time} className="text-sm">
-                    <tr className="border-b hover:bg-gray-50 transition">
+                    <tr className=" hover:bg-gray-50 transition">
                         <td className="py-3 px-4">{slot.facility}</td>
                         <td className="py-3 px-4">
                             <span className="px-3 py-1 bg-[#5500ff] text-white rounded-xl font-medium">{slot.court}</span>
                         </td>
-                        <td className="py-3 px-4">{extractTime(slot.time)}</td>
-                        <td className="py-3 px-4">{slot.seats}</td>
-                        <td className="py-3 px-4">
+                        <td className="py-3 text-gray-700 px-4">{extractTime(slot.time)}</td>
+                        <td className="py-3 text-gray-700 px-4">{slot.seats}</td>
+                        <td className="py-3 text-gray-700 px-4">
                             <span className="text-green-600 font-semibold">₹{slot.amount}</span>
                         </td>
                     </tr>
                 </tbody>
-            ))}
+            )
+            else return null;
+            })}
         </table>
     </div>
   )

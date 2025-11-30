@@ -11,6 +11,23 @@ function TrackRequest() {
         }
         setFilteredRequest(requests.filter((req)=>req?.status === filter));
     }
+    function extractTime(dateString) {
+        const date = new Date(dateString);
+
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const year = date.getFullYear();
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12 || 12;
+
+        return {
+        date: `${day}/${month}/${year}`,
+        time: `${hours}:${minutes} ${ampm}`,
+        };
+    }
   return (
     <div className='w-full py-2 flex flex-col justify-start items-center bg-gray-100 min-h-screen px-2 rounded-2xl'>
         <div className='w-full py-1  z-50 relative flex justify-end '>
@@ -37,7 +54,7 @@ function TrackRequest() {
                         <h2 className="text-2xl font-bold text-gray-800 mb-2">{request?.name}</h2>
                         <p>{`${request?.street}, ${request?.city}`}</p>
                         <p>{`${request?.state}, ${request?.country}`}</p>
-                        <p>Created At: ${request?.createdAt}</p>
+                        <p>Created At: {extractTime(request?.createdAt)?.date}</p>
                         {request?.status === "accepted" && <div className={`absolute top-2 right-2 items-center py-1 px-2 rounded-[10px] flex text-green-500`}>Accepted</div>}
                         {request?.status === "pending" && <div className={`absolute top-2 right-2 items-center py-1 px-2 rounded-[10px] flex text-yellow-500`}>Pending</div>}
                         {request?.status === "rejected" && <div className={`absolute top-2 right-2 items-center py-1 px-2 rounded-[10px] flex text-red-500`}>Rejected</div>}

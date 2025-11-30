@@ -6,6 +6,9 @@ import { Save } from 'lucide-react';
 import { upload } from '../services/Cloudinary';
 import ErrorAlert from './errorAlert';
 import SuccessAlert from './successAlert';
+import NProgress from 'nprogress'; 
+import "nprogress/nprogress.css";
+
  function EditFacility() {
   const { facilityId } = useParams();
     const [images, setImages] = useState(["","","","",""]);
@@ -43,6 +46,7 @@ import SuccessAlert from './successAlert';
             }
         }
         fetchFacility();
+        NProgress.configure({showSpinner: false});
     },[]);
 
     useEffect(()=>{
@@ -104,7 +108,10 @@ import SuccessAlert from './successAlert';
     }
     const handleSubmit = async (e)=>{
       e.preventDefault();
-      if(loading) return;
+      if(loading) {
+        NProgress.done();
+        return
+      };
       setLoading(true);
       try {
         let profileImgLink = image;
@@ -114,7 +121,8 @@ import SuccessAlert from './successAlert';
             profileImgLink = res.message;
           }
           else{
-            setError(link.message)
+            setError(link.message);
+            NProgress.done();
             return;
           }
         }
@@ -127,6 +135,7 @@ import SuccessAlert from './successAlert';
             }
             else{
               setError(link.message);
+              NProgress.done();
               return;
             }
           }
@@ -145,6 +154,9 @@ import SuccessAlert from './successAlert';
       } catch (error) {
         console.log(error.message);
       }
+      finally{
+        NProgress.done();
+      }
     }
     const closeErrorMsg = () => {
       setError("");
@@ -160,7 +172,7 @@ import SuccessAlert from './successAlert';
     // )
   return (
     
-    <form className='w-full h-full p-2 bg-white rounded-2xl  flex flex-col overflow-scroll facilityContainer relative'>
+    <form className='w-full h-full p-2 bg-white rounded-2xl  flex flex-col overflow-scroll facilityContainer relative' onSubmit={(e) => {NProgress.start();handleSubmit(e)}}>
         <div className='w-full h-[70vh]  flex flex-col sm:flex-row'>
             {/* image */}
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  p-2 flex flex-col items-center'>
@@ -197,9 +209,9 @@ import SuccessAlert from './successAlert';
             <div className='sm:h-full h-[50%] sm:w-[50%] w-full  flex flex-col items-start px-2 py-3 gap-2'>
               <div className='w-[80%] p-1 flex justify-between items-center'>
                 <input className=' text-4xl font-semibold text-gray-800 w-[60%] p-0.5 focus:outline-none active:outline-none' value={newData?.name} onChange={(e) => { if(loading) return; setNewData({...newData, name:e.target.value})}}/>
-                <button type="submits" className={`p-1 active:outline-none focus:outline-none  ${loading ? "cursor-not-allowed":"cursor-pointer"}`} onClick={handleSubmit}><Save size={25} className={`${loading?"text-[#a273ff]":"text-[#5500ff]"}`}/></button>
+                <button type="submit" className={`p-1 active:outline-none focus:outline-none  ${loading ? "cursor-not-allowed":"cursor-pointer"}`} ><Save size={25} className={`${loading?"text-[#a273ff]":"text-[#5500ff]"}`}/></button>
               </div>
-              <p className='text-gray-700 max-w-[80%] p-1'><b>About:</b> </p>
+              <p className='text-gray-700 max-w-[80%] p-1'><b>About:</b></p>
               <i className='w-full'><textarea className='min-w-[80%] resize-none overflow-hidden min-h-[40px] p-[8px] rounded-[6px] outline-none' rows={1} ref={textareaRef} name="about" value={newData?.about}  onChange={(e)=>{if (loading) return; setNewData({...newData,about: e.target.value})}}></textarea></i>
               <p className='text-gray-700 p-1'><b>Owner:</b><i>{facility?.owner?.name}</i></p>
               <div className='w-full'>

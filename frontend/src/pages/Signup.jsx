@@ -7,6 +7,8 @@ import ErrorAlert from '../components/errorAlert.jsx';
 import { createFundAccount, registerUser } from '../services/server.js'; 
 import SuccessAlert from '../components/successAlert.jsx';
 import { Link, useNavigate } from 'react-router-dom';
+import NProgress from 'nprogress'; 
+import "nprogress/nprogress.css";
 
 function Signup() {
   const [email,setEmail] = useState("");
@@ -35,6 +37,7 @@ function Signup() {
       setCountries(res);
     }
     fetchCountries();
+    NProgress.configure({showSpinner: false});
   },[]);
 
 
@@ -129,6 +132,7 @@ function Signup() {
     e.preventDefault();
     if(!verifiedEmail || !verifiedPhoneNo){
       setError("verify email and phone number");
+      NProgress.done();
       return;
     }
     
@@ -139,6 +143,7 @@ function Signup() {
       const anotherResult = await anotherRes.json();
       if(!anotherRes.ok){
         setError(anotherResult.message);
+        NProgress.done();
         return;
       }
       data.fundAccountId = anotherResult.fund_account_id;
@@ -150,7 +155,9 @@ function Signup() {
             avtar = avatarRes.message;
         }
         else{
-            setError(avatarRes.message);
+          setError(avatarRes.message);
+          NProgress.done();
+          return;
         }
     }
     data.avtar = avtar;
@@ -165,6 +172,7 @@ function Signup() {
       result = await result.json();
       setError(result.message);
     }
+    NProgress.done();
   }
 
   return (
@@ -172,7 +180,7 @@ function Signup() {
       <div className='w-[70%] min-h-[70vh] py-0.5 bg-white rounded-2xl relative'>
         <div className='left-0 text-2xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
         <h1 className='w-full text-center text-3xl font-serif'>Sign up.</h1>
-        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={handleSubmit} method='POST'>
+        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={(e) => {NProgress.start(); handleSubmit(e);}} method='POST'>
             <div className='w-full h-full flex sm:flex-row flex-col justify-between items-center'>
               <div className={`${role === "facilityOwner"?"w-[30%]":"w-[48%]"} h-full  flex flex-col justify-start gap-4 ${role === "facilityOwner"?"items-center":"items-end "}`}>
                   {/* name */} 

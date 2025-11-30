@@ -1,10 +1,6 @@
 import Court from "../models/courtModel.js"
 import Slot from "../models/timeSlotModel.js";
 
-
-
-
-
 const months = {
   January: 0,
   February: 1,

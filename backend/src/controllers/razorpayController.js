@@ -57,7 +57,7 @@ const verifyPayment =  async (req,res) => {
                 state: facility.state,
                 country: facility.country,
                 time: slot.time,
-                price: court.price,
+                price: court.price * seats,
                 seats: seats,
                 courtImage: court.photoLink,
                 status : "booked"

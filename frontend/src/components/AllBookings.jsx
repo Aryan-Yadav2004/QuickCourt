@@ -65,8 +65,8 @@ function AllBookings() {
         {(bookings.length > 0)? //
           bookings.map((booking) => (
             <div key={booking._id}  className= {`w-full sm:h-32 gap-4 relative flex p-1 rounded-2xl bg-white ${loading?"cursor-not-allowed":"cursor-pointer"}`} onClick={() => handleBookingClick(booking?._id)}>
-              <div className='w-[20%] h-full flex justify-center items-center bg-gray-100 rounded-2xl'>
-                <img src={booking?.courtImage} alt="court image" className='w-full h-full object-contain'/>
+              <div className='w-[20%] h-full flex justify-center items-center bg-gray-100 overflow-clip rounded-2xl'>
+                <img src={booking?.courtImage} alt="court image" className='w-full h-full object-cover'/>
               </div>
               <div className='w-[75%] h-full relative flex flex-col justify-start items-start px-1 flex-wrap gap-1  rounded-2xl '>
                 <p className='font-semibold text-xl text-gray-700'>{booking?.facility}</p>
