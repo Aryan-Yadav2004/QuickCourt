@@ -21,7 +21,7 @@ app.use(express.json());
 
 
 app.use(cors({ 
-    origin: "http://localhost:5173",
+    origin: "https://quickcourt-online.onrender.com",
     credentials: true,
 }));
 app.use(cookieParser());
@@ -58,7 +58,7 @@ cron.schedule("0 0 * * *",async ()=>{
 },{timezone: "Asia/Kolkata"});
 const start = async () => {
     const dbURL = process.env.DBurl;
-    const port = process.env.PORT;
+    const port = process.env.PORT || 3000;
     const connecctionDB = await mongoose.connect(dbURL);
     console.log("connected to db");
     server.listen(port,()=>{

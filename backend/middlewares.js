@@ -141,6 +141,7 @@ const userCreateValidator = async (req,res,next)=>{
 //passed
 const userUpdateValidator = async (req,res,next) => {
     const data = req.body;
+    console.log(data);
     if(!data.name || data.name.trim()===""    || !data.street || data.street.trim()===""|| !data.city || data.city.trim()==="" || !data.state || data.state.trim()===""  || !data.avtar || data.avtar.trim()===""){
        return res.status(400).json({message: "Provide appropirate data"});
     }
@@ -161,7 +162,6 @@ const pinCodeValidator = (pin) => {
 //passed
 const facilityValidator = (req,res,next) => {
     const data = req.body;
-    console.log(data)
     if(!data.name || data.name.trim()==="" || !data.profileImg || data.profileImg.trim() === ""){
        return res.status(400).json({message: "Provide Facility appropirate data"});
     }
@@ -175,7 +175,6 @@ const courtValidator = (req,res,next) => {
     if(!data.sport || data.sport.trim()==="" || !data.schedule || !data.schedule.days || !data.schedule.time || !data.seats || typeof(data.seats) !== "number"){
         return res.status(400).json({message: "provide appropirate data"});
     }
-    console.log(data.schedule);
     if(!data.price || typeof(data.price) !== "number"  || data.price < 0 || !data.schedule.time ){
         return res.status(400).json({message: "provide appropirate data "});
     }
