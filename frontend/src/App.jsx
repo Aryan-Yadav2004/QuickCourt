@@ -23,7 +23,7 @@ function App() {
   
   useEffect(()=>{ 
     const checkLogin = async ()=>{
-      const res = await fetch('http://localhost:3000/api/v1/user/verify',{
+      const res = await fetch('https://quickcourt-pvr8.onrender.com/api/v1/user/verify',{
         method: "GET",
         credentials: "include",
       });
