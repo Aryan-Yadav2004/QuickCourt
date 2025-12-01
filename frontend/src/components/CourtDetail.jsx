@@ -143,6 +143,9 @@ function CourtDetail() {
         };
     };
     const handleSlotDetail = (slot) => {
+        if(isLoged === false) {
+            navigate("/login");
+        }
         if(court?.seats === slot?.totalSeatsBooked) return;
         setSlotDetails(slot);
     }   
