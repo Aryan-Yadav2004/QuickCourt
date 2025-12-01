@@ -10,7 +10,7 @@ function FacilityManagement() {
   const [images, setImages] = useState([]);
   const [image,setImage] = useState("");
   const [page, setPage] = useState(1);
-  const limit = useRef(2);
+  const limit = useRef(5);
   const [error,setError] = useState("");
   const [success,setSuccess] = useState("");
   useEffect(() => {
@@ -101,7 +101,7 @@ return (
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
                   <div>
                     <p><span className="font-medium">Owner:</span>{req.owner.name}</p>
-                    <p><span className="font-medium">Location:</span> Bilaspur, Chhattisgarh </p>
+                    <p><span className="font-medium">Location:</span> {`${req?.street}, ${req?.city}, ${req?.state}, ${req?.country}`} </p>
                   </div>
                   <div>
                     <p><span className="font-medium">Submitted:</span> {extractTime(req.createdAt).date}</p>

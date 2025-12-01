@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function UserManagement() {
     const [page,setPage] = useState(1);
-    const limit = useRef(2);
+    const limit = useRef(5);
     const [loading,setLoading] = useState(false);
     const [users,setUsers] = useState([]);
     const [filter,setFilter] = useState("all");

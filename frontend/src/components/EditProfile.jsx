@@ -37,17 +37,17 @@ function EditProfile() {
             const fetchedStates = await getStates(iso2);
             setStates(fetchedStates);
             setCountrtyIso2(iso2);
+            setName(user?.name);
+            setStreet(user?.street);
         }
         fetchCountries();
         NProgress.configure({showSpinner: false});
-    },[]);
+    },[user]);
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData(e.target)
-        console.log(formData);
         const data = Object.fromEntries(formData.entries());
-        console.log(data);
         let avtar = user?.avtar;
         if(file){
             const res = await upload(file);
@@ -62,6 +62,7 @@ function EditProfile() {
         let res = await updateUser(user?._id,data);
         if(res.ok){
             setSuccess("updated successfully!");
+            window.location.reload();
         }
         else{
             let result = await res.json();
@@ -73,10 +74,8 @@ function EditProfile() {
         const value = e.target.value.trim();
         if(value === "" || !value) return;
         const selectedState = states.find((currState) => currState.name === value);
-        console.log(selectedState);
         const stateIso2 = selectedState.iso2;
         const fetchedCities = await getCities(countryIso2,stateIso2);
-        console.log(fetchedCities);
         setCitites(fetchedCities);
     }
     const onFileChange = (e) => {

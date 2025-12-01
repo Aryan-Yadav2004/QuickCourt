@@ -83,7 +83,7 @@ function CreateFacility() {
         console.log(f)
         if(!f) return;
         for(let photo of f){
-            if(photo.size > 10 * 1024 * 1024){
+            if(photo.size > 100 * 1024 * 1024){
                 setPhotosSizeError(true);
                 e.target.value = "" // clear input
                 return;
@@ -221,7 +221,7 @@ function CreateFacility() {
                 {/* profile photo */}
                 <div className='w-[70%]'>
                     <label htmlFor="profileImg" className='font-medium text-gray-700'>Profile Image:</label>
-                    <input type="file" id='profileImg' accept="image/*" name='profileImg'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={() => {if(isDisabled) return; onProfilePhotoChange(e);}} required/>
+                    <input type="file" id='profileImg' accept="image/*" name='profileImg'  className=" block w-full px-4 py-1 border border-gray-300 rounded-md cursor-pointer bg-white focus:outline-none focus:ring-2 focus:ring-[#f0ebfa] focus:border-[#f0ebfa] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#f0ebfa] file:text-[#5500ff] hover:file:bg-[#e5dcfb]" onChange={(e) => {if(isDisabled) return; onProfilePhotoChange(e);}} required/>
                     {profilePhotoSizeError? <p className='text-red-500'>Image size should be less than or equal 10MB</p>:<></>}
                 </div>
                 {/* Facility photos */}

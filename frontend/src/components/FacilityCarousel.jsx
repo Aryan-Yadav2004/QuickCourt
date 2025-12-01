@@ -14,9 +14,9 @@ function FacilityCarousel() {
         fetchFacilities();
     },[])
   return (
-    <div className='w-full h-96 flex flex-nowrap overflow-x-scroll items-center gap-8  px-2' style={{ scrollbarWidth: 'none' }}>
+    <div className='w-full h-96 flex  overflow-x-scroll items-center gap-8  px-2' style={{ scrollbarWidth: 'none' }}>
         {facilities.map(facility=>(
-            <div key={facility._id} className='flex flex-col items-center  h-[90%] w-[20vw] cursor-pointer rounded-2xl hover:shadow-lg'  onClick={()=>navigate(`/facility/${facility._id}`)} >
+            <div key={facility._id} className='flex flex-col flex-shrink-0 items-center  h-[90%] w-[20vw] cursor-pointer rounded-2xl hover:shadow-lg'  onClick={()=>navigate(`/facility/${facility._id}`)} >
                 <div className='w-full h-[75%]  rounded-2xl overflow-clip'>
                     <img src={facility.profileImg} alt="" className='w-full h-full object-cover'/>
                 </div>

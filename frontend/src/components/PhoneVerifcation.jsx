@@ -12,13 +12,13 @@ function PhoneVerifcation({isOpen,onPhoneOtpPreviewClose,phonecode,phoneNo, comp
         const code = String(Math.floor(100000 + Math.random() * 900000));
         setOtp(code);
         console.log(code);
-        // fetch("http://localhost:3000/api/v1/sendOtp",{
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({otp:code,phonecode:phonecode,phoneNo:phoneNo}),
-        // }).then(res => res.json()).then(data => console.log(data.message));
+        fetch("http://localhost:3000/api/v1/sendOtp",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({otp:code,phonecode:phonecode,phoneNo:phoneNo}),
+        }).then(res => res.json()).then(data => console.log(data.message));
     },[]);
     useEffect(()=>{
         if(!isOpen) return;

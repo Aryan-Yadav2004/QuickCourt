@@ -13,6 +13,7 @@ function EmailVerification({isOpen,onEmailOtpPreviewClose,email,completeVerifica
         const sendOtp = async() => {
             const code = String(Math.floor(100000 + Math.random() * 900000));
             setOtp(code); 
+            console.log(code)
             await sendOtpMail(email,code);
         }     
         sendOtp();

@@ -45,7 +45,7 @@ function Book() {
                 newFilter = {...newFilter, city: city}
             }
             newFilter = {...newFilter, startsWith: filter.price, rating: filter.rating}
-            const res = await getFacilityListing(newFilter,page.currpage, 10);
+            const res = await getFacilityListing(newFilter,page.currpage, 5);
             const data = await res.json(); 
             console.log(data);
             if(page.add){

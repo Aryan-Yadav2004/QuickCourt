@@ -143,7 +143,7 @@ function CourtDetail() {
         };
     };
     const handleSlotDetail = (slot) => {
-        if(court?.seats === slot?.bookings.length) return;
+        if(court?.seats === slot?.totalSeatsBooked) return;
         setSlotDetails(slot);
     }   
     const closeSlotBookingView = () => {
@@ -182,8 +182,8 @@ function CourtDetail() {
                     </div>
                     <p className='text-gray-700'><span className='font-semibold'>Location: </span><i>{court?.location}</i></p>
                     <p className='text-gray-700'><span className='font-semibold'>Sport: </span><i>{court?.sport}</i></p>
-                    <p className='text-gray-700 max-w-52 p-1]'><span className='font-semibold'>about: </span><i>{court?.about}</i></p>
-                    <p className='text-gray-700'><span className='font-semibold'>Price: </span><i>&#8377; {court?.price}</i></p>
+                    <p className='text-gray-700 max-w-210 p-1]'><span className='font-semibold'>about: </span><i>{court?.about}</i></p>
+                    <p className='text-gray-700'><span className='font-semibold'>Price{` (per hour)`}: </span><i>&#8377; {court?.price}</i></p>
                 </div>
             </div>
         </div>

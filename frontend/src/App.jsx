@@ -15,7 +15,7 @@ import CreateCourt from './components/CreateCourt.jsx';
 import CourtDetail from './components/CourtDetail.jsx';
 import EditCourt from './components/EditCourt.jsx';
 import Payment from './pages/Payment.jsx';
-import TicketDetail from './pages/ticketDetail.jsx';
+import TicketDetail from './pages/TicketDetail.jsx';
 import Book from './pages/Book.jsx';
 import { searchContent } from './services/server.js';
 function App() {
