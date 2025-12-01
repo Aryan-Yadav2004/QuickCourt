@@ -24,7 +24,6 @@ const handleLogin = async (req,res) => {
     try{
         const {username,password} = req.body;
         const user = await User.findOne({username:username});
-        console.log(user);
         if(!user){
             return res.status(500).json({message: "user not found"});
         }
@@ -34,7 +33,7 @@ const handleLogin = async (req,res) => {
         }
         const secretKey = process.env.JWTsecretKey;
         const token = jwt.sign({_id: user._id, username: user.username, role: user.role}, secretKey, {expiresIn: "168h"});
-        return res.cookie("token",token,{httpOnly: true,maxAge: 24 * 60 * 60 * 1000}).status(200).json(user);
+        return res.cookie("token",token,{httpOnly: true, secure: true,maxAge: 24 * 60 * 60 * 1000}).status(200).json(user);
     }
     catch(error){
         return res.status(500).json({message: error.message});
