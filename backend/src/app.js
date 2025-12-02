@@ -21,7 +21,7 @@ app.use(express.json());
 
 
 app.use(cors({ 
-    origin: "https://quickcourt-pvr8.onrender.com", 
+    origin: "https://quickcourt-online.onrender.com", 
     credentials: true,
 }));
 //https://quickcourt-online.onrender.com
