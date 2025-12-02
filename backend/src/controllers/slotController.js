@@ -30,12 +30,10 @@ const createTimeSlot = async () => {
     const year = dayAfterTomorrow.getFullYear();
     
     while (totalCourts > 0){
-        console.log(totalCourts);
         skip = (page - 1) * limit;
         let courts = await Court.find({}).skip(skip).limit(limit);
         totalCourts -= courts.length;
         for(let court of courts){
-            console.log(day);
             if(!court.schedule.days.includes(day)){
                 continue;
             }
@@ -47,7 +45,6 @@ const createTimeSlot = async () => {
                 if(t.meridian === "AM" && t.hour === 12){
                     hour24 = 0;
                 }
-                console.log(year, months[month], date, hour24, t.minute);
                 const obj = new Slot({
                     time: new Date(year, months[month], date, hour24, t.minute, 0),
                     price: court.price,
