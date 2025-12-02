@@ -21,9 +21,10 @@ app.use(express.json());
 
 
 app.use(cors({ 
-    origin: "https://quickcourt-online.onrender.com",
+    origin: "http://localhost:5173", 
     credentials: true,
 }));
+//https://quickcourt-online.onrender.com
 app.use(cookieParser());
 
 
@@ -41,6 +42,7 @@ app.get("/api/v1/hello",(req,res)=>{
 
 app.post("/api/v1/sendOtp",(req,res) => {
     const {otp,phonecode,phoneNo} = req.body;
+    console.log(req.body);
     sendOtp(otp,phonecode,phoneNo);
     return res.status(200).json({message: "otp send from server"});
 });
@@ -52,14 +54,11 @@ app.get("/",async (req,res)=>{
 })
 
 cron.schedule("*/1 * * * *", completeBooking);
-cron.schedule("0 0 * * *",async ()=>{
-    console.log("cron is running at 12:00 PM");
-    await createTimeSlot();
-},{timezone: "Asia/Kolkata"});
+cron.schedule("0 0 * * *",createTimeSlot,{timezone: "Asia/Kolkata"});
 const start = async () => {
     const dbURL = process.env.DBurl;
     const port = process.env.PORT || 3000;
-    const connecctionDB = await mongoose.connect(dbURL);
+    const connectionDB = await mongoose.connect(dbURL);
     console.log("connected to db");
     server.listen(port,()=>{
         console.log(`listening at port ${port}`);

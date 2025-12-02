@@ -12,7 +12,7 @@ function PhoneVerifcation({isOpen,onPhoneOtpPreviewClose,phonecode,phoneNo, comp
         const code = String(Math.floor(100000 + Math.random() * 900000));
         setOtp(code);
         console.log(code);
-        fetch("https://quickcourt-pvr8.onrender.com/api/v1/sendOtp",{
+        fetch("http://localhost:3000/api/v1/sendOtp",{
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

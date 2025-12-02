@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import twilio from "twilio"
 const accountSid = 'AC863233b16e0b728f478e989de69ea856';
-const authToken = "505a7554c04d1961d1beca7e841189f8";
-
+const authToken = "716e98d3adfe88256bb38ad2ec82a849";
+ 
 const client = new twilio(accountSid, authToken);
 
 const handleRegister = async (req, res) => {
@@ -16,7 +16,6 @@ const handleRegister = async (req, res) => {
     const user = new User(req.body);
     user.joinedAt = new Date();
     const result = await user.save();
-    console.log(result);
     res.status(200).json({message: "User registerd successfully"});
 }
 
@@ -68,7 +67,7 @@ const verifyUser = async (req,res) => {
 
 const sendOtp = (otp,phonecode,phoneNo) => {
     client.messages.create({
-            body: `Your otp for verification is ${otp}. Thank you!`,
+            body: `Thank you for registering in Quickcourt. Your otp for verification is ${otp}. Thank you!`,
             from: '+12183575341',
             to: `+${phonecode}${phoneNo}`
     }).then(message => console.log(message.sid));

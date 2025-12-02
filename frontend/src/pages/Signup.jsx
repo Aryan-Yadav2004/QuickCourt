@@ -177,10 +177,10 @@ function Signup() {
 
   return (
     <div className='w-full h-lvh bg-[#f0ebfa] flex justify-center items-center'>
-      <div className='w-[70%] min-h-[70vh] py-0.5 bg-white rounded-2xl relative'>
+      <div className='w-[70%] min-h-[80vh] py-0.5 bg-white rounded-2xl relative'>
         <div className='left-0 text-2xl absolute font-bold max-w-52 ml-4'>QUICK<span className='text-[#5500ff] italic'>COURT</span></div>
         <h1 className='w-full text-center text-3xl font-serif'>Sign up.</h1>
-        <form className='w-full h-[80%] flex flex-col gap-2' onSubmit={(e) => {NProgress.start(); handleSubmit(e);}} method='POST'>
+        <form className='w-full h-[90%] flex flex-col gap-2' onSubmit={(e) => {NProgress.start(); handleSubmit(e);}} method='POST'>
             <div className='w-full h-full flex sm:flex-row flex-col justify-between items-center'>
               <div className={`${role === "facilityOwner"?"w-[30%]":"w-[48%]"} h-full  flex flex-col justify-start gap-4 ${role === "facilityOwner"?"items-center":"items-end "}`}>
                   {/* name */} 

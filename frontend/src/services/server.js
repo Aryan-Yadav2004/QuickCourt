@@ -1,6 +1,7 @@
 
 
-const baseURL = "https://quickcourt-pvr8.onrender.com/api/v1";
+const baseURL = "http://localhost:3000/api/v1";
+//https://quickcourt-pvr8.onrender.com
 
 const registerUser = async (user) => {
     let res = await fetch(`${baseURL}/user/register`,{
