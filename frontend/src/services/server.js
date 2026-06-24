@@ -1,24 +1,24 @@
 
 
-const baseURL = "http://localhost:3000/api/v1";
+const baseURL = "http://16.171.18.60:3000/api/v1";
 //https://quickcourt-pvr8.onrender.com
 
 const registerUser = async (user) => {
-    let res = await fetch(`${baseURL}/user/register`,{
+    let res = await fetch(`${baseURL}/user/register`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(user)
     });
-    
+
     return res;
 }
 
 
 
-const loginUser = async(user) => {
-    let res = await fetch(`${baseURL}/user/login`,{
+const loginUser = async (user) => {
+    let res = await fetch(`${baseURL}/user/login`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -29,8 +29,8 @@ const loginUser = async(user) => {
     return res;
 }
 
-const updateUser = async(id,data) => {
-    let res = await fetch(`${baseURL}/user/${id}`,{
+const updateUser = async (id, data) => {
+    let res = await fetch(`${baseURL}/user/${id}`, {
         method: 'PATCH',
         headers: {
             "Content-Type": "application/json"
@@ -41,8 +41,8 @@ const updateUser = async(id,data) => {
     return res;
 }
 
-const getAllBookings = async(id) => {
-    let res = await fetch(`${baseURL}/user/${id}/bookings`,{
+const getAllBookings = async (id) => {
+    let res = await fetch(`${baseURL}/user/${id}/bookings`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json"
@@ -53,7 +53,7 @@ const getAllBookings = async(id) => {
 }
 
 const createFacility = async (facility) => {
-    let res = await fetch(`${baseURL}/facility/new`,{
+    let res = await fetch(`${baseURL}/facility/new`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json"
@@ -65,7 +65,7 @@ const createFacility = async (facility) => {
 }
 
 const readAllFacilities = async () => {
-    let res = await fetch(`${baseURL}/facility/allfacility`,{
+    let res = await fetch(`${baseURL}/facility/allfacility`, {
         method: 'GET',
         headers: {
             "Content-Type": "application/json"
@@ -79,7 +79,7 @@ const upLoadPdf = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
 
-    let res = await fetch(`${baseURL}/upload`,{
+    let res = await fetch(`${baseURL}/upload`, {
         method: 'POST',
         credentials: "include",
         body: formData
@@ -88,28 +88,28 @@ const upLoadPdf = async (file) => {
 }
 
 
-const allPendingRequest = async (page,limit) => {
-    const res = await fetch(`${baseURL}/facility/allPendingRequest?page=${page}&limit=${limit}`,{
+const allPendingRequest = async (page, limit) => {
+    const res = await fetch(`${baseURL}/facility/allPendingRequest?page=${page}&limit=${limit}`, {
         method: 'GET',
         credentials: "include",
     });
     return res;
 }
 
-const replyRequest = async(facilityId,answer) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/requestReply`,{
+const replyRequest = async (facilityId, answer) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/requestReply`, {
         method: 'PATCH',
         credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({request: answer}),
+        body: JSON.stringify({ request: answer }),
     })
     return res;
 }
 
-const getAllUsers = async (page,limit) => {
-    const res = await fetch(`${baseURL}/user/getUsers?page=${page}&limit=${limit}`,{
+const getAllUsers = async (page, limit) => {
+    const res = await fetch(`${baseURL}/user/getUsers?page=${page}&limit=${limit}`, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -120,27 +120,27 @@ const getAllUsers = async (page,limit) => {
 }
 
 const getUser = async (userId) => {
-    const res = await fetch(`${baseURL}/user/${userId}`,{
+    const res = await fetch(`${baseURL}/user/${userId}`, {
         method: 'GET',
         credentials: 'include',
     })
     return res;
 }
 
-const updateUserStatus = async (userId,status) => {
-    const res = await fetch(`${baseURL}/user/${userId}/updateStatus`,{
+const updateUserStatus = async (userId, status) => {
+    const res = await fetch(`${baseURL}/user/${userId}/updateStatus`, {
         method: 'PATCH',
         credentials: 'include',
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({status: status}),
+        body: JSON.stringify({ status: status }),
     })
     return res;
 }
 
 const getFacility = async (facilityId) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}`,{
+    const res = await fetch(`${baseURL}/facility/${facilityId}`, {
         method: 'GET',
         credentials: "include",
     })
@@ -148,15 +148,15 @@ const getFacility = async (facilityId) => {
 }
 
 const getUserByUsername = async (username) => {
-    const res = await fetch(`${baseURL}/user/getUserByUsername?username=${username}`,{
+    const res = await fetch(`${baseURL}/user/getUserByUsername?username=${username}`, {
         method: 'GET',
         credentials: 'include',
     })
     return res;
 }
 
-const updateFacility = async(facility,facilityId) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/edit`,{
+const updateFacility = async (facility, facilityId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/edit`, {
         method: 'PATCH',
         credentials: "include",
         headers: {
@@ -168,15 +168,15 @@ const updateFacility = async(facility,facilityId) => {
 }
 
 const deleteFacility = async (facilityId) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/delete`,{
+    const res = await fetch(`${baseURL}/facility/${facilityId}/delete`, {
         method: 'DELETE',
         credentials: "include",
     });
     return res;
 }
 
-const createCourt = async(facilityId,court) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/new`,{
+const createCourt = async (facilityId, court) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/new`, {
         method: 'POST',
         credentials: "include",
         headers: {
@@ -187,17 +187,17 @@ const createCourt = async(facilityId,court) => {
     return res;
 }
 
-const getCourt = async(facilityId, courtId) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}`,{
+const getCourt = async (facilityId, courtId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}`, {
         method: 'GET',
         credentials: 'include',
-        
+
     })
     return res;
 }
 
-const createReview = async(facilityId,courtId,review) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/reviews/new`,{
+const createReview = async (facilityId, courtId, review) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/reviews/new`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -208,15 +208,15 @@ const createReview = async(facilityId,courtId,review) => {
     return res;
 }
 
-const deleteReview = async(facilityId,courtId,reviewId) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/reviews/${reviewId}/delete`,{
+const deleteReview = async (facilityId, courtId, reviewId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/reviews/${reviewId}/delete`, {
         method: 'DELETE',
         credentials: 'include',
     })
-    return res; 
+    return res;
 }
-const updateCourt = async(facilityId,courtId,court) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/edit`,{
+const updateCourt = async (facilityId, courtId, court) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/edit`, {
         method: 'PATCH',
         credentials: "include",
         headers: {
@@ -227,41 +227,41 @@ const updateCourt = async(facilityId,courtId,court) => {
     return res;
 }
 
-const deleteCourt = async(facilityId,courtId) => {
-    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/delete`,{
+const deleteCourt = async (facilityId, courtId) => {
+    const res = await fetch(`${baseURL}/facility/${facilityId}/courts/${courtId}/delete`, {
         method: 'DELETE',
         credentials: 'include',
     });
     return res;
 }
 
-const createOrder = async(slot_id, court_id, seats) => {
-    const res = await fetch(`${baseURL}/payment/orders`,{
-        method: 'POST',
-        credentials: 'include',
-        headers:{
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({slot_id: slot_id,court_id: court_id,seats: seats}),
-    });
-    return res;
-}
-
-const verifyPayment = async (razorpay_payment_id, razorpay_order_id, razorpay_signature, orderAmount, slot_id, user_id, seats) => {
-    const res = await fetch(`${baseURL}/payment/verify`,{
+const createOrder = async (slot_id, court_id, seats) => {
+    const res = await fetch(`${baseURL}/payment/orders`, {
         method: 'POST',
         credentials: 'include',
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify({razorpay_payment_id: razorpay_payment_id,razorpay_order_id: razorpay_order_id, razorpay_signature, orderAmount: orderAmount ,slot_id: slot_id, user_id: user_id, seats: seats}),
+        body: JSON.stringify({ slot_id: slot_id, court_id: court_id, seats: seats }),
     });
-    const result = await res.json(); 
+    return res;
+}
+
+const verifyPayment = async (razorpay_payment_id, razorpay_order_id, razorpay_signature, orderAmount, slot_id, user_id, seats) => {
+    const res = await fetch(`${baseURL}/payment/verify`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify({ razorpay_payment_id: razorpay_payment_id, razorpay_order_id: razorpay_order_id, razorpay_signature, orderAmount: orderAmount, slot_id: slot_id, user_id: user_id, seats: seats }),
+    });
+    const result = await res.json();
     return result;
 }
 
 const createFundAccount = async (detail) => {
-    const res = await fetch(`${baseURL}/payment/createFundAccount`,{
+    const res = await fetch(`${baseURL}/payment/createFundAccount`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
@@ -272,15 +272,15 @@ const createFundAccount = async (detail) => {
 }
 
 const getBookingTicket = async (userId, bookingId) => {
-    const res = await fetch(`${baseURL}/user/${userId}/bookings/${bookingId}`,{
+    const res = await fetch(`${baseURL}/user/${userId}/bookings/${bookingId}`, {
         method: 'GET',
         credentials: 'include'
     });
     return res;
-} 
+}
 
 const cancelBooking = async (userId, bookingId) => {
-    const res = await fetch(`${baseURL}/user/${userId}/bookings/${bookingId}/cancel`,{
+    const res = await fetch(`${baseURL}/user/${userId}/bookings/${bookingId}/cancel`, {
         method: 'PATCH',
         credentials: 'include'
     });
@@ -288,32 +288,32 @@ const cancelBooking = async (userId, bookingId) => {
 }
 
 const getCountryISO = async () => {
-  const res = await fetch("https://ipapi.co/json/");
-  const data = await res.json();
-  return data;
+    const res = await fetch("https://ipapi.co/json/");
+    const data = await res.json();
+    return data;
 };
 
 const searchContent = async () => {
-    const res = await fetch(`${baseURL}/facility/searchContent`,{
+    const res = await fetch(`${baseURL}/facility/searchContent`, {
         method: 'GET',
     })
     const result = await res.json();
     return result;
 }
 
-const getFacilityListing = async (filter,page,limit) => {
-    const res = await fetch(`${baseURL}/facility/facilities`,{
+const getFacilityListing = async (filter, page, limit) => {
+    const res = await fetch(`${baseURL}/facility/facilities`, {
         method: 'POST',
         headers: {
             'Content-type': 'application/json'
         },
-        body: JSON.stringify({filter,page,limit}),
+        body: JSON.stringify({ filter, page, limit }),
     });
     return res
 }
 
-const getSlotBookingDetails = async(id, time) => {
-    const res = await fetch(`${baseURL}/user/${id}/ownerBookingdetails/${time}`,{
+const getSlotBookingDetails = async (id, time) => {
+    const res = await fetch(`${baseURL}/user/${id}/ownerBookingdetails/${time}`, {
         method: 'GET',
         credentials: 'include'
     })
@@ -321,7 +321,7 @@ const getSlotBookingDetails = async(id, time) => {
 }
 
 const getBookingTrend = async () => {
-    const res = await fetch(`${baseURL}/facility/bookingtrend`,{
+    const res = await fetch(`${baseURL}/facility/bookingtrend`, {
         method: "GET",
         credentials: 'include'
     });
@@ -329,7 +329,7 @@ const getBookingTrend = async () => {
 }
 
 const getEarning = async () => {
-    const res = await fetch(`${baseURL}/facility/earnings`,{
+    const res = await fetch(`${baseURL}/facility/earnings`, {
         method: "GET",
         credentials: 'include'
     });
@@ -337,7 +337,7 @@ const getEarning = async () => {
 }
 
 const getAdminStats = async (id) => {
-    const res = await fetch(`${baseURL}/user/${id}/stats`,{
+    const res = await fetch(`${baseURL}/user/${id}/stats`, {
         method: "GET",
         credentials: 'include'
     });
@@ -345,11 +345,11 @@ const getAdminStats = async (id) => {
 }
 
 const handleLogOut = async (id) => {
-    const res = await fetch(`${baseURL}/user/${id}/logout`,{
+    const res = await fetch(`${baseURL}/user/${id}/logout`, {
         method: 'POST',
         credentials: 'include'
     });
     return res;
 }
 
-export { getAdminStats ,registerUser, getEarning ,getBookingTrend, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview,updateCourt, deleteCourt,deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket,cancelBooking ,getCountryISO, searchContent, getFacilityListing, getSlotBookingDetails, handleLogOut};
+export { getAdminStats, registerUser, getEarning, getBookingTrend, loginUser, createCourt, getAllBookings, updateUser, updateFacility, createFacility, readAllFacilities, upLoadPdf, allPendingRequest, replyRequest, getAllUsers, updateUserStatus, getUser, getUserByUsername, getFacility, deleteFacility, getCourt, createReview, updateCourt, deleteCourt, deleteReview, createOrder, verifyPayment, createFundAccount, getBookingTicket, cancelBooking, getCountryISO, searchContent, getFacilityListing, getSlotBookingDetails, handleLogOut };
