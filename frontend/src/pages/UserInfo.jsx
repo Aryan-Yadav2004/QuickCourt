@@ -192,18 +192,18 @@ function UserInfo() {
                     <h4 className="font-semibold text-lg">{f.name}</h4>
                     <div className="grid grid-cols-2 gap-4 mt-2 text-sm text-gray-600">
                       <div>
-                        <p><span className='font-medium'>About:</span>{f.about}</p>
+                        <p><span className='font-medium'>About:</span>{f?.about}</p>
                         <p><span className="font-medium">Location: </span> {`${f?.street}, ${f?.city}, ${f?.state}, ${f?.country}`}</p>
                         <p><span className="font-medium">Status: </span> <span className={`${f.status === 'accepted' && 'text-green-500'} ${f.status === 'pending' && 'text-yellow-500'} ${f.status === 'rejected' && 'text-red-500'}`}>{f.status}</span></p>
                         {/* <p><span className="font-medium">Sports:</span> {facility.sports}</p> */}
                       </div>
                       <div>
-                        <p><span className="font-medium">Rating:</span> ⭐ 4.5</p>
+                        <p><span className="font-medium">Rating:</span> ⭐ {f.rating}</p>
                       </div>
                     </div>
                   </div>
-                  <button className="text-purple-600 hover:text-purple-700 font-medium">
-                    View Details
+                  <button className="text-purple-600 hover:text-purple-700 font-medium" onClick={()=>navigate(`/facility/${f._id}`)}>
+                    View
                   </button>
                 </div>
               </div>
