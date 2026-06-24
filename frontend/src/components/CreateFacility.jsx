@@ -6,7 +6,7 @@ import SuccessAlert from './successAlert.jsx';
 import {useSelector} from "react-redux"
 import { createFacility, upLoadPdf } from '../services/server.js';
 import NProgress from 'nprogress'; 
-import "nprogress/nprogress.css";
+
 
 
 

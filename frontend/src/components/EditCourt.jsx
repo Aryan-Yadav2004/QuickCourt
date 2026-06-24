@@ -4,7 +4,7 @@ import ErrorAlert from './errorAlert';
 import { getCourt, updateCourt } from '../services/server';
 import { upload } from '../services/Cloudinary';
 import NProgress from 'nprogress'; 
-import "nprogress/nprogress.css";
+
 function EditCourt() {
     const {facilityId,courtId} = useParams(); 
     const [court, setCourt] = useState(null); 

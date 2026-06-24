@@ -6,7 +6,7 @@ import ErrorAlert from './errorAlert';
 import SuccessAlert from './successAlert';
 import {upload} from '../services/Cloudinary.js';
 import NProgress from 'nprogress'; 
-import "nprogress/nprogress.css";
+
 function EditProfile() {
     const user = useSelector((state) => state.user?.userDetail);
     const [states,setStates] = useState([]);

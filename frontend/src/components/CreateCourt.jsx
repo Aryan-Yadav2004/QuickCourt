@@ -4,7 +4,7 @@ import { upload } from '../services/Cloudinary';
 import { createCourt } from '../services/server';
 import { useNavigate, useParams } from 'react-router-dom';
 import NProgress from 'nprogress'; 
-import "nprogress/nprogress.css";
+
 function CreateCourt() {
   const [error,setError] = useState("");
   const navigate = useNavigate();

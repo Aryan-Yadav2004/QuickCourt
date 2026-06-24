@@ -7,7 +7,7 @@ import { upload } from '../services/Cloudinary';
 import ErrorAlert from './errorAlert';
 import SuccessAlert from './successAlert';
 import NProgress from 'nprogress'; 
-import "nprogress/nprogress.css";
+
 
  function EditFacility() {
   const { facilityId } = useParams();

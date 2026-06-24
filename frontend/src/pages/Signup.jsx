@@ -8,7 +8,7 @@ import { createFundAccount, registerUser } from '../services/server.js';
 import SuccessAlert from '../components/successAlert.jsx';
 import { Link, useNavigate } from 'react-router-dom';
 import NProgress from 'nprogress'; 
-import "nprogress/nprogress.css";
+
 
 function Signup() {
   const [email,setEmail] = useState("");
