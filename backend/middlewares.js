@@ -7,7 +7,7 @@ import Review from "./src/models/reviewsModel.js";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import cloudinaryStoragePkg from "multer-storage-cloudinary";
-const { CloudinaryStorage } = cloudinaryStoragePkg;
+const CloudinaryStorage = cloudinaryStoragePkg.CloudinaryStorage ?? cloudinaryStoragePkg;
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
